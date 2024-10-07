@@ -11,7 +11,7 @@ import javafx.stage.Stage
 class HelloApplication : Application() {
 
     override fun start(stage: Stage) {
-// Get the dimensions of the primary screen
+        // Get the dimensions of the primary screen
         val screenBounds: Rectangle2D = Screen.getPrimary().bounds
         val width = screenBounds.width * 0.7 // 70% of screen width
         val height = screenBounds.height * 0.7 // 70% of screen height

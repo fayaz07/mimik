@@ -4,8 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e5cdd11-e4d7-4767-9f22-036dc04a97dd" name="Changes" comment="add simple screen code">
+    <list default="true" id="1e5cdd11-e4d7-4767-9f22-036dc04a97dd" name="Changes" comment="add core module">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/module-info.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/resources/in/mfayaz/mimik/core/hello-view.fxml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,6 +84,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Gradle.Build core.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Build mimik.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.mimik [run].executor&quot;: &quot;Run&quot;,
     &quot;Kotlin.HelloApplicationKt.executor&quot;: &quot;Run&quot;,
@@ -129,6 +139,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Gradle.mimik [run]" />
+      <item itemvalue="Kotlin.HelloApplicationKt" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.mimik [run]" />
