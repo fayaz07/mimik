@@ -15,11 +15,6 @@
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/core" />
         <option name="gradleJvm" value="homebrew-21" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/core" />
-          </set>
-        </option>
       </GradleProjectSettings>
     </option>
   </component>

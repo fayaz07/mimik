@@ -1,4 +1,4 @@
-package `in`.mfayaz.mimik
+package `in`.mfayaz.mimik.core
 
 import javafx.scene.paint.Color
 

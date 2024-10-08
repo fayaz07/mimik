@@ -25,7 +25,7 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'in.mfayaz.mimik'
-    mainClass = 'in.mfayaz.mimik.HelloApplication'
+    mainClass = 'in.mfayaz.mimik.MimikApplication'
 }
 kotlin {
     jvmToolchain(17)

@@ -4,17 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e5cdd11-e4d7-4767-9f22-036dc04a97dd" name="Changes" comment="add core module">
+    <list default="true" id="1e5cdd11-e4d7-4767-9f22-036dc04a97dd" name="Changes" comment="remove core module">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/navigation/NavController.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/navigation/NavParams.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/navigation/NavigationException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/navigation/Route.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/navigation/Routes.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/screens/splash/SplashScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/module-info.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/resources/in/mfayaz/mimik/core/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/AppColors.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/core/AppColors.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/HelloApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/MimikApplication.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +71,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JavaFXApplication" />
         <option value="Kotlin Object" />
+        <option value="Kotlin Class" />
+        <option value="Kotlin Data Class" />
       </list>
     </option>
   </component>
@@ -77,7 +85,9 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2mq3IYrxCJ9xpE5inrfhAWWFaw8" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -108,6 +118,9 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/in/mfayaz/mimik" />
     </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="in.mfayaz.mimik.core" />
+    </key>
   </component>
   <component name="RunManager" selected="Gradle.mimik [run]">
     <configuration name="mimik [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -132,8 +145,8 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="HelloApplicationKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="in.mfayaz.mimik.HelloApplicationKt" />
+    <configuration name="MimikApplicationKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="in.mfayaz.mimik.MimikApplicationKt" />
       <module name="mimik.main" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -141,12 +154,12 @@
     </configuration>
     <list>
       <item itemvalue="Gradle.mimik [run]" />
-      <item itemvalue="Kotlin.HelloApplicationKt" />
+      <item itemvalue="Kotlin.MimikApplicationKt" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.mimik [run]" />
-        <item itemvalue="Kotlin.HelloApplicationKt" />
+        <item itemvalue="Kotlin.MimikApplicationKt" />
       </list>
     </recent_temporary>
   </component>
@@ -175,11 +188,20 @@
       <option name="project" value="LOCAL" />
       <updated>1728060934895</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="remove core module">
+      <option name="closed" value="true" />
+      <created>1728307253920</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1728307253920</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add simple screen code" />
-    <option name="LAST_COMMIT_MESSAGE" value="add simple screen code" />
+    <MESSAGE value="remove core module" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove core module" />
   </component>
 </project>
