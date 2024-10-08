@@ -5,11 +5,6 @@ import javafx.stage.Screen
 import javafx.stage.Stage
 import java.util.*
 
-data class NavOptions(
-  val replace: Boolean = false,
-  val params: NavParams = NavParams()
-)
-
 object NavController {
   private val backstack: Stack<String> = Stack()
   private val routes: MutableMap<String, (params: NavParams) -> Scene> = mutableMapOf()
@@ -35,7 +30,7 @@ object NavController {
     navigate(initialRoute)
   }
 
-  fun addRoute(route: Route, builder: (params: NavParams) -> Scene) {
+  fun register(route: Route, builder: (params: NavParams) -> Scene) {
     routes[route.id] = builder
   }
 

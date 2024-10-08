@@ -1,66 +1,47 @@
 package `in`.mfayaz.mimik.screens.splash
 
+import `in`.mfayaz.mimik.MimikApplication
 import `in`.mfayaz.mimik.core.AppColors
-import `in`.mfayaz.mimik.navigation.NavController
-import `in`.mfayaz.mimik.navigation.NavOptions
-import `in`.mfayaz.mimik.navigation.NavParams
-import `in`.mfayaz.mimik.navigation.Route
-import javafx.animation.FadeTransition
+import `in`.mfayaz.mimik.core.AppConfig
 import javafx.application.Application
 import javafx.geometry.Pos
+import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.layout.Background
 import javafx.scene.layout.VBox
-import javafx.stage.Stage
-import kotlin.reflect.KAnnotatedElement
-import javafx.util.Duration
+import java.io.InputStream
+import kotlin.math.log
 
-data class XScreenParams(
-  val text: String
-): NavParams()
-
-fun XScreen(
-  params: XScreenParams
-): Scene {
-  val layout = VBox()
-  layout.alignment = Pos.CENTER
-
-  val label = Label("This is the X Screen, message: ${params.text}")
-
-  layout.background = Background.fill(AppColors.backgroundMain)
-  layout.children.apply {
-    add(label)
-
-    add(Button("Navigate to Splash Screen").apply {
-      setOnAction {
-        NavController.popBackStack()
-      }
-    })
-  }
-
-  val scene = Scene(layout)
-  return scene
-}
+private const val stylesheetFile = "splash.css"
+private const val baseStyleClass = "splash"
 
 fun SplashScreen(onClick: () -> Unit): Scene {
   val layout = VBox()
-  layout.alignment = Pos.CENTER
 
-  val label = Label("This is the First Scene")
+  with(layout) {
+    alignment = Pos.CENTER
 
-  layout.children.apply {
-    add(label)
+    stylesheets.add(MimikApplication.getStyleResource(stylesheetFile)!!.toExternalForm())
+    styleClass.add(baseStyleClass)
 
-    add(Button("Navigate to X Screen").apply {
-      setOnAction {
-        label.text = "navigated"
-        onClick()
-      }
-    })
+    children.apply {
+      add(logo())
+      add(Label(AppConfig.AppName).apply { styleClass.add("appName") })
+    }
   }
+  return Scene(layout)
+}
 
-  val scene = Scene(layout)
-  return scene
+private fun logo(): Node? {
+  val logo = MimikApplication.getImageResource("logo.png")
+  return logo?.let {
+    ImageView(Image(it)).apply {
+      fitWidth = 200.0
+      fitHeight = 200.0
+    }
+  }
 }

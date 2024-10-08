@@ -1,0 +1,21 @@
+.root {
+  -fx-color-primary: #5271FF;
+  -fx-color-secondary: #52C7FF;
+  -fx-color-accent: #FF52D4;
+  -fx-color-secondary-dark: #118bc6;
+  -fx-color-secondary-light: #c3ebff;
+  -fx-color-neutral-light: #F0F2F5;
+  -fx-color-neutral-medium: #D1D5DB;
+  -fx-color-neutral-dark: #4B5563;
+  -fx-color-text-primary: #1F2937;
+  -fx-color-text-secondary: #6B7280;
+  -fx-color-background-main: #FFFFFF;
+  -fx-color-background-secondary: #F9FAFB;
+  -fx-color-primary-light: #7A91FF;
+  -fx-color-primary-dark: #3955D6;
+  -fx-color-success: #10B981;
+  -fx-color-warning: #FBBF24;
+  -fx-color-error: #EF4444;
+
+  -fx-color-white: #FFFFFF;
+}
