@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e5cdd11-e4d7-4767-9f22-036dc04a97dd" name="Changes" comment="add icons">
-      <change afterPath="$PROJECT_DIR$/.github/workflows/ci.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/Launcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/FooTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-    </list>
+    <list default="true" id="1e5cdd11-e4d7-4767-9f22-036dc04a97dd" name="Changes" comment="add macos icon, Launcher, ci for build and test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -130,6 +123,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources/in/mfayaz/mimik" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="in.mfayaz.mimik" />
       <recent name="in.mfayaz.mimik.core" />
     </key>
   </component>
@@ -318,7 +312,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728408412456</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add macos icon, Launcher, ci for build and test">
+      <option name="closed" value="true" />
+      <created>1728474858523</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1728474858523</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -327,6 +329,7 @@
     <MESSAGE value="add basic navigation" />
     <MESSAGE value="add .editorconfig" />
     <MESSAGE value="add icons" />
-    <option name="LAST_COMMIT_MESSAGE" value="add icons" />
+    <MESSAGE value="add macos icon, Launcher, ci for build and test" />
+    <option name="LAST_COMMIT_MESSAGE" value="add macos icon, Launcher, ci for build and test" />
   </component>
 </project>
