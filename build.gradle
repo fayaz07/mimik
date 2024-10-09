@@ -15,7 +15,7 @@ repositories {
 }
 
 ext {
-  junitVersion = '5.10.3'
+  junitVersion = '5.11.2'
 }
 
 tasks.withType(JavaCompile) {
