@@ -4,20 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e5cdd11-e4d7-4767-9f22-036dc04a97dd" name="Changes" comment="add .editorconfig">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/core/AppConfig.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/navigation/NavOptions.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/styles/colors.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/styles/splash.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/.editorconfig" afterDir="false" />
+    <list default="true" id="1e5cdd11-e4d7-4767-9f22-036dc04a97dd" name="Changes" comment="add icons">
+      <change afterPath="$PROJECT_DIR$/.github/workflows/ci.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/Launcher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/kotlin/FooTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/MimikApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/MimikApplication.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/navigation/NavController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/navigation/NavController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/navigation/Routes.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/core/Routes.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/screens/splash/SplashScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/in/mfayaz/mimik/screens/splash/SplashScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +53,12 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="mimik" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="application" type="c8890929:TasksNode$1" />
+                <item name="verification" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="mimik" type="f1a62948:ProjectNode" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
               </path>
             </expand>
             <select />
@@ -72,10 +70,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaFXApplication" />
-        <option value="Kotlin Class" />
         <option value="Kotlin Data Class" />
         <option value="Kotlin Object" />
+        <option value="JavaFXApplication" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -100,7 +98,13 @@
   "keyToString": {
     "Gradle.Build core.executor": "Run",
     "Gradle.Build mimik.executor": "Run",
+    "Gradle.mimik [buildNative].executor": "Run",
+    "Gradle.mimik [customFatJar].executor": "Run",
+    "Gradle.mimik [jarForStandalone].executor": "Run",
+    "Gradle.mimik [jar].executor": "Run",
+    "Gradle.mimik [jpackageImage].executor": "Run",
     "Gradle.mimik [run].executor": "Run",
+    "Gradle.mimik [test].executor": "Run",
     "Kotlin.HelloApplicationKt.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -129,8 +133,8 @@
       <recent name="in.mfayaz.mimik.core" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.mimik [run]">
-    <configuration name="mimik [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.mimik [test]">
+    <configuration name="mimik [buildNative]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -141,7 +145,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="run" />
+            <option value="buildNative" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -152,21 +156,108 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="MimikApplicationKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="in.mfayaz.mimik.MimikApplicationKt" />
-      <module name="mimik.main" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration name="mimik [customFatJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="customFatJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="mimik [jarForStandalone]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="jarForStandalone" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="mimik [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="jar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="mimik [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Gradle.mimik [run]" />
-      <item itemvalue="Kotlin.MimikApplicationKt" />
+      <item itemvalue="Gradle.mimik [buildNative]" />
+      <item itemvalue="Gradle.mimik [customFatJar]" />
+      <item itemvalue="Gradle.mimik [jarForStandalone]" />
+      <item itemvalue="Gradle.mimik [jar]" />
+      <item itemvalue="Gradle.mimik [test]" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.mimik [run]" />
-        <item itemvalue="Kotlin.MimikApplicationKt" />
+        <item itemvalue="Gradle.mimik [test]" />
+        <item itemvalue="Gradle.mimik [jarForStandalone]" />
+        <item itemvalue="Gradle.mimik [jar]" />
+        <item itemvalue="Gradle.mimik [customFatJar]" />
+        <item itemvalue="Gradle.mimik [buildNative]" />
       </list>
     </recent_temporary>
   </component>
@@ -219,7 +310,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728392696111</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add icons">
+      <option name="closed" value="true" />
+      <created>1728408412456</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1728408412456</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -227,6 +326,7 @@
     <MESSAGE value="remove core module" />
     <MESSAGE value="add basic navigation" />
     <MESSAGE value="add .editorconfig" />
-    <option name="LAST_COMMIT_MESSAGE" value="add .editorconfig" />
+    <MESSAGE value="add icons" />
+    <option name="LAST_COMMIT_MESSAGE" value="add icons" />
   </component>
 </project>
