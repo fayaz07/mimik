@@ -8,15 +8,13 @@ function App() {
   const [name, setName] = useState("");
 
   async function greet() {
-    if(invoke && invoke !== undefined) {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-      setGreetMsg(await invoke("greet", { name }));
-    }
+    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+    setGreetMsg(await invoke("greet", { name }));
   }
 
   return (
-    <div className="container">
-      <h1>Welcome to Tauri!</h1>
+    <main className="container">
+      <h1>Welcome to Tauri + React</h1>
 
       <div className="row">
         <a href="https://vitejs.dev" target="_blank">
@@ -29,7 +27,6 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-
       <p>Click on the Tauri, Vite, and React logos to learn more.</p>
 
       <form
@@ -46,9 +43,8 @@ function App() {
         />
         <button type="submit">Greet</button>
       </form>
-
       <p>{greetMsg}</p>
-    </div>
+    </main>
   );
 }
 

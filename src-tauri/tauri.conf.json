@@ -1,12 +1,12 @@
 {
-  "$schema": "https://schema.tauri.app/config/2.0.0",
+  "$schema": "https://schema.tauri.app/config/2",
   "productName": "mimik",
   "version": "0.1.0",
   "identifier": "in.mfayaz.mimik",
   "build": {
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "deno task dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "deno task build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -15,7 +15,6 @@
         "title": "mimik",
         "width": 800,
         "height": 600
-        
       }
     ],
     "security": {
