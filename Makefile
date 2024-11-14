@@ -1,5 +1,5 @@
 run: 
-	deno run tauri dev
+	npm run tauri dev
 
 update_icon:
-	deno run tauri icon $(path)
+	npm run tauri icon $(path)
