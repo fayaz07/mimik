@@ -29,3 +29,5 @@
 
 - Tauri is great and Rust is giant too, but unfortunately I don't know Rust and couldn't spend time to learn it
 - Switching to `fyne`. If you ask me why `fyne`?, I know `Go` and according to the plan of building `mimik`, I felt I don't need complex UI components. Let's see what is gonna happen.
+- Explored `fyne` and it's demo app and felt `fyne` has it's own design system, doesn't feel native
+- Back with `Electron`? Uhhh! I have ended up choosing what I wanted to skip right at the start.
