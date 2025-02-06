@@ -24,3 +24,8 @@
 - The project was stale, no updates for few days.
 - Tauri released `v2`, and I decided to re-initiate the project with `v2`, but with `deno@v2` this time.
 - I wanted a monorepo, found the structure and implementation of monorepo with `deno` weird, so switched back to `npm`.
+
+### Feb 6, 2025
+
+- Tauri is great and Rust is giant too, but unfortunately I don't know Rust and couldn't spend time to learn it
+- Switching to `fyne`. If you ask me why `fyne`?, I know `Go` and according to the plan of building `mimik`, I felt I don't need complex UI components. Let's see what is gonna happen.
