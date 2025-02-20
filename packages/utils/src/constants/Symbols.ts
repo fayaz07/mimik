@@ -1,0 +1,17 @@
+export default Object.freeze({
+  hash: "#",
+  slash: "/",
+  colon: ":",
+  at: "@",
+  dot: ".",
+  percentage: "%",
+  questionMark: "?",
+  underscore: "_",
+  hyphen: "-",
+  comma: ",",
+  space: " ",
+  empty: "",
+  newLine: "\n",
+  tab: "\t",
+  dollar: "$",
+});
