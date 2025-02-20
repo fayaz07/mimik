@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import UpdateElectron from "@/components/update";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import logo from "./assets/logo.png";
+import routes from "./Routes";
 
 function App() {
-  const router = createBrowserRouter([]);
+  const router = createBrowserRouter(routes);
   return <RouterProvider router={router} />;
 }
 

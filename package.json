@@ -28,13 +28,20 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@mimik/core": "^1.0.0",
     "@mimik/splash-screen": "^1.0.0",
+    "@mimik/ui": "^1.0.0",
+    "@mimik/utils": "^1.0.0",
+    "@mui/material": "^6.4.5",
     "electron-updater": "^6.3.9",
     "i18next": "^24.2.2",
     "i18next-browser-languagedetector": "^8.0.4",
+    "puppertino": "github:codedgar/Puppertino#master",
     "react-i18next": "^15.4.1",
-    "react-router-dom": "^7.2.0"
+    "react-router-dom": "^7.2.0",
+    "sass": "^1.85.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.2",
