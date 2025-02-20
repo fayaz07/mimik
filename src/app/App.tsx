@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
 import UpdateElectron from "@/components/update";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import logo from "./assets/logo.png";
 
 function App() {
-  useEffect(() => {
-    document.title = "Electron React App";
-  }, []);
-
-  return <div className="App"></div>;
+  const router = createBrowserRouter([]);
+  return <RouterProvider router={router} />;
 }
 
 export default App;
