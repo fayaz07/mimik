@@ -1,8 +1,10 @@
 import { rmSync } from "node:fs";
 import path from "node:path";
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import fs from "node:fs";
+import { type Plugin, defineConfig, normalizePath } from "vite";
 import electron from "vite-plugin-electron/simple";
+
 import pkg from "./package.json";
 
 // https://vitejs.dev/config/
@@ -14,6 +16,15 @@ export default defineConfig(({ command }) => {
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG;
 
   return {
+    optimizeDeps: {
+      exclude: ["realm"], // Prevent Vite from pre-bundling Realm
+    },
+    build: {
+      target: "esnext", // Ensure ES module compatibility
+      commonjsOptions: {
+        transformMixedEsModules: true, // Fix for better-sqlite3
+      },
+    },
     define: {
       "import.meta.env.PLATFORM": JSON.stringify(process.platform),
     },
@@ -43,9 +54,10 @@ export default defineConfig(({ command }) => {
               minify: isBuild,
               outDir: "dist-electron/main",
               rollupOptions: {
-                external: Object.keys(
-                  "dependencies" in pkg ? pkg.dependencies : {}
-                ),
+                external: [
+                  ...Object.keys("dependencies" in pkg ? pkg.dependencies : {}),
+                  "better-sqlite3",
+                ],
               },
             },
           },

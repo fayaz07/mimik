@@ -11,7 +11,8 @@
   "workspaces": [
     "./packages/*",
     "./packages/screens/*",
-    "./packages/data/*"
+    "./packages/data/*",
+    "./packages/data/local"
   ],
   "license": "Apache-2.0",
   "private": true,
@@ -25,18 +26,22 @@
     "build": "tsc && vite build && electron-builder",
     "preview": "vite preview",
     "pretest": "vite build --mode=test",
-    "test": "vitest run"
+    "test": "vitest run",
+    "rebuild": "electron-rebuild -f -w better-sqlite3"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mimik/core": "^1.0.0",
     "@mimik/home-screen": "^1.0.0",
+    "@mimik/local": "^1.0.0",
     "@mimik/project-screens": "^1.0.0",
+    "@mimik/repo": "^1.0.0",
     "@mimik/splash-screen": "^1.0.0",
     "@mimik/ui": "^1.0.0",
     "@mimik/utils": "^1.0.0",
     "@mui/material": "^6.4.5",
+    "better-sqlite3": "^11.8.1",
     "electron-updater": "^6.3.9",
     "i18next": "^24.2.2",
     "i18next-browser-languagedetector": "^8.0.4",
@@ -47,12 +52,14 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.48.2",
+    "@types/better-sqlite3": "^7.6.12",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
-    "electron": "^33.2.0",
+    "electron": "^33.4.1",
     "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9",
     "postcss": "^8.4.49",
     "postcss-import": "^16.1.0",
     "react": "^18.3.1",
