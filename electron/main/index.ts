@@ -3,8 +3,10 @@ import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import os from "node:os";
+import Database from "better-sqlite3";
 import { update } from "./update";
-import { getSqlite3 } from "./db";
+
+// import { getSqlite3 } from "./db";
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -83,13 +85,42 @@ async function createWindow() {
   update(win);
 
   // ensure did-finish-load
+  // setTimeout(() => {
+  //   // const db = getSqlite3(__dirname);
+  //   // win?.webContents.send(
+  //   //   "main-process-message",
+  //   //   `[better-sqlite3] ${JSON.stringify(db.pragma("journal_mode = WAL"))}`
+  //   // );
+  // }, 999);
   setTimeout(() => {
-    const db = getSqlite3(__dirname);
-    win?.webContents.send(
-      "main-process-message",
-      `[better-sqlite3] ${JSON.stringify(db.pragma("journal_mode = WAL"))}`
+    // Example SQLite usage
+    console.debug("connecting to database");
+    const dbPath = path.join(__dirname, "mydatabase.db");
+    console.debug("dbPatH", dbPath);
+    const db = new Database(dbPath);
+
+    db.exec(
+      `CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY, name TEXT)`
     );
-  }, 999);
+
+    ipcMain.on("insert-item", (event, itemName) => {
+      const stmt = db.prepare("INSERT INTO items (name) VALUES (?)");
+      stmt.run(itemName);
+      event.reply("item-inserted", itemName);
+    });
+
+    ipcMain.on("get-items", (event) => {
+      const items = db.prepare("SELECT * FROM items").all();
+      event.reply("items-fetched", items);
+    });
+
+    // app.on('window-all-closed', () => {
+    //   if (process.platform !== 'darwin') {
+    //     app.quit();
+    //   }
+    //   db.close(); // Close the database when the app quits
+    // });
+  }, 2000);
 }
 
 app.whenReady().then(createWindow);

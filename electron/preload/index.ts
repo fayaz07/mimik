@@ -1,5 +1,14 @@
 import { ipcRenderer, contextBridge } from "electron";
 
+contextBridge.exposeInMainWorld("electronAPI", {
+  insertItem: (itemName: string) => ipcRenderer.send("insert-item", itemName),
+  onItemInserted: (callback: (itemName: string) => void) =>
+    ipcRenderer.on("item-inserted", (_event, itemName) => callback(itemName)),
+  getItems: () => ipcRenderer.send("get-items"),
+  onItemsFetched: (callback: (items: any[]) => void) =>
+    ipcRenderer.on("items-fetched", (_event, items) => callback(items)),
+});
+
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld("ipcRenderer", {
   on(...args: Parameters<typeof ipcRenderer.on>) {

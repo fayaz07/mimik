@@ -1,13 +1,15 @@
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "in.mfayaz.mimik",
+  "productName": "Mimik",
   "asar": true,
   "directories": {
     "output": "release/${version}"
   },
   "files": [
     "dist-electron",
-    "dist"
+    "dist",
+    "node_modules/better-sqlite3/**/*"
   ],
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",
