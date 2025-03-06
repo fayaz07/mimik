@@ -7,6 +7,9 @@ import "./_.scss";
 export default function SplashScreen() {
   useEffect(() => {
     document.title = AppConfig.name;
+
+    console.log("workspaces", window.electronAPI.workspaces.getAll());
+    console.log("creating", window.electronAPI.workspaces.create("Test"));
   }, []);
 
   return (

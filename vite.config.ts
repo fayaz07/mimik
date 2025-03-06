@@ -16,9 +16,6 @@ export default defineConfig(({ command }) => {
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG;
 
   return {
-    optimizeDeps: {
-      exclude: ["realm"], // Prevent Vite from pre-bundling Realm
-    },
     build: {
       target: "esnext", // Ensure ES module compatibility
       commonjsOptions: {
@@ -73,9 +70,7 @@ export default defineConfig(({ command }) => {
               outDir: "dist-electron/preload",
               rollupOptions: {
                 external: [
-                  ...Object.keys(
-                    "dependencies" in pkg ? pkg.dependencies : {}
-                  ),
+                  ...Object.keys("dependencies" in pkg ? pkg.dependencies : {}),
                   "better-sqlite3",
                 ],
               },

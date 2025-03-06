@@ -1,12 +1,17 @@
 import { ipcRenderer, contextBridge } from "electron";
+import { events as workspaceEvents } from "@mimik/local/src/dao/WorkSpace";
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  insertItem: (itemName: string) => ipcRenderer.send("insert-item", itemName),
-  onItemInserted: (callback: (itemName: string) => void) =>
-    ipcRenderer.on("item-inserted", (_event, itemName) => callback(itemName)),
-  getItems: () => ipcRenderer.send("get-items"),
-  onItemsFetched: (callback: (items: any[]) => void) =>
-    ipcRenderer.on("items-fetched", (_event, items) => callback(items)),
+  // insertItem: (itemName: string) => ipcRenderer.send("insert-item", itemName),
+  // onItemInserted: (callback: (itemName: string) => void) =>
+  //   ipcRenderer.on("item-inserted", (_event, itemName) => callback(itemName)),
+  // getItems: () => ipcRenderer.send("get-items"),
+  // onItemsFetched: (callback: (items: any[]) => void) =>
+  //   ipcRenderer.on("items-fetched", (_event, items) => callback(items)),
+  workspaces: {
+    getAll: () => ipcRenderer.send(workspaceEvents.getAll),
+    create: (name: string) => ipcRenderer.send(workspaceEvents.create, name),
+  },
 });
 
 // --------- Expose some API to the Renderer process ---------
