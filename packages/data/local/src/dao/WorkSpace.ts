@@ -1,31 +1,11 @@
 import WorkSpace, {
+  metadata,
   createTableQuery,
   selectAll,
   insertQuery,
 } from "@mimik/local/src/entity/WorkSpace";
-import betterSqlite3 from "better-sqlite3";
-
-// let dao: WorkSpaceDao;
-// let initiated: boolean = false;
-
-// export class WorkSpaceDao {
-//   db: betterSqlite3.Database;
-
-//   constructor(_db: betterSqlite3.Database) {
-//     this.db = _db;
-
-//     this.init();
-//   }
-
-//   private init() {
-//     console.log(this.db.prepare(createQuery()).run());
-//   }
-
-//   getAll(): WorkSpace[] {
-//     const result = this.db.prepare(select());
-//     return result.all() as WorkSpace[];
-//   }
-// }
+import { Database } from "better-sqlite3";
+import { isTableExisting } from "./Util";
 
 const events = Object.freeze({
   getAll: "get-workspaces",
@@ -36,14 +16,12 @@ const events = Object.freeze({
 
 export { events };
 
-export function init(db: betterSqlite3.Database, ipcMain: Electron.IpcMain) {
-  // dao = new WorkSpaceDao(db);
-  // initiated = true;
-  // return dao;
-
+export function init(db: Database, ipcMain: Electron.IpcMain) {
   console.debug("initialing Workspaces dao");
 
   // console.debug(db.prepare(createTableQuery()).run());
+  if (isTableExisting(metadata.tableName)) {
+  }
 
   ipcMain.on(events.getAll, (event) => {
     const res = db.prepare(selectAll()).all();

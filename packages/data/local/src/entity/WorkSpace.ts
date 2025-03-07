@@ -13,6 +13,8 @@ const metadata = Object.freeze({
   ],
 });
 
+export { metadata };
+
 export default class WorkSpace {
   id: number;
   name: string;
