@@ -18,7 +18,8 @@ function checkIfEnvIsValid(env: string) {
       env === ENVIRONMENTS.stage ||
       env === ENVIRONMENTS.test);
   if (!isValid) {
-    process.exit(`Invalid environment value found - ${env}`);
+    console.error("[env-check]", `Invalid environment value found - ${env}`);
+    process.exit(-1);
   }
 }
 

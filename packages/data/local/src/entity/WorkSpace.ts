@@ -1,16 +1,16 @@
 const metadata = Object.freeze({
   tableName: "WorkSpace",
-  columns: [
-    {
+  columns: {
+    id: {
       key: "id",
     },
-    {
+    name: {
       key: "name",
     },
-    {
+    createdOn: {
       key: "createdOn",
     },
-  ],
+  },
 });
 
 export { metadata };
@@ -30,16 +30,15 @@ export default class WorkSpace {
 // create table query
 export function createTableQuery(): string {
   return `CREATE TABLE ${metadata.tableName} (
-  ${metadata.columns[0].key} INTEGER PRIMARY KEY AUTOINCREMENT,
-  ${metadata.columns[1].key} TEXT NOT NULL
+  ${metadata.columns.id.key} INTEGER PRIMARY KEY AUTOINCREMENT,
+  ${metadata.columns.name.key} TEXT NOT NULL,
+  ${metadata.columns.createdOn.key} DATETIME NOT NULL
 );`;
-  // ${metadata.columns[2].key} DATETIME NOT NULL
 }
 
-export function insertQuery(name: string): string {
+export function insertQuery(name: string, createdOn: string): string {
   return `INSERT INTO ${metadata.tableName} 
-  (${metadata.columns[1].key}) VALUES ('${name}');`;
-  //  ${metadata.columns[2].key} DATETIME NOT NULL
+  (${metadata.columns.name.key}, ${metadata.columns.createdOn.key}) VALUES ('${name}', '${createdOn}');`;
 }
 
 export function selectAll(): string {

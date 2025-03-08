@@ -2,14 +2,19 @@ import React, { useEffect } from "react";
 import AppConfig from "@mimik/core/src/app/Config";
 import logo from "@mimik/ui/src/assets/logo.png";
 import AppSpinner from "@mimik/ui/src/components/spinner/AppSpinner";
+import { useNavigate } from "react-router-dom";
+import AppRoutes from "@mimik/core/src/routes/AppRoutes";
 import "./_.scss";
 
 export default function SplashScreen() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = AppConfig.name;
 
-    console.log("workspaces", window.electronAPI.workspaces.getAll());
-    console.log("creating", window.electronAPI.workspaces.create("Test"));
+    setTimeout(() => {
+      navigate(AppRoutes.home);
+    }, 200);
   }, []);
 
   return (

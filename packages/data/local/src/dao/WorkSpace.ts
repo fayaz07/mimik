@@ -7,31 +7,59 @@ import WorkSpace, {
 import { Database } from "better-sqlite3";
 import { isTableExisting } from "./Util";
 
+const TAG = "[Workspaces dao]";
+
 const events = Object.freeze({
   getAll: "get-workspaces",
   fetchedAll: "fetched-workspaces",
+
   create: "create-workspace",
   created: "created-workspace",
+
+  failed: "failed",
 });
 
 export { events };
 
-export function init(db: Database, ipcMain: Electron.IpcMain) {
-  console.debug("initialing Workspaces dao");
-
-  // console.debug(db.prepare(createTableQuery()).run());
-  if (isTableExisting(metadata.tableName)) {
+function createTable(db: Database) {
+  try {
+    if (!isTableExisting(metadata.tableName, db)) {
+      console.debug(TAG, "creating Workspaces table");
+      db.exec(createTableQuery());
+    }
+  } catch (e) {
+    console.debug(
+      "Failed to initialize Workspace table, please report this issue",
+      e
+    );
+    process.exit(-1);
   }
+}
 
-  ipcMain.on(events.getAll, (event) => {
-    const res = db.prepare(selectAll()).all();
-    console.log(res);
-    event.reply(events.fetchedAll, res);
+function setupInsert(db: Database, ipcMain: Electron.IpcMain) {
+  ipcMain.on(events.create, (event, name: string) => {
+    try {
+      const createdOn: string = Date.now().toLocaleString();
+      const query = insertQuery(name, createdOn);
+      console.debug(TAG, "inserting workspace: ", query);
+      const result = db.prepare(query).run();
+      console.debug(TAG, "inserted workspace: ", result);
+      event.reply(events.created, {
+        id: result.lastInsertRowid,
+        name,
+        createdOn,
+      } as WorkSpace);
+    } catch (e) {
+      console.error(TAG, "Failed to insert workspace", e);
+      event.reply(events.failed, `Failed to insert workspace, ${e}`);
+    }
   });
+}
 
-  ipcMain.on(events.create, (event, name) => {
-    const res = db.prepare(insertQuery(name));
-    console.log(res);
-    event.reply(events.created, res);
-  });
+export function init(db: Database, ipcMain: Electron.IpcMain) {
+  console.debug(TAG, "initialing Workspaces dao");
+
+  createTable(db);
+
+  setupInsert(db, ipcMain);
 }
