@@ -1,8 +1,8 @@
-import WorkSpace from "packages/data/local/src/entity/WorkSpace";
+import WorkSpaceEntity from "packages/data/local/src/entity/WorkSpace";
 
 export default interface ElectronAPI {
   workspaces: {
-    getAll: () => WorkSpace[];
-    create: (name: string) => WorkSpace;
+    getAll: () => WorkSpaceEntity[];
+    create: (name: string) => WorkSpaceEntity;
   };
 }

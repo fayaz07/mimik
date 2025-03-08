@@ -7,5 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/joy": "^5.0.0-beta.51",
+    "@mui/material": "^6.4.7",
+    "i": "^0.3.7",
+    "npm": "^11.2.0",
+    "react-icons": "^5.5.0"
+  }
 }

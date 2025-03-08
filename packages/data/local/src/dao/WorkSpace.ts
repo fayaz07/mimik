@@ -1,4 +1,4 @@
-import WorkSpace, {
+import WorkSpaceEntity, {
   metadata,
   createTableQuery,
   selectAll,
@@ -48,7 +48,7 @@ function setupInsert(db: Database, ipcMain: Electron.IpcMain) {
         id: result.lastInsertRowid,
         name,
         createdOn,
-      } as WorkSpace);
+      } as WorkSpaceEntity);
     } catch (e) {
       console.error(TAG, "Failed to insert workspace", e);
       event.reply(events.failed, `Failed to insert workspace, ${e}`);

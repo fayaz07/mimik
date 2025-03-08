@@ -15,7 +15,7 @@ const metadata = Object.freeze({
 
 export { metadata };
 
-export default class WorkSpace {
+export default class WorkSpaceEntity {
   id: number;
   name: string;
   createdOn: string;

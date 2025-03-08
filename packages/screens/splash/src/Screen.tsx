@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AppConfig from "@mimik/core/src/app/Config";
-import logo from "@mimik/ui/src/assets/logo.png";
+import logo from "@mimik/ui/src/assets/images/logo.png";
 import AppSpinner from "@mimik/ui/src/components/spinner/AppSpinner";
 import { useNavigate } from "react-router-dom";
 import AppRoutes from "@mimik/core/src/routes/AppRoutes";
