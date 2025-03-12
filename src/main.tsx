@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "@mimik/core/src/lang/i18n";
 import App from "./app/App";
 
 import "./demos/ipc";

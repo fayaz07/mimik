@@ -1,7 +1,7 @@
 import React from "react";
 
-import keys from "@ed/core/src/lang/keys/Keys";
-import ClassType from "@ed/types/src/class/Class";
+import keys from "@mimik/core/src/lang/keys/Keys";
+import ClassType from "@mimik/types/src/class/Class";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useTranslation } from "react-i18next";
 

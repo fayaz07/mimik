@@ -1,7 +1,7 @@
 import React from "react";
 
-import tKeys from "@ed/core/src/lang/keys/Keys";
-import MinApiKey from "@ed/types/src/response/apikey/MinApiKeyResponse";
+import tKeys from "@mimik/core/src/lang/keys/Keys";
+import MinApiKey from "@mimik/types/src/response/apikey/MinApiKeyResponse";
 import Table from "react-bootstrap/Table";
 import { useTranslation } from "react-i18next";
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import keys from "@ed/core/src/lang/keys/Keys";
+import keys from "@mimik/core/src/lang/keys/Keys";
 import { Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 

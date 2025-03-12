@@ -1,24 +1,19 @@
 import React from "react";
 
-import {
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { Divider, List, ListItem } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import getNavRailMenuData from "./NavRailMenuData";
 import NavRailMenuOption, { menuOptionsMap } from "./NavRailMenuOption";
-import getRoleBasedMenu from "./RoleSpecificMenu";
+import { Button, IconButton, Typography } from "@mui/joy";
+import { IconType } from "react-icons";
+import { CgChevronRight } from "react-icons/cg";
 
 const listItemBtnStyle = (showMenu: boolean) => [
   {
-    minHeight: 48,
-    px: 2.5,
+    minHeight: 32,
+    px: 1.0,
   },
   showMenu
     ? {
@@ -45,12 +40,57 @@ const listItemIconStyle = (showMenu: boolean) => [
 const listItemTextStyle = (showMenu: boolean) => [
   showMenu
     ? {
+        fontSize: "small",
         opacity: 1,
       }
     : {
         opacity: 0,
       },
 ];
+
+function ListItemButton(props: {
+  menuShown: boolean;
+  onClick: () => void;
+  selected: boolean;
+  IconS: IconType;
+  title: string;
+}) {
+  const { onClick, selected, IconS, title, menuShown } = props;
+
+  if (!menuShown) {
+    return (
+      <div className="w-100 d-flex justify-content-center align-items-center mt-1 mb-1">
+        <IconButton onClick={onClick} variant={selected ? "soft" : "plain"}>
+          <IconS color={selected ? "primary" : "neutral"} />
+        </IconButton>
+      </div>
+    );
+  }
+
+  return (
+    <Button
+      onClick={onClick}
+      variant={selected ? "soft" : "plain"}
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "start",
+        alignItems: "center",
+        marginLeft: "8px",
+        marginRight: "8px",
+        gap: "8px",
+        marginBottom: "8px",
+      }}
+    >
+      {/* // TODO: fix the color */}
+      <IconS color={selected ? "blue" : "gray"} />
+      <Typography level="body-xs" color={selected ? "primary" : "neutral"}>
+        {title}
+      </Typography>
+      {selected && <CgChevronRight />}
+    </Button>
+  );
+}
 
 function MenuList(props: {
   activeRouteId: string;
@@ -69,6 +109,15 @@ function MenuList(props: {
         return (
           <ListItem key={data.menuId} disablePadding>
             <ListItemButton
+              menuShown={showMenu}
+              IconS={data.icon}
+              onClick={() => {
+                navigate(data.route);
+              }}
+              selected={data.menuId === activeRouteId}
+              title={t(data.title)}
+            />
+            {/* <ListItemButton
               onClick={() => {
                 navigate(data.route);
               }}
@@ -82,7 +131,7 @@ function MenuList(props: {
                 primary={t(data.title)}
                 sx={listItemTextStyle(showMenu)}
               />
-            </ListItemButton>
+            </ListItemButton> */}
           </ListItem>
         );
       })}
@@ -102,67 +151,17 @@ function Header(props: { title: string; showMenu: boolean }) {
 }
 
 function NavMenuByCategory(props: {
-  userRole: string;
   activeRouteId: string;
   showMenu: boolean;
 }) {
-  const { userRole, activeRouteId, showMenu } = props;
-
-  const allowedOptions = getRoleBasedMenu(userRole);
-
-  // show only allowed options
-  const defMenu = menuOptionsMap.default.menu.filter((menu) =>
-    allowedOptions.includes(menu)
-  );
-
-  const usersMenu = menuOptionsMap.users.menu.filter((menu) =>
-    allowedOptions.includes(menu)
-  );
-
-  const academicsMenu = menuOptionsMap.academics.menu.filter((menu) =>
-    allowedOptions.includes(menu)
-  );
-
-  const inventoryMenu = menuOptionsMap.inventory.menu.filter((menu) =>
-    allowedOptions.includes(menu)
-  );
+  const { activeRouteId, showMenu } = props;
 
   return (
-    <List>
-      <MenuList
-        activeRouteId={activeRouteId}
-        showMenu={showMenu}
-        menuList={defMenu}
-      />
-
-      {usersMenu.length > 0 && (
-        <Header title={menuOptionsMap.users.title} showMenu={showMenu} />
-      )}
-      <MenuList
-        activeRouteId={activeRouteId}
-        showMenu={showMenu}
-        menuList={usersMenu}
-      />
-
-      {academicsMenu.length > 0 && (
-        <Header title={menuOptionsMap.academics.title} showMenu={showMenu} />
-      )}
-      <MenuList
-        activeRouteId={activeRouteId}
-        showMenu={showMenu}
-        menuList={academicsMenu}
-      />
-
-      {inventoryMenu.length > 0 && (
-        <Header title={menuOptionsMap.inventory.title} showMenu={showMenu} />
-      )}
-
-      <MenuList
-        activeRouteId={activeRouteId}
-        showMenu={showMenu}
-        menuList={inventoryMenu}
-      />
-    </List>
+    <MenuList
+      activeRouteId={activeRouteId}
+      showMenu={showMenu}
+      menuList={menuOptionsMap.default.menu}
+    />
   );
 }
 

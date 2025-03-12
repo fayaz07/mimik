@@ -1,0 +1,17 @@
+@use "../../styles/constants.scss" as *;
+
+.home-content {
+  display: flex;
+  flex-direction: row;
+
+  &-nav-menu {
+    flex: 2;
+  }
+
+  &-body {
+    height: calc(100vh - $navBarHeight - 4px);
+    max-height: calc(100vh - $navBarHeight - 4px);
+    overflow-y: scroll;
+    padding: 16px;
+  }
+}

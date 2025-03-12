@@ -1,6 +1,6 @@
 import React from "react";
 
-import keys from "@ed/core/src/lang/keys/Keys";
+import keys from "@mimik/core/src/lang/keys/Keys";
 import { CopyAll } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
 import { Alert, Button, Modal } from "react-bootstrap";

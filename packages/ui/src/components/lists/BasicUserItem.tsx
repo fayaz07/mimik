@@ -1,7 +1,7 @@
 import React from "react";
 
-import keys from "@ed/core/src/lang/keys/Keys";
-import { BasicUserData } from "@ed/types/src/response/apikey/FullApiKeyResponse";
+import keys from "@mimik/core/src/lang/keys/Keys";
+import { BasicUserData } from "@mimik/types/src/response/apikey/FullApiKeyResponse";
 import { DeleteOutline } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { Table } from "react-bootstrap";

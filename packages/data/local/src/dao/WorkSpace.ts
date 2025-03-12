@@ -1,22 +1,22 @@
-import WorkSpaceEntity, {
+import WorkspaceEntity, {
   metadata,
   createTableQuery,
   selectAll,
   insertQuery,
-} from "@mimik/local/src/entity/WorkSpace";
+  onWorkSpaceAccessed,
+} from "@mimik/local/src/entity/Workspace";
 import { Database } from "better-sqlite3";
+import DBResult from "@mimik/types/src/api/DBResult";
 import { isTableExisting } from "./Util";
 
 const TAG = "[Workspaces dao]";
 
 const events = Object.freeze({
-  getAll: "get-workspaces",
-  fetchedAll: "fetched-workspaces",
+  fetchAll: "fetch-workspaces",
 
   create: "create-workspace",
-  created: "created-workspace",
 
-  failed: "failed",
+  accessed: "workspace-accessed",
 });
 
 export { events };
@@ -37,23 +37,67 @@ function createTable(db: Database) {
 }
 
 function setupInsert(db: Database, ipcMain: Electron.IpcMain) {
-  ipcMain.on(events.create, (event, name: string) => {
-    try {
-      const createdOn: string = Date.now().toLocaleString();
-      const query = insertQuery(name, createdOn);
-      console.debug(TAG, "inserting workspace: ", query);
-      const result = db.prepare(query).run();
-      console.debug(TAG, "inserted workspace: ", result);
-      event.reply(events.created, {
-        id: result.lastInsertRowid,
-        name,
-        createdOn,
-      } as WorkSpaceEntity);
-    } catch (e) {
-      console.error(TAG, "Failed to insert workspace", e);
-      event.reply(events.failed, `Failed to insert workspace, ${e}`);
+  ipcMain.handle(
+    events.create,
+    async (_, name: string): Promise<DBResult<WorkspaceEntity>> => {
+      try {
+        const createdOn: string = Date.now().toLocaleString();
+        const query = insertQuery(name);
+        console.debug(TAG, "inserting workspace: ", query);
+        const result = db.prepare(query).run();
+        console.debug(TAG, "inserted workspace: ", result);
+
+        return DBResult.success({
+          id: result.lastInsertRowid,
+          name,
+          createdOn,
+          lastAccessed: createdOn,
+        } as WorkspaceEntity);
+      } catch (e) {
+        console.error(TAG, "Failed to insert workspace", e);
+        // throw e;
+        return DBResult.fail<WorkspaceEntity>(
+          `Failed to insert workspace, ${e}`
+        );
+      }
     }
-  });
+  );
+}
+
+function setupFetchAll(db: Database, ipcMain: Electron.IpcMain) {
+  ipcMain.handle(
+    events.fetchAll,
+    async (): Promise<DBResult<WorkspaceEntity[]>> => {
+      try {
+        const result = db.prepare(selectAll()).all();
+        console.debug(TAG, result);
+        return DBResult.success(result as WorkspaceEntity[]);
+      } catch (e) {
+        console.debug(TAG, "Failed to fetch workspaces", e);
+        return DBResult.fail<WorkspaceEntity[]>(
+          `Failed to fetch workspaces, ${e}`
+        );
+      }
+    }
+  );
+}
+
+function setupAccessed(db: Database, ipcMain: Electron.IpcMain) {
+  ipcMain.handle(
+    events.accessed,
+    async (_, id: number): Promise<DBResult<void>> => {
+      try {
+        const query = onWorkSpaceAccessed(id);
+        console.debug(TAG, "accessed workspace: ", query);
+        db.prepare(query).run();
+        console.debug(TAG, "accessed workspace: ", id);
+        return DBResult.successNoData();
+      } catch (e) {
+        console.error(TAG, "Failed to access workspace", e);
+        return DBResult.fail<void>(`Failed to access workspace, ${e}`);
+      }
+    }
+  );
 }
 
 export function init(db: Database, ipcMain: Electron.IpcMain) {
@@ -62,4 +106,8 @@ export function init(db: Database, ipcMain: Electron.IpcMain) {
   createTable(db);
 
   setupInsert(db, ipcMain);
+
+  setupFetchAll(db, ipcMain);
+
+  setupAccessed(db, ipcMain);
 }

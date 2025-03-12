@@ -1,1 +1,8 @@
-{}
+{
+  "navRailMenu": {
+    "dashboard": "Dashboard",
+    "workspaces": "Workspaces",
+    "teams": "Teams",
+    "settings": "Settings"
+  }
+}

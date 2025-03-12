@@ -1,6 +1,6 @@
 import React from "react";
 
-import keys from "@ed/core/src/lang/keys/Keys";
+import keys from "@mimik/core/src/lang/keys/Keys";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { IconButton, MenuItem, Select } from "@mui/material";
 import { useTranslation } from "react-i18next";

@@ -1,8 +1,8 @@
 import React from "react";
 
-import logo from "@ed/ui/src/assets/logo.png";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import MenuIcon from "@mui/icons-material/Menu";
+import logo from "@mimik/ui/src/assets/images/logo.png";
+import { MdChevronLeft } from "react-icons/md";
+import { CgMenuLeftAlt } from "react-icons/cg";
 import { CssBaseline, Divider, IconButton } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
@@ -10,7 +10,8 @@ import { CSSObject, Theme, styled } from "@mui/material/styles";
 import NavMenuByCategory from "./MenuButtons";
 import "./_.scss";
 
-const drawerWidth = 200;
+// note: check in constants.scss for the value of drawerWidth
+const drawerWidth = 160;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -59,13 +60,12 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 function NavRailMenu(props: {
-  role: string;
   activeRouteId: string;
   showMenu: boolean;
   // eslint-disable-next-line no-unused-vars
   onToggleMenu: (show: boolean) => void;
 }) {
-  const { role, activeRouteId, showMenu, onToggleMenu } = props;
+  const { activeRouteId, showMenu, onToggleMenu } = props;
 
   return (
     <Drawer
@@ -80,27 +80,26 @@ function NavRailMenu(props: {
       <CssBaseline />
       {showMenu ? (
         <div className="navRailMenu_logoContainer">
+          <img src={logo} alt="logo" className="navRailMenu_logo" />
           <IconButton
             className="navRailMenu_closeIcon"
             onClick={() => onToggleMenu(false)}
           >
-            <ChevronLeftIcon />
+            <MdChevronLeft />
           </IconButton>
-          <img src={logo} alt="logo" className="navRailMenu_logo" />
         </div>
       ) : (
         <div className="navRailMenu_collapsed">
-          <IconButton onClick={() => onToggleMenu(true)}>
-            <MenuIcon />
+          <IconButton
+            className="navRailMenu_closeIcon"
+            onClick={() => onToggleMenu(true)}
+          >
+            <CgMenuLeftAlt />
           </IconButton>
         </div>
       )}
       <Divider />
-      <NavMenuByCategory
-        userRole={role}
-        activeRouteId={activeRouteId}
-        showMenu={showMenu}
-      />
+      <NavMenuByCategory activeRouteId={activeRouteId} showMenu={showMenu} />
     </Drawer>
   );
 }

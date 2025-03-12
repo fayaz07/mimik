@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ViewState, ViewStatus } from "@ed/utils/src/view/ViewStatus";
+import { ViewState, ViewStatus } from "@mimik/utils/src/view/ViewStatus";
 
 import ErrorWithMessage from "../error/Error";
 import Loader from "../loader/Loader";

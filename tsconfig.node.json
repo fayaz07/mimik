@@ -7,10 +7,10 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": [
-    "vite.config.ts",
-    "package.json"
-  ]
+  "include": ["vite.config.ts", "package.json"]
 }

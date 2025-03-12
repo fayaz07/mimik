@@ -1,11 +1,14 @@
-import { configureStore, Dispatch } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import WorkSpaceRepo from "../workspaces/Repo";
 import ProjectsRepo from "../projects/Repo";
 import workspace from "../workspaces/Store";
+import navMenu from "../navMenu/Store";
+import { useSelector } from "react-redux";
 
 const store = configureStore({
   reducer: {
     workspace,
+    navMenu,
   },
 });
 
@@ -25,4 +28,12 @@ export function useRepo<T extends typeof WorkSpaceRepo | typeof ProjectsRepo>(
     default:
       throw new Error("Invalid Repo type");
   }
+}
+
+export function useWorkSpaceState() {
+  return useSelector((rootState: AppRootState) => rootState.workspace);
+}
+
+export function useNavMenuState() {
+  return useSelector((rootState: AppRootState) => rootState.navMenu);
 }

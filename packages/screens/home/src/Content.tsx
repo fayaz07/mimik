@@ -4,10 +4,10 @@ import AppButton from "@mimik/ui/src/components/button/AppButton";
 import Stack from "@mimik/ui/src/components/stack";
 import Icons from "@mimik/ui/src/components/icons";
 import { HorizontalDivider } from "@mimik/ui/src/components/divider";
-import WorkSpacesList from "./WorkSpacesList";
+import WorkSpacesList from "./WorkspacesList";
 import "./_.scss";
 import { useRepo } from "@mimik/repo/src/store/AppRootStore";
-import WorkSpaceRepo from "packages/data/repo/src/workspaces/Repo";
+import WorkSpaceRepo from "@mimik/repo/src/workspaces/Repo";
 
 function Greeting() {
   return <h4>Hello, Good {whatPartOfTimeIsIt()}</h4>;

@@ -1,5 +1,5 @@
 const metadata = Object.freeze({
-  tableName: "WorkSpace",
+  tableName: "Workspace",
   columns: {
     id: {
       key: "id",
@@ -10,12 +10,15 @@ const metadata = Object.freeze({
     createdOn: {
       key: "createdOn",
     },
+    lastAccessed: {
+      key: "lastAccessed",
+    },
   },
 });
 
 export { metadata };
 
-export default class WorkSpaceEntity {
+export default class WorkspaceEntity {
   id: number;
   name: string;
   createdOn: string;
@@ -32,15 +35,28 @@ export function createTableQuery(): string {
   return `CREATE TABLE ${metadata.tableName} (
   ${metadata.columns.id.key} INTEGER PRIMARY KEY AUTOINCREMENT,
   ${metadata.columns.name.key} TEXT NOT NULL,
-  ${metadata.columns.createdOn.key} DATETIME NOT NULL
+  ${metadata.columns.createdOn.key} DATETIME NOT NULL,
+  ${metadata.columns.lastAccessed.key} DATETIME NOT NULL
 );`;
 }
 
-export function insertQuery(name: string, createdOn: string): string {
+export function insertQuery(name: string): string {
   return `INSERT INTO ${metadata.tableName} 
-  (${metadata.columns.name.key}, ${metadata.columns.createdOn.key}) VALUES ('${name}', '${createdOn}');`;
+  (
+    ${metadata.columns.name.key}, 
+    ${metadata.columns.createdOn.key},
+    ${metadata.columns.lastAccessed.key},
+  ) 
+  VALUES 
+  ('${name}', datetime('now'), datetime('now'));`.trim();
 }
 
 export function selectAll(): string {
-  return `SELECT * FROM ${metadata.tableName};`;
+  return `SELECT * FROM ${metadata.tableName} ORDER BY ${metadata.columns.lastAccessed.key} DESC;`;
+}
+
+export function onWorkSpaceAccessed(id: number): string {
+  return `UPDATE ${metadata.tableName} 
+  SET ${metadata.columns.lastAccessed.key} = datetime('now') 
+  WHERE ${metadata.columns.id.key} = ${id};`.trim();
 }

@@ -2,7 +2,7 @@ import { app, ipcMain } from "electron";
 import * as path from "path";
 import betterSqlite3 from "better-sqlite3";
 import { getEnv } from "@mimik/core/src/env/index";
-import * as workspaceDao from "./dao/WorkSpace";
+import * as workspaceDao from "@mimik/local/src/dao/Workspace";
 
 const TAG = "[better-sqlite3]";
 

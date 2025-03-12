@@ -1,5 +1,6 @@
 @use "./breakpoints.scss" as *;
 @use "./margin.scss" as *;
+@use "./colors.scss" as *;
 
 .nCol {
   display: flex;
@@ -24,4 +25,8 @@
 
 .height-fit-content {
   height: fit-content;
+}
+
+.text-muted {
+  color: $textMutedDark;
 }

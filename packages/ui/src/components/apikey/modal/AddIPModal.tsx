@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import keys from "@ed/core/src/lang/keys/Keys";
+import keys from "@mimik/core/src/lang/keys/Keys";
 import { TextField } from "@mui/material";
 import { Address4, Address6 } from "ip-address";
 import { Button, Modal } from "react-bootstrap";

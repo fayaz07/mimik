@@ -1,7 +1,7 @@
 import React from "react";
 
-import keys from "@ed/core/src/lang/keys/Keys";
-import MinApiKey from "@ed/types/src/response/apikey/MinApiKeyResponse";
+import keys from "@mimik/core/src/lang/keys/Keys";
+import MinApiKey from "@mimik/types/src/response/apikey/MinApiKeyResponse";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 

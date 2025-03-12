@@ -1,11 +1,11 @@
 /* eslint-disable react/require-default-props */
 import React from "react";
 
-import keys from "@ed/core/src/lang/keys/Keys";
+import keys from "@mimik/core/src/lang/keys/Keys";
 import ApiCallStatus, {
   isError,
   isLoading,
-} from "@ed/types/src/api/ApiCallStatus";
+} from "@mimik/types/src/api/ApiCallStatus";
 import { Alert } from "@mui/material";
 import { useTranslation } from "react-i18next";
 

@@ -1,8 +1,8 @@
 import React from "react";
 
-import keys from "@ed/core/src/lang/keys/Keys";
-import { Activity } from "@ed/types/src/response/apikey/FullApiKeyResponse";
-import { getFormattedDate } from "@ed/utils/src/Date";
+import keys from "@mimik/core/src/lang/keys/Keys";
+import { Activity } from "@mimik/types/src/response/apikey/FullApiKeyResponse";
+import { getFormattedDate } from "@mimik/utils/src/Date";
 import { Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 

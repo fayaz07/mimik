@@ -1,18 +1,5 @@
 import { ipcRenderer, contextBridge } from "electron";
-import { events as workspaceEvents } from "@mimik/local/src/dao/WorkSpace";
-
-contextBridge.exposeInMainWorld("electronAPI", {
-  // insertItem: (itemName: string) => ipcRenderer.send("insert-item", itemName),
-  // onItemInserted: (callback: (itemName: string) => void) =>
-  //   ipcRenderer.on("item-inserted", (_event, itemName) => callback(itemName)),
-  // getItems: () => ipcRenderer.send("get-items"),
-  // onItemsFetched: (callback: (items: any[]) => void) =>
-  //   ipcRenderer.on("items-fetched", (_event, items) => callback(items)),
-  workspaces: {
-    getAll: () => ipcRenderer.send(workspaceEvents.getAll),
-    create: (name: string) => ipcRenderer.send(workspaceEvents.create, name),
-  },
-});
+import "./api";
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld("ipcRenderer", {
@@ -69,6 +56,7 @@ const safeDOM = {
   },
 };
 
+// TODO: we have a Splash Screen, it should be shown before the app is ready and not this one.
 /**
  * https://tobiasahlin.com/spinkit
  * https://connoratherton.com/loaders

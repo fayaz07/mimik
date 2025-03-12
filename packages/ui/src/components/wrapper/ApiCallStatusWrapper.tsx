@@ -1,6 +1,6 @@
 import React from "react";
 
-import ApiCallStatus from "@ed/types/src/api/ApiCallStatus";
+import ApiCallStatus from "@mimik/types/src/api/ApiCallStatus";
 
 import ErrorWithMessage from "../error/Error";
 import Loader from "../loader/Loader";

@@ -7,11 +7,13 @@ enum ApiCallState {
 export default interface ApiCallStatus {
   msg: string;
   state: ApiCallState;
+  lastReq: number;
 }
 
 const defState: ApiCallStatus = {
   msg: "",
   state: ApiCallState.idle,
+  lastReq: 0,
 };
 
 export { ApiCallState, defState };
