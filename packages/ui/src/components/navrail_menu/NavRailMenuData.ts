@@ -27,7 +27,7 @@ const workspaces = {
   menuId: "workspaces",
   title: keys.navRailMenu.workspaces,
   icon: HiOutlineSquares2X2,
-  route: AppRoutes.home,
+  route: AppRoutes.workspaces,
 };
 
 const teams = {

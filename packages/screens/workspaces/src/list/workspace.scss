@@ -1,0 +1,39 @@
+@use "@mimik/ui/src/styles/colors.scss" as *;
+
+$cardWidth: 230px;
+$cardHeight: 170px;
+
+.workspace {
+  &_add {
+    height: $cardHeight;
+    width: $cardWidth;
+
+    border-style: dashed !important;
+
+    &_content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      &_icon {
+        height: 36px;
+        width: 36px;
+        background-color: $primary;
+        border-radius: 32px;
+        color: $on-primary;
+        padding: 4px;
+      }
+    }
+  }
+
+  &_item {
+    height: $cardHeight;
+    width: $cardWidth;
+
+    &_img {
+      width: 100%;
+      height: calc($cardHeight * 0.5);
+    }
+  }
+}

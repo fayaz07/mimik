@@ -112,26 +112,12 @@ function MenuList(props: {
               menuShown={showMenu}
               IconS={data.icon}
               onClick={() => {
+                console.log("navigating to ", data.route);
                 navigate(data.route);
               }}
               selected={data.menuId === activeRouteId}
               title={t(data.title)}
             />
-            {/* <ListItemButton
-              onClick={() => {
-                navigate(data.route);
-              }}
-              selected={data.menuId === activeRouteId}
-              sx={listItemBtnStyle(showMenu)}
-            >
-              <ListItemIcon sx={listItemIconStyle(showMenu)}>
-                <data.icon />
-              </ListItemIcon>
-              <ListItemText
-                primary={t(data.title)}
-                sx={listItemTextStyle(showMenu)}
-              />
-            </ListItemButton> */}
           </ListItem>
         );
       })}

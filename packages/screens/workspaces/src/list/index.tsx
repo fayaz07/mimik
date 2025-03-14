@@ -1,13 +1,13 @@
 import React from "react";
-import Content from "./src/Content";
 import DrawerScreen from "@mimik/ui/src/components/screen/DrawerScreen";
 import NavRailMenuOption from "@mimik/ui/src/components/navrail_menu/NavRailMenuOption";
+import Content from "./Content";
 
-export default function HomeScreen() {
+export default function WorkspacesListScreen() {
   return (
     <DrawerScreen
-      section={NavRailMenuOption.Dashboard}
-      title="Home"
+      section={NavRailMenuOption.Workspaces}
+      title="Workspaces"
       content={<Content />}
     />
   );

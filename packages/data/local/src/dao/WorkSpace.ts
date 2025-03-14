@@ -39,10 +39,14 @@ function createTable(db: Database) {
 function setupInsert(db: Database, ipcMain: Electron.IpcMain) {
   ipcMain.handle(
     events.create,
-    async (_, name: string): Promise<DBResult<WorkspaceEntity>> => {
+    async (
+      _,
+      name: string,
+      desc: string
+    ): Promise<DBResult<WorkspaceEntity>> => {
       try {
         const createdOn: string = Date.now().toLocaleString();
-        const query = insertQuery(name);
+        const query = insertQuery(name, desc);
         console.debug(TAG, "inserting workspace: ", query);
         const result = db.prepare(query).run();
         console.debug(TAG, "inserted workspace: ", result);
@@ -50,8 +54,10 @@ function setupInsert(db: Database, ipcMain: Electron.IpcMain) {
         return DBResult.success({
           id: result.lastInsertRowid,
           name,
+          desc,
           createdOn,
           lastAccessed: createdOn,
+          cover: "",
         } as WorkspaceEntity);
       } catch (e) {
         console.error(TAG, "Failed to insert workspace", e);

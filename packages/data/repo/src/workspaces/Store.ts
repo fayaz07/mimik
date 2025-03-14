@@ -5,11 +5,16 @@ import WorkSpaceState from "./State";
 
 const initialState: WorkSpaceState = {
   fetchApi: defState,
-  createApi: defState,
   updateApi: defState,
   deleteApi: defState,
 
   list: [],
+
+  // add
+  createApi: defState,
+  showAddModal: false,
+  name: "",
+  desc: "",
 };
 
 const slice = createSlice({

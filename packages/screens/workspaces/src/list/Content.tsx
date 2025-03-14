@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import Card from "@mimik/ui/src/components/card";
 import Stack from "@mimik/ui/src/components/stack";
 import Space from "@mimik/ui/src/components/space";
+import Icons from "@mimik/ui/src/components/icons";
+import AppButton from "@mimik/ui/src/components/button/AppButton";
 import ApiCallStatus, {
   isError,
   isIdle,
@@ -11,7 +13,10 @@ import { useRepo, useWorkSpaceState } from "@mimik/repo/src/store/AppRootStore";
 import WorkSpaceRepo from "@mimik/repo/src/workspaces/Repo";
 import Error from "@mimik/ui/src/components/error";
 import WorkspaceEntity from "@mimik/local/src/entity/Workspace";
-import AddWorkspaceDialog from "./dialogs/Add";
+import AddWorkspaceDialog from "../dialogs/Add";
+import AddWorkspaceCard from "./AddWorkspaceCard";
+import WorkspaceCard from "./WorkspaceCard";
+import "./_.scss";
 
 function Spinner() {
   return (
@@ -22,16 +27,12 @@ function Spinner() {
   );
 }
 
-function AddWorkSpaceCard() {
-  return (
-    <Card>
-      <p>Add Workspace</p>
-    </Card>
-  );
-}
-
-function List(props: { api: ApiCallStatus; list: WorkspaceEntity[] }) {
-  const { api, list } = props;
+function List(props: {
+  api: ApiCallStatus;
+  list: WorkspaceEntity[];
+  onAdd: () => void;
+}) {
+  const { api, list, onAdd } = props;
 
   if (isError(api)) {
     return <Error msg={api.msg} />;
@@ -43,15 +44,11 @@ function List(props: { api: ApiCallStatus; list: WorkspaceEntity[] }) {
     }
 
     const child = (
-      <Stack direction="row" spacing={8}>
+      <Stack direction="row" spacing={2}>
         {list.map((e) => {
-          return (
-            <Card key={e.id}>
-              <p>{e.name}</p>
-            </Card>
-          );
+          return <WorkspaceCard item={e} />;
         })}
-        <AddWorkSpaceCard />
+        <AddWorkspaceCard onClick={onAdd} />
       </Stack>
     );
 
@@ -74,6 +71,27 @@ function List(props: { api: ApiCallStatus; list: WorkspaceEntity[] }) {
   return <Spinner />;
 }
 
+function Header() {
+  const workspaceRepo = useRepo(WorkSpaceRepo);
+
+  return (
+    <div className="wsLs_header">
+      <h5>Recently Accessed</h5>
+      <AppButton
+        size="sm"
+        content="Add"
+        prefix={
+          <Icons.addIcon
+            size="1.75em"
+            style={{ marginLeft: "0px", marginRight: "4px" }}
+          />
+        }
+        onClick={workspaceRepo.showAddModal}
+      />
+    </div>
+  );
+}
+
 export default function WorkSpacesList() {
   const repo = useRepo(WorkSpaceRepo);
   const state = useWorkSpaceState();
@@ -83,10 +101,26 @@ export default function WorkSpacesList() {
   }, []);
 
   return (
-    <Stack>
+    <Stack className="wsLs_body">
+      <Header />
       <Space spacing={16} />
-      <List api={state.fetchApi} list={state.list} />
-      <AddWorkspaceDialog show={true} onClose={() => {}} />
+      <List
+        api={state.fetchApi}
+        list={state.list}
+        onAdd={() => {
+          repo.showAddModal();
+        }}
+      />
+      <AddWorkspaceDialog
+        show={state.showAddModal}
+        api={state.createApi}
+        name={state.name}
+        onNameChange={repo.setCreateName}
+        desc={state.desc}
+        onDescChange={repo.setCreateDesc}
+        onClose={repo.hideAddModal}
+        onSave={repo.saveNewWorkspace}
+      />
     </Stack>
   );
 }

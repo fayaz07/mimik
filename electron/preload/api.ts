@@ -5,7 +5,8 @@ import ElectronAPI from "@mimik/core/src/app/ElectronAPI";
 contextBridge.exposeInMainWorld("electronAPI", {
   workspaces: {
     getAll: () => ipcRenderer.invoke(workspaceEvents.fetchAll),
-    create: (name: string) => ipcRenderer.invoke(workspaceEvents.create, name),
+    create: (name: string, desc: string) =>
+      ipcRenderer.invoke(workspaceEvents.create, name, desc),
     onAccessed: (id: number) =>
       ipcRenderer.invoke(workspaceEvents.accessed, id),
   },

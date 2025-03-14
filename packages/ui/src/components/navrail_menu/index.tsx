@@ -68,15 +68,7 @@ function NavRailMenu(props: {
   const { activeRouteId, showMenu, onToggleMenu } = props;
 
   return (
-    <Drawer
-      variant="permanent"
-      // sx={{
-      //   width: drawerWidth,
-      //   flexShrink: 0,
-      //   [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: "border-box" },
-      // }}
-      open={showMenu}
-    >
+    <Drawer variant="permanent" open={showMenu}>
       <CssBaseline />
       {showMenu ? (
         <div className="navRailMenu_logoContainer">

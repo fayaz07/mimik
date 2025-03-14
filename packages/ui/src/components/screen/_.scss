@@ -11,6 +11,8 @@
   &-body {
     height: calc(100vh - $navBarHeight - 4px);
     max-height: calc(100vh - $navBarHeight - 4px);
+    width: calc(100vw - $navRailMenuWidth);
+    max-width: calc(100vw - $navRailMenuWidth);
     overflow-y: scroll;
     padding: 16px;
   }

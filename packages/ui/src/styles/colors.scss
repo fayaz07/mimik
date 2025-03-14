@@ -1,4 +1,160 @@
-$primaryColor: #005cbb;
-$secondaryColor: #006c4f;
-$textMuted: #a8a8a8;
-$textMutedDark: #6c6c6c;
+// Core Brand Colors
+$primary: #5271ff;
+$primary-light: #8a9dff;
+$primary-dark: #3f57cc;
+$on-primary: #ffffff;
+$on-primary-light: #000000;
+$on-primary-dark: #ffffff;
+
+// Secondary Colors
+$secondary: #7a49c9; // Purple (analogous)
+$secondary-light: #9e6fe0;
+$secondary-dark: #5d2f9e;
+$on-secondary: #ffffff;
+$on-secondary-light: #ffffff;
+$on-secondary-dark: #ffffff;
+
+// Tertiary Colors
+$tertiary: #1de9b6; // Teal
+$tertiary-light: #64ffda;
+$tertiary-dark: #00b686;
+$on-tertiary: #000000;
+$on-tertiary-light: #000000;
+$on-tertiary-dark: #ffffff;
+
+// Background Colors
+$background: #f8f9fc;
+$background-light: #ffffff;
+$background-dark: #e9ecf5;
+$on-background: #343a59;
+$on-background-light: #5c6389;
+$on-background-dark: #242840;
+
+// Surface Colors
+$surface: #ffffff;
+$surface-light: #fafbff;
+$surface-variant: #eef1fd;
+$surface-dark: #f0f2f8;
+$on-surface: #343a59;
+$on-surface-light: #5c6389;
+$on-surface-variant: #4f5677;
+$on-surface-dark: #242840;
+
+// Text Colors
+$text-primary: #343a59;
+$text-secondary: #5c6389;
+$text-muted: #9b9da8;
+$text-disabled: #c4cae6;
+$text-hint: #8e97bc;
+$text-placeholder: #b1b8d6;
+
+// Error States
+$error: #ff5630;
+$error-light: #ff8c72;
+$error-dark: #db3a16;
+$on-error: #ffffff;
+$text-error: #e53935;
+$border-error: #ffcdd2;
+$bg-error-light: #ffebee;
+
+// Warning States
+$warning: #ffab00;
+$warning-light: #ffd149;
+$warning-dark: #d18d00;
+$on-warning: #000000;
+$text-warning: #f57c00;
+$border-warning: #ffe0b2;
+$bg-warning-light: #fff8e1;
+
+// Success States
+$success: #36b37e;
+$success-light: #6ae0a9;
+$success-dark: #1d8854;
+$on-success: #ffffff;
+$text-success: #2e7d32;
+$border-success: #c8e6c9;
+$bg-success-light: #e8f5e9;
+
+// Info States
+$info: #00b8d9;
+$info-light: #62ebff;
+$info-dark: #0088a7;
+$on-info: #ffffff;
+$text-info: #0288d1;
+$border-info: #b3e5fc;
+$bg-info-light: #e1f5fe;
+
+// Icon Colors
+$icon-primary: #343a59;
+$icon-secondary: #5c6389;
+$icon-muted: #9da5c9;
+$icon-disabled: #c4cae6;
+$icon-active: $primary;
+$icon-light: #ffffff;
+$icon-dark: #242840;
+$icon-error: $error;
+$icon-warning: $warning;
+$icon-success: $success;
+$icon-info: $info;
+
+// Border Colors
+$border-light: #e6e9f4;
+$border-regular: #c4cae6;
+$border-dark: #9da5c9;
+$border-active: $primary;
+$border-focus: $primary-light;
+$border-disabled: #e6e9f4;
+
+// Neutral Colors
+$gray-50: #f5f7fa;
+$gray-100: #e6e9f4;
+$gray-200: #c4cae6;
+$gray-300: #9da5c9;
+$gray-400: #5c6389;
+$gray-500: #343a59;
+$gray-600: #242840;
+$gray-700: #1a1e30;
+$gray-800: #13162a;
+$gray-900: #0d0f1e;
+
+// Dark Theme Colors
+$dark-background: #121424;
+$dark-background-light: #1a1d30;
+$dark-background-dark: #0d0f1e;
+$dark-surface: #1e2035;
+$dark-surface-light: #252840;
+$dark-surface-variant: #2c2f45;
+$dark-surface-dark: #17192c;
+
+// Dark Theme Text/Icon Colors
+$dark-text-primary: #e6e9f4;
+$dark-text-secondary: #c4cae6;
+$dark-text-muted: #9da5c9;
+$dark-text-disabled: #5c6389;
+$dark-text-hint: #7b85a8;
+$dark-icon-primary: #e6e9f4;
+$dark-icon-secondary: #c4cae6;
+$dark-icon-muted: #9da5c9;
+$dark-icon-disabled: #5c6389;
+$dark-icon-light: #f5f7fa;
+$on-dark-background: #e6e9f4;
+$on-dark-surface: #e6e9f4;
+$on-dark-surface-variant: #9da5c9;
+
+// Overlay Colors
+$overlay-light: rgba(255, 255, 255, 0.8);
+$overlay-medium: rgba(255, 255, 255, 0.5);
+$overlay-dark: rgba(0, 0, 0, 0.5);
+$overlay-black: rgba(0, 0, 0, 0.8);
+$scrim: rgba(0, 0, 0, 0.3);
+
+// Gradient Colors
+$gradient-primary: linear-gradient(45deg, $primary-dark, $primary);
+$gradient-secondary: linear-gradient(45deg, $secondary-dark, $secondary);
+$gradient-primary-to-secondary: linear-gradient(45deg, $primary, $secondary);
+$gradient-blue-purple: linear-gradient(45deg, #4e6fff, #9271ff);
+
+// Utility color function
+@function alpha($color, $opacity) {
+  @return rgba($color, $opacity);
+}

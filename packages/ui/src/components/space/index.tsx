@@ -11,5 +11,5 @@ Space.defaultProps = {
 export default function Space(props: SpaceProps) {
   const { spacing } = props;
 
-  return <div style={{ height: `${spacing}px` }} />;
+  return <div style={{ height: `${spacing}px`, width: `${spacing}px` }} />;
 }
