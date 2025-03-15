@@ -10,44 +10,6 @@ import { Button, IconButton, Typography } from "@mui/joy";
 import { IconType } from "react-icons";
 import { CgChevronRight } from "react-icons/cg";
 
-const listItemBtnStyle = (showMenu: boolean) => [
-  {
-    minHeight: 32,
-    px: 1.0,
-  },
-  showMenu
-    ? {
-        justifyContent: "initial",
-      }
-    : {
-        justifyContent: "center",
-      },
-];
-
-const listItemIconStyle = (showMenu: boolean) => [
-  {
-    minWidth: 0,
-    justifyContent: "center",
-  },
-  showMenu
-    ? {
-        mr: 3,
-      }
-    : {
-        mr: "auto",
-      },
-];
-const listItemTextStyle = (showMenu: boolean) => [
-  showMenu
-    ? {
-        fontSize: "small",
-        opacity: 1,
-      }
-    : {
-        opacity: 0,
-      },
-];
-
 function ListItemButton(props: {
   menuShown: boolean;
   onClick: () => void;
@@ -80,9 +42,11 @@ function ListItemButton(props: {
         marginRight: "8px",
         gap: "8px",
         marginBottom: "8px",
+        textTransform: "none",
       }}
     >
       {/* // TODO: fix the color */}
+      {/* // TODO: The chevron icon should be at the end */}
       <IconS color={selected ? "blue" : "gray"} />
       <Typography level="body-xs" color={selected ? "primary" : "neutral"}>
         {title}
@@ -112,7 +76,6 @@ function MenuList(props: {
               menuShown={showMenu}
               IconS={data.icon}
               onClick={() => {
-                console.log("navigating to ", data.route);
                 navigate(data.route);
               }}
               selected={data.menuId === activeRouteId}

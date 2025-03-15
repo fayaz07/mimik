@@ -35,5 +35,21 @@ $cardHeight: 170px;
       width: 100%;
       height: calc($cardHeight * 0.5);
     }
+
+    // metadata
+    &_md {
+      display: flex;
+      flex-direction: row;
+      justify-content: end;
+
+      &_projects {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        justify-content: flex-end;
+        font-size: small;
+      }
+    }
   }
 }

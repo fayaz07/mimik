@@ -1,0 +1,114 @@
+// Default Material Design Typography Styles (SCSS)
+
+// Base Font Size
+$md-font-size: 1rem; // 16px
+
+// Font Weights
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// Line Heights
+$line-height-base: 1.5; // 24px on 16px base
+$line-height-heading: 1.2;
+
+// Letter Spacing (Em values)
+$letter-spacing-tight: -0.0125em; // -0.2px on 16px
+$letter-spacing-normal: 0;
+$letter-spacing-wide: 0.0178571429em; // 0.2857px on 16px
+
+// Typography Styles
+
+.display-4 {
+  font-size: 6rem; // 96px
+  font-weight: $font-weight-light;
+  letter-spacing: $letter-spacing-tight;
+  line-height: $line-height-heading;
+}
+
+.display-3 {
+  font-size: 3.5rem; // 56px
+  font-weight: $font-weight-regular;
+  letter-spacing: $letter-spacing-normal;
+  line-height: $line-height-heading;
+}
+
+.display-2 {
+  font-size: 2.75rem; // 44px
+  font-weight: $font-weight-regular;
+  letter-spacing: $letter-spacing-normal;
+  line-height: $line-height-heading;
+}
+
+.display-1 {
+  font-size: 2.125rem; // 34px
+  font-weight: $font-weight-regular;
+  letter-spacing: $letter-spacing-normal;
+  line-height: $line-height-heading;
+}
+
+.headline {
+  font-size: 1.5rem; // 24px
+  font-weight: $font-weight-regular;
+  letter-spacing: $letter-spacing-normal;
+  line-height: $line-height-heading;
+}
+
+.title {
+  font-size: 1.25rem; // 20px
+  font-weight: $font-weight-medium;
+  letter-spacing: $letter-spacing-normal;
+  line-height: $line-height-heading;
+}
+
+.subheading-2 {
+  font-size: 1rem; // 16px
+  font-weight: $font-weight-medium;
+  letter-spacing: $letter-spacing-normal;
+  line-height: $line-height-base;
+}
+
+.subheading-1 {
+  font-size: 0.875rem; // 14px
+  font-weight: $font-weight-regular;
+  letter-spacing: $letter-spacing-normal;
+  line-height: $line-height-base;
+}
+
+body-2 {
+  font-size: 0.875rem; // 14px
+  font-weight: $font-weight-medium;
+  letter-spacing: $letter-spacing-normal;
+  line-height: $line-height-base;
+}
+
+body-1 {
+  font-size: 0.875rem; // 14px
+  font-weight: $font-weight-regular;
+  letter-spacing: $letter-spacing-normal;
+  line-height: $line-height-base;
+}
+
+caption {
+  font-size: 0.75rem; // 12px
+  font-weight: $font-weight-regular;
+  letter-spacing: $letter-spacing-wide;
+  line-height: $line-height-base;
+}
+
+button {
+  font-size: 0.875rem; // 14px
+  font-weight: $font-weight-medium;
+  letter-spacing: $letter-spacing-wide;
+  text-transform: uppercase;
+  line-height: $line-height-base;
+}
+
+overline {
+  font-size: 0.75rem; // 12px
+  font-weight: $font-weight-medium;
+  letter-spacing: $letter-spacing-wide;
+  text-transform: uppercase;
+  line-height: $line-height-base;
+}

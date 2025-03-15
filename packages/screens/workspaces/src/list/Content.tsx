@@ -46,7 +46,7 @@ function List(props: {
     const child = (
       <Stack direction="row" spacing={2}>
         {list.map((e) => {
-          return <WorkspaceCard item={e} />;
+          return <WorkspaceCard item={e} onClick={() => {}} />;
         })}
         <AddWorkspaceCard onClick={onAdd} />
       </Stack>

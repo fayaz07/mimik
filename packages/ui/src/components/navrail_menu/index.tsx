@@ -11,7 +11,7 @@ import NavMenuByCategory from "./MenuButtons";
 import "./_.scss";
 
 // note: check in constants.scss for the value of drawerWidth
-const drawerWidth = 160;
+const drawerWidth = 200;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
