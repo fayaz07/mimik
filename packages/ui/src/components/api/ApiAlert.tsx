@@ -11,17 +11,16 @@ import { useTranslation } from "react-i18next";
 
 export default function ApiAlert(props: {
   className?: string;
-  message: string;
   api: ApiCallStatus;
 }) {
-  const { className, message, api } = props;
+  const { className, api } = props;
   const { t } = useTranslation();
-  const msglen = message.length > 0;
+  const msglen = api.msg.length > 0;
 
   if (isLoading(api) && msglen) {
     return (
       <Alert severity="info" className={className}>
-        {message}
+        {api.msg}
       </Alert>
     );
   }
@@ -36,7 +35,7 @@ export default function ApiAlert(props: {
     }
     return (
       <Alert severity="error" className={className}>
-        {t(message)}
+        {t(api.msg)}
       </Alert>
     );
   }
@@ -44,7 +43,7 @@ export default function ApiAlert(props: {
   if (msglen) {
     return (
       <Alert severity="success" className={className}>
-        {t(message)}
+        {t(api.msg)}
       </Alert>
     );
   }

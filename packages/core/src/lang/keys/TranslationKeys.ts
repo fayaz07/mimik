@@ -5,4 +5,7 @@ export default interface TranslationKeys {
     teams: string;
     settings: string;
   };
+  common: {
+    unknownError: string;
+  };
 }

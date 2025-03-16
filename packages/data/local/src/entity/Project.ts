@@ -6,14 +6,23 @@ import TableMetadata, {
   insertToAnyTable,
   selectAllFromAnyTable,
 } from "./TableMetadata";
+import { metadata as WorkspaceMD } from "./Workspace";
 
-const metadata: TableMetadata = {
-  name: "workspaces",
+const metadata = {
+  name: "projects",
   columns: {
     id: {
       key: "id",
       type: "INTEGER",
       constraints: ["PRIMARY KEY", "AUTOINCREMENT"],
+    },
+    workspaceId: {
+      key: "workspaceId",
+      type: "INTEGER",
+      constraints: [
+        "NOT NULL",
+        `REFERENCES ${WorkspaceMD.name}(${WorkspaceMD.columns.id.key})`,
+      ],
     },
     name: {
       key: "name",
@@ -45,59 +54,74 @@ const metadata: TableMetadata = {
 
 export { metadata };
 
-export default class WorkspaceEntity {
+export default class ProjectEntity {
   id: number;
+  workspaceId: number;
   name: string;
   desc: string;
   cover: string;
   createdOn: string;
+  lastAccessed: string;
 
   constructor(
     id: number,
+    workspaceId: number,
     name: string,
     desc: string,
     cover: string,
-    createdOn: string
+    createdOn: string,
+    lastAccessed: string
   ) {
     this.id = id;
+    this.workspaceId = workspaceId;
     this.name = name;
     this.desc = desc;
     this.cover = cover;
     this.createdOn = createdOn;
+    this.lastAccessed = lastAccessed;
   }
 
-  static fromRow(row: any): WorkspaceEntity {
-    return new WorkspaceEntity(
-      row[metadata.columns.id.key],
-      row[metadata.columns.name.key],
-      row[metadata.columns.desc.key],
-      row[metadata.columns.cover.key],
-      row[metadata.columns.createdOn.key]
+  static fromRow(row: any): ProjectEntity {
+    return new ProjectEntity(
+      row.id,
+      row.workspaceId,
+      row.name,
+      row.desc,
+      row.cover,
+      row.createdOn,
+      row.lastAccessed
     );
   }
 
-  static fromRows(rows: any[]): WorkspaceEntity[] {
-    return rows.map(WorkspaceEntity.fromRow);
+  static fromRows(rows: any[]): ProjectEntity[] {
+    return rows.map((row) => ProjectEntity.fromRow(row));
   }
 
-  static toRow(entity: WorkspaceEntity): any {
+  static toRow(project: ProjectEntity): any {
     return {
-      [metadata.columns.id.key]: entity.id,
-      [metadata.columns.name.key]: entity.name,
-      [metadata.columns.desc.key]: entity.desc,
-      [metadata.columns.cover.key]: entity.cover,
-      [metadata.columns.createdOn.key]: entity.createdOn,
+      id: project.id,
+      workspaceId: project.workspaceId,
+      name: project.name,
+      desc: project.desc,
+      cover: project.cover,
+      createdOn: project.createdOn,
+      lastAccessed: project.lastAccessed,
     };
   }
 
-  static toRows(entities: WorkspaceEntity[]): any[] {
-    return entities.map(WorkspaceEntity.toRow);
+  static toRows(projects: ProjectEntity[]): any[] {
+    return projects.map((project) => ProjectEntity.toRow(project));
   }
 
-  static insertQuery(name: string, desc: string): string {
+  static createTableQuery(): string {
+    return createAnyTable(metadata);
+  }
+
+  static insertQuery(name: string, desc: string, workspaceId: number): string {
     return insertToAnyTable(metadata, {
       name,
       desc,
+      workspaceId,
       createdOn: "datetime('now')",
       lastAccessed: "datetime('now')",
     });
@@ -105,18 +129,6 @@ export default class WorkspaceEntity {
 
   static selectAllQuery(): string {
     return selectAllFromAnyTable(metadata);
-  }
-
-  static onAccessedQuery(id: number): string {
-    return updateAnyTable(
-      metadata,
-      { id },
-      { lastAccessed: "datetime('now')" }
-    );
-  }
-
-  static createTableQuery(): string {
-    return createAnyTable(metadata);
   }
 
   static selectQuery(where: { [key: string]: any }): string {
@@ -128,5 +140,13 @@ export default class WorkspaceEntity {
     values: { [key: string]: any }
   ): string {
     return updateAnyTable(metadata, where, values);
+  }
+
+  static onAccessedQuery(id: number): string {
+    return updateAnyTable(
+      metadata,
+      { id },
+      { lastAccessed: "datetime('now')" }
+    );
   }
 }

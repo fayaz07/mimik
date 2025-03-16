@@ -12,6 +12,9 @@ const translationKeys = {
     teams: "navRailMenu.teams",
     settings: "navRailMenu.settings",
   },
+  common: {
+    unknownError: "common.unknownError",
+  },
 } as TranslationKeys;
 
 export default translationKeys;

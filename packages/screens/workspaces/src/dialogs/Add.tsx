@@ -3,6 +3,7 @@ import Modal, { Typography } from "@mimik/ui/src/components/modal";
 import AppButton from "@mimik/ui/src/components/button/AppButton";
 import Space from "@mimik/ui/src/components/space";
 import TextField from "@mimik/ui/src/components/textField";
+import ApiAlert from "@mimik/ui/src/components/api/ApiAlert";
 import ApiCallStatus, { isLoading } from "@mimik/types/src/api/ApiCallStatus";
 
 // TODO: need field validation
@@ -29,6 +30,8 @@ export default function AddWorkspaceDialog(props: {
           Fill the form below to add a new workspace
         </Typography>
         <Space spacing={8} />
+        <ApiAlert api={api} />
+        <Space spacing={8} />
         <TextField
           label="Name"
           helperText="A simple name"
@@ -46,7 +49,12 @@ export default function AddWorkspaceDialog(props: {
       <Modal.Footer>
         <AppButton variant="outlined" onClick={onClose} content="Close" />
         <Space spacing={4} />
-        <AppButton onClick={onSave} content="Save" loading={isLoading(api)} />
+        <AppButton
+          onClick={onSave}
+          content="Save"
+          loading={isLoading(api)}
+          showLoader
+        />
       </Modal.Footer>
     </Modal>
   );

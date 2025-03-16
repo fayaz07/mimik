@@ -2,6 +2,9 @@ import React from "react";
 
 import Button from "@mui/joy/Button";
 import AppSpinner from "../spinner/AppSpinner";
+import { CircularProgress } from "@mui/joy";
+import "./_.scss";
+import { capitalize } from "@mui/material";
 
 // const platform = import.meta.env.PLATFORM;
 
@@ -22,12 +25,12 @@ import AppSpinner from "../spinner/AppSpinner";
 
 export interface AppButtonProps {
   content: string;
+  capitalized?: boolean;
   onClick: () => void;
 
   variant?: "solid" | "outlined" | "soft" | "plain";
   size?: "sm" | "md" | "lg";
   loading?: boolean;
-  showLoader?: boolean;
   enabled?: boolean;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
@@ -43,6 +46,8 @@ export interface AppButtonProps {
 
 // default props
 AppButton.defaultProps = {
+  capitalized: false,
+
   variant: "solid",
   size: "md",
   loading: false,
@@ -76,11 +81,11 @@ function getSize(size: string): {
 } {
   switch (size) {
     case "sm":
-      return { btnSize: "sm", fontSize: "10px" };
+      return { btnSize: "sm", fontSize: "12px" };
     case "lg":
-      return { btnSize: "lg", fontSize: "16px" };
+      return { btnSize: "lg", fontSize: "18px" };
     default:
-      return { btnSize: "md", fontSize: "12px" };
+      return { btnSize: "md", fontSize: "14px" };
   }
 }
 
@@ -106,11 +111,18 @@ export default function AppButton(props: AppButtonProps) {
         marginRight: btnProps.marginRight,
         fontSize: size.fontSize,
         height: "fit-content",
+        textTransform: btnProps.capitalized ? "capitalize" : "none",
       }}
     >
       {btnProps.prefix && btnProps.prefix}
-      {btnProps.loading && btnProps.showLoader && <AppSpinner />}
-      {btnProps.content}
+      {btnProps.loading ? (
+        <div className="appBtn_loading">
+          <CircularProgress className="appBtn_spinner" />
+          {btnProps.content}
+        </div>
+      ) : (
+        btnProps.content
+      )}
       {btnProps.suffix && btnProps.suffix}
     </Button>
   );

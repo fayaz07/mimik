@@ -4,5 +4,8 @@
     "workspaces": "Workspaces",
     "teams": "Teams",
     "settings": "Settings"
+  },
+  "common": {
+    "unknownError": "An unknown error occurred"
   }
 }
