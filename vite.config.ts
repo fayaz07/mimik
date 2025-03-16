@@ -21,6 +21,9 @@ export default defineConfig(({ command }) => {
       commonjsOptions: {
         transformMixedEsModules: true, // Fix for better-sqlite3
       },
+      rollupOptions: {
+        external: ["better-sqlite3", "electron"],
+      },
     },
     define: {
       "import.meta.env.PLATFORM": JSON.stringify(process.platform),

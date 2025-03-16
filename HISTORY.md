@@ -31,3 +31,13 @@
 - Switching to `fyne`. If you ask me why `fyne`?, I know `Go` and according to the plan of building `mimik`, I felt I don't need complex UI components. Let's see what is gonna happen.
 - Explored `fyne` and it's demo app and felt `fyne` has it's own design system, doesn't feel native
 - Back with `Electron`? Uhhh! I have ended up choosing what I wanted to skip right at the start.
+
+### Mar 16, 2025
+
+- Electron was great. I tried to find best template, used the one that was created by community (maybe), electron, vite, typescript & react - awesome.
+- I wanted this app to be an offline supported
+- Searched for local-storage, yeah the sql databases, found out that the databases are native modules and not directly supported by electron, this was a pain and a bigger pain was to see some SQL library as a paid version
+- Had a mess and struggle setting up the `better-sqlite3` library only to find out after few days of successfully setting it up that it doesn't work in release mode. The problem was it was not able to find the native better-sqlite3 module in release mode at all, no matter what configuration I tried.
+- I guess this is the reason why native SDK's are the evergreen solutions.
+- I feel good that I found this issue, just at the beginning of the project (just built 2 screens)
+- Another astonishing thing was, the app size with just these 2 screens is massively huge 200mb 😱 and the extracted archive is around 500mb, seriously? Am I building an IDE.
