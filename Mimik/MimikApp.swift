@@ -12,7 +12,7 @@ import SwiftData
 struct MimikApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AppNavigationView()
         }
     }
 }
