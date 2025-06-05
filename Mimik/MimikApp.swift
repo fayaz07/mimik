@@ -10,9 +10,13 @@ import SwiftData
 
 @main
 struct MimikApp: App {
-    var body: some Scene {
-        WindowGroup {
-            AppNavigationView()
-        }
+  
+  @StateObject private var controller = DataController()
+  
+  var body: some Scene {
+    WindowGroup {
+      AppNavigationView()
+        .environment(\.managedObjectContext, controller.container.viewContext)
     }
+  }
 }
