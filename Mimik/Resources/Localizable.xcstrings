@@ -1,13 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Detail" : {
+
+    },
+    "Hello, settings!" : {
+
+    },
     "Hello, Workspaces!" : {
 
     },
     "Hello, World!" : {
 
     },
-    "sidebar.dashboard" : {
+    "Hello!" : {
+
+    },
+    "screen.dashboard" : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
@@ -24,7 +33,7 @@
         }
       }
     },
-    "sidebar.settings" : {
+    "screen.settings" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -35,7 +44,7 @@
         }
       }
     },
-    "sidebar.workspaces" : {
+    "screen.workspaces" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -45,9 +54,6 @@
           }
         }
       }
-    },
-    "Tap Here!" : {
-
     }
   },
   "version" : "1.0"

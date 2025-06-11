@@ -9,6 +9,8 @@ import CoreData
 import Foundation
 
 class DataController : ObservableObject {
+  static let shared = DataController()
+
   let container = NSPersistentContainer(name: "AppModels")
   
   init() {
@@ -20,9 +22,13 @@ class DataController : ObservableObject {
       if let storeURL = description.url {
         try? self.container.persistentStoreCoordinator.destroyPersistentStore(
           at: storeURL,
-          ofType: NSSQLiteStoreType,
+          ofType: NSSQLiteStoreType
         )
       }
     }
+  }
+  
+  var viewContext: NSManagedObjectContext {
+    container.viewContext
   }
 }

@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct WorkspacesView: View {
+struct WorkspacesListView: View {
     var body: some View {
         Text("Hello, Workspaces!")
     }
 }
 
 #Preview {
-    WorkspacesView()
+    WorkspacesListView()
 }
 
 //

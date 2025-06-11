@@ -8,22 +8,31 @@
 import SwiftUI
 
 struct AppNavigationView: View {
-  @State private var selectedSidebarItem: SidebarItem = .dashboard
+  @EnvironmentObject private var viewModel: AppNavigationRouter
   
   var body: some View {
     NavigationSplitView {
-      List(selection: $selectedSidebarItem) {
-        ForEach(SidebarItem.allCases) { menuItem in
-          NavigationLink(value: menuItem) {
-            Label(LocalizedStringKey(menuItem.title), systemImage: "gearshape")
+      List(
+        SidebarRoutes.allCases,
+        selection: Binding(
+          get: { viewModel.selectedSidebarRoute },
+          set: { newValue in
+            Task { @MainActor in
+              viewModel.selectedSidebarRoute = newValue
+            }
           }
+        )
+      ) { menuItem in
+        NavigationLink(value: menuItem) {
+          Label(LocalizedStringKey(menuItem.title), systemImage: "gearshape")
         }
       }
     } detail: {
-      switch selectedSidebarItem {
+      switch viewModel.selectedSidebarRoute {
         case .dashboard: DashboardView()
-        case .workspaces: WorkspacesView()
-        case .settings: DashboardView()
+        case .workspaces: WorkspacesListView()
+        case .settings: SettingsView()
+        case .none: Text("Hello!")
       }
     }
   }

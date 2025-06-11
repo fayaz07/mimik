@@ -6,42 +6,42 @@
 //
 
 import SwiftUI
+import Factory
 
 struct DashboardView: View {
   
-  @FetchRequest(sortDescriptors: []) var workspaces: FetchedResults<Workspace>
+//  @InjectedObject(\.dashboardViewModel) private var viewModel
   @Environment(\.managedObjectContext) var moc
-  
+    
   var body: some View {
     content
-      .navigationTitle(LocalizedStringKey(SidebarItem.dashboard.title))
+      .navigationTitle(LocalizedStringKey(SidebarRoutes.dashboard.title))
   }
-  
+    
   var content: some View {
-      
+        
     VStack {
-      ForEach(workspaces, id: \.objectID) { workspace in
-        Text(workspace.name)
-      }
+//      List(viewModel.workspaces, id: \.objectID) { workspace in
+//        Text(workspace.name)
+//      }
+//      .task {
+//        try? await viewModel.fetchWorkspaces()
+//      }
       
-      Button(
-        action: {
-          debugPrint(workspaces)
-          let newWorkspace = Workspace(context: moc)
-          newWorkspace.name = "New Workspace with random name \(UUID().uuidString)"
-          try? moc.save()
-        },
-        label: {
-          Text("Tap Here!")
-        }
-      )
-    }.onAppear {
-      for workspace in workspaces {
-        debugPrint(workspace.objectID, workspace.id.uuidString)
-      }
+//      Button(
+//        action: {
+//          //          let newWorkspace = Workspace(context: moc)
+//          //          newWorkspace.name = "New Workspace with random name \(UUID().uuidString)"
+//          //          newWorkspace.id = UUID()
+//          //          try? moc.save()
+//        },
+//        label: {
+//          Text("Tap Here!")
+//        }
+//      )
     }
   }
-  
+    
 }
 
 #Preview {

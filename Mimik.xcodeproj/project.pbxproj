@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8EB66A0F2DF6B71C00A9694E /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 8EB66A0E2DF6B71C00A9694E /* Factory */; };
+		8EB66A112DF6B71C00A9694E /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8EB66A102DF6B71C00A9694E /* FactoryKit */; };
+		8EB66A132DF6B71C00A9694E /* FactoryTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 8EB66A122DF6B71C00A9694E /* FactoryTesting */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		F48B41882D86AFB1006C16FE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EB66A112DF6B71C00A9694E /* FactoryKit in Frameworks */,
+				8EB66A0F2DF6B71C00A9694E /* Factory in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EB66A132DF6B71C00A9694E /* FactoryTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +121,8 @@
 			);
 			name = Mimik;
 			packageProductDependencies = (
+				8EB66A0E2DF6B71C00A9694E /* Factory */,
+				8EB66A102DF6B71C00A9694E /* FactoryKit */,
 			);
 			productName = Mimik;
 			productReference = F48B41742D86AFB0006C16FE /* Mimik.app */;
@@ -135,6 +146,7 @@
 			);
 			name = MimikTests;
 			packageProductDependencies = (
+				8EB66A122DF6B71C00A9694E /* FactoryTesting */,
 			);
 			productName = MimikTests;
 			productReference = F48B41872D86AFB1006C16FE /* MimikTests.xctest */;
@@ -196,6 +208,9 @@
 			);
 			mainGroup = F48B416B2D86AFB0006C16FE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8EB66A0D2DF6B71C00A9694E /* XCRemoteSwiftPackageReference "Factory" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F48B41752D86AFB0006C16FE /* Products */;
 			projectDirPath = "";
@@ -397,11 +412,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Mimik/Mimik.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Mimik/Preview Content\"";
-				DEVELOPMENT_TEAM = 8439533Q96;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -428,11 +444,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Mimik/Mimik.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Mimik/Preview Content\"";
-				DEVELOPMENT_TEAM = 8439533Q96;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -560,6 +577,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8EB66A0D2DF6B71C00A9694E /* XCRemoteSwiftPackageReference "Factory" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Factory";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8EB66A0E2DF6B71C00A9694E /* Factory */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8EB66A0D2DF6B71C00A9694E /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = Factory;
+		};
+		8EB66A102DF6B71C00A9694E /* FactoryKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8EB66A0D2DF6B71C00A9694E /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = FactoryKit;
+		};
+		8EB66A122DF6B71C00A9694E /* FactoryTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8EB66A0D2DF6B71C00A9694E /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = FactoryTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F48B416C2D86AFB0006C16FE /* Project object */;
 }
