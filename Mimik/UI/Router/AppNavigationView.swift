@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct AppNavigationView: View {
-  @EnvironmentObject private var viewModel: AppNavigationRouter
+  @EnvironmentObject private var navRouter: AppNavigationRouter
   
   var body: some View {
     NavigationSplitView {
       List(
         SidebarRoutes.allCases,
         selection: Binding(
-          get: { viewModel.selectedSidebarRoute },
+          get: { navRouter.selectedSidebarRoute },
           set: { newValue in
             Task { @MainActor in
-              viewModel.selectedSidebarRoute = newValue
+              navRouter.selectedSidebarRoute = newValue
             }
           }
         )
@@ -28,9 +28,9 @@ struct AppNavigationView: View {
         }
       }
     } detail: {
-      switch viewModel.selectedSidebarRoute {
+      switch navRouter.selectedSidebarRoute {
         case .dashboard: DashboardView()
-        case .workspaces: WorkspacesListView()
+        case .workspaces: WorkspaceModule()
         case .settings: SettingsView()
         case .none: Text("Hello!")
       }

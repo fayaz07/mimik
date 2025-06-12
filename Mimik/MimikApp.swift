@@ -12,13 +12,13 @@ import SwiftData
 struct MimikApp: App {
   
   @StateObject private var controller = DataController()
-  @StateObject var navState = AppNavigationRouter()
+  @StateObject var navRouter = AppNavigationRouter()
   
   var body: some Scene {
     WindowGroup {
       AppNavigationView()
         .environment(\.managedObjectContext, controller.container.viewContext)
-        .environmentObject(navState)
+        .environmentObject(navRouter)
     }
   }
 }

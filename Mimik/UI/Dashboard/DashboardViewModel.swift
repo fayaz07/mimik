@@ -5,7 +5,7 @@
 //  Created by Mohammad Fayaz on 05/06/25.
 //
 
-import CoreData
+import Foundation
 
 final class DashboardViewModel: ObservableObject {
   @Published var workspaces: [WorkspaceEntity] = []

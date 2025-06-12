@@ -6,26 +6,22 @@
 //
 
 import SwiftUI
-import Factory
 
 struct WorkspaceModule: View {
-  
-  @Injected(\.workspaceRouter) private var router
+  @StateObject private var router = WorkspaceRouter()
   
   var body: some View {
     NavigationStack {
       switch router.currentRoute {
-        case .list:
-          WorkspacesListView()
-        case .create:
-          CreateWorkspaceView()
-//        case .detail(let id):
-//          Text("Detail \(id)")
-          //          WorkspaceDetailView(workspaceId: id)
-        case .detail:
-          Text("Detail")
+      case .list:
+        WorkspacesListView()
+      case .create:
+        CreateWorkspaceView()
+      case .detail:
+        Text("Detail")
       }
     }
+    .environmentObject(router)
   }
 }
 

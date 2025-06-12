@@ -6,20 +6,33 @@
 //
 
 import Foundation
+import Combine
 
-final class WorkspaceRouter {
-  @Published var currentRoute: WorkspaceRoutes = .list
-  
-  func navigate(to route: WorkspaceRoutes) {
-      currentRoute = route
-  }
-  
-  func navigateBack() {
-      switch currentRoute {
-      case .create, .detail:
-          currentRoute = .list
-      case .list:
-          break
-      }
-  }
+final class WorkspaceRouter: ObservableObject {
+  @Published var currentRoute: WorkspaceRoutes = .list {
+       didSet {
+           print("🔄 Route changed from \(oldValue) to \(currentRoute)")
+       }
+   }
+   
+   // Navigation history for more complex back navigation
+   private var navigationHistory: [WorkspaceRoutes] = [.list]
+   
+   func navigate(to route: WorkspaceRoutes) {
+       print("🔄 Navigating to \(route)")
+       navigationHistory.append(currentRoute)
+       currentRoute = route
+   }
+   
+   func navigateBack() {
+       if navigationHistory.count > 1 {
+           navigationHistory.removeLast()
+           currentRoute = navigationHistory.last ?? .list
+       }
+   }
+   
+   func navigateToRoot() {
+       navigationHistory = [.list]
+       currentRoute = .list
+   }
 }

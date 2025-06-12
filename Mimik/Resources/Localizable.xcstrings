@@ -1,16 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Add New Workspace" : {
+
+    },
+    "Add Workspace" : {
+
+    },
     "Detail" : {
+
+    },
+    "Hello, CreateWorkspaceView!" : {
 
     },
     "Hello, settings!" : {
 
     },
     "Hello, Workspaces!" : {
-
-    },
-    "Hello, World!" : {
 
     },
     "Hello!" : {

@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct CreateWorkspaceView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  @EnvironmentObject private var router: WorkspaceRouter
+  
+  var body: some View {
+    VStack {
+      Text("Hello, CreateWorkspaceView!")
     }
+    .navigationTitle("Add New Workspace")
+    .toolbar {
+      ToolbarItem(placement: .navigation) {
+        Button(action: {
+          router.navigateBack()
+        }) {
+          Image(systemName: "chevron.left")
+            .font(.system(size: 16, weight: .medium))
+        }
+      }
+    }
+  }
 }
 
 #Preview {
-    CreateWorkspaceView()
+  CreateWorkspaceView()
 }
