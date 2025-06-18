@@ -12,17 +12,15 @@ struct CreateWorkspaceView: View {
   
   var body: some View {
     VStack {
-      Text("Hello, CreateWorkspaceView!")
+      
     }
-    .navigationTitle("Add New Workspace")
+    .padding(
+      EdgeInsets.init(top: 8.0, leading: 8.0, bottom: 8.0, trailing: 8.0)
+    )
+    .navigationTitle("New Workspace")
     .toolbar {
-      ToolbarItem(placement: .navigation) {
-        Button(action: {
-          router.navigateBack()
-        }) {
-          Image(systemName: "chevron.left")
-            .font(.system(size: 16, weight: .medium))
-        }
+      BackNavButton {
+        router.navigateBack()
       }
     }
   }
@@ -30,4 +28,5 @@ struct CreateWorkspaceView: View {
 
 #Preview {
   CreateWorkspaceView()
+    .environmentObject(WorkspaceRouter())
 }

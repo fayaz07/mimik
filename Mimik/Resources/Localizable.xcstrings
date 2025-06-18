@@ -1,16 +1,10 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Add New Workspace" : {
-
-    },
     "Add Workspace" : {
 
     },
     "Detail" : {
-
-    },
-    "Hello, CreateWorkspaceView!" : {
 
     },
     "Hello, settings!" : {
@@ -20,6 +14,9 @@
 
     },
     "Hello!" : {
+
+    },
+    "New Workspace" : {
 
     },
     "screen.dashboard" : {
