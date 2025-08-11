@@ -12,7 +12,7 @@ struct CreateWorkspaceView: View {
   
   var body: some View {
     VStack {
-      
+      CreateWorkspaceForm()
     }
     .padding(
       EdgeInsets.init(top: 8.0, leading: 8.0, bottom: 8.0, trailing: 8.0)
