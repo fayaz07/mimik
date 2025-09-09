@@ -8,32 +8,21 @@
 import SwiftUI
 
 struct AppNavigationView: View {
-  @EnvironmentObject private var navRouter: AppNavigationRouter
+  @State private var path = [String]()
   
   var body: some View {
-    NavigationSplitView {
-      List(
-        SidebarRoutes.allCases,
-        selection: Binding(
-          get: { navRouter.selectedSidebarRoute },
-          set: { newValue in
-            Task { @MainActor in
-              navRouter.selectedSidebarRoute = newValue
-            }
+    NavigationStack(path: $path) {
+      SplashScreen()
+        .navigationDestination(for: String.self) { dest in
+          switch dest {
+            case AppRoutes.dashboard:
+              DashboardScreen()
+            case AppRoutes.Workspace.list:
+              WorkspacesListScreen()
+            default:
+              SplashScreen()
           }
-        )
-      ) { menuItem in
-        NavigationLink(value: menuItem) {
-          Label(LocalizedStringKey(menuItem.title), systemImage: "gearshape")
         }
-      }
-    } detail: {
-      switch navRouter.selectedSidebarRoute {
-        case .dashboard: DashboardView()
-        case .workspaces: WorkspaceModule()
-        case .settings: SettingsView()
-        case .none: Text("Hello!")
-      }
     }
   }
 }

@@ -16,9 +16,10 @@ struct MimikApp: App {
   
   var body: some Scene {
     WindowGroup {
-      AppNavigationView()
-        .environment(\.managedObjectContext, controller.container.viewContext)
-        .environmentObject(navRouter)
+      SplashScreen()
+//      AppNavigationView()
+//        .environment(\.managedObjectContext, controller.container.viewContext)
+//        .environmentObject(navRouter)
     }
   }
 }

@@ -18,13 +18,6 @@ class DataController : ObservableObject {
       if let error = error {
         print("Core Data failed to load: \(error.localizedDescription)")
       }
-        
-      if let storeURL = description.url {
-        try? self.container.persistentStoreCoordinator.destroyPersistentStore(
-          at: storeURL,
-          ofType: NSSQLiteStoreType
-        )
-      }
     }
   }
   

@@ -22,6 +22,9 @@
     "New Workspace" : {
 
     },
+    "No workspaces found." : {
+
+    },
     "screen.dashboard" : {
       "extractionState" : "manual",
       "localizations" : {

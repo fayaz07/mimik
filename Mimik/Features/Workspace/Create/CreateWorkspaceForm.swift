@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct CreateWorkspaceForm: View {
-  @State var viewModel: CreateWorkspaceVM = CreateWorkspaceVM()
+  @Bindable var viewModel: CreateWorkspaceVM
   
   var body: some View {
     VStack {
       Form {
         Section {
-
           AppTextField(
             label: "Name",
             value: $viewModel.name,
@@ -44,7 +43,7 @@ struct CreateWorkspaceForm: View {
         }
         
         FilledButton(text: "Save", width: .infinity) {
-          
+          viewModel.saveWorkspace()
         }
         .padding(.top, 16)
       }
@@ -54,5 +53,11 @@ struct CreateWorkspaceForm: View {
 }
 
 #Preview {
-  CreateWorkspaceForm()
+  CreateWorkspaceForm(
+    viewModel: CreateWorkspaceVM(
+      workspaceRepository: WorkspaceRepositoryImpl(
+        localSource: WorkspaceLocalDataSource(context: NSManagedObjectContext())
+      )
+    )
+  )
 }

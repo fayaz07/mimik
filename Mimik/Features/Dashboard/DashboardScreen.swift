@@ -8,7 +8,7 @@
 import SwiftUI
 import Factory
 
-struct DashboardView: View {
+struct DashboardScreen: View {
   
 //  @InjectedObject(\.dashboardViewModel) private var viewModel
   @Environment(\.managedObjectContext) var moc

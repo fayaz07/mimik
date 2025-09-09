@@ -25,10 +25,27 @@ final class WorkspaceLocalDataSource {
     doc.id = UUID()
     doc.name = name
     doc.desc = description ?? ""
+    print("Saving")
+    //    try await context.perform {
+    //      [weak context] in
+    //      try context?.save()
+    //    }
     
-    try await context.perform {
-      [weak context] in
-      try context?.save()
+    try await context.perform { [weak context] in
+      print(
+        "[CoreData] Performing save on context: \(String(describing: context))"
+      )
+      if context?.hasChanges == true {
+        do {
+          try context?.save()
+          print("[CoreData] Save successful")
+        } catch {
+          print("[CoreData] Save failed: \(error.localizedDescription)")
+          throw error
+        }
+      } else {
+        print("[CoreData] No changes to save")
+      }
     }
   }
 
