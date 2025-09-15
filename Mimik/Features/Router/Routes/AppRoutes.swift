@@ -5,12 +5,14 @@
 //  Created by Mohammad Fayaz on 07/09/25.
 //
 
+typealias AppRoute = String
+
 struct AppRoutes {
-  static let splash = "/splash"
-  static let dashboard = "/dashboard"
+  static let splash: AppRoute = "/splash"
+  static let dashboard: AppRoute = "/dashboard"
   
   struct Workspace {
-    static let add = "/workspace/add"
-    static let list = "/workspace/list"
+    static let add: AppRoute = "/workspace/add"
+    static let list: AppRoute = "/workspace/list"
   }
 }

@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct AppNavigationView: View {
-  @State private var path = [String]()
+  
+  @EnvironmentObject var router: AppNavigationRouter
   
   var body: some View {
-    NavigationStack(path: $path) {
+    NavigationStack(path: $router.path) {
       SplashScreen()
         .navigationDestination(for: String.self) { dest in
           switch dest {
             case AppRoutes.dashboard:
               DashboardScreen()
+                .navigationBarBackButtonHidden(true)
             case AppRoutes.Workspace.list:
               WorkspacesListScreen()
             default:

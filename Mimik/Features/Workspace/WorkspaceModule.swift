@@ -14,7 +14,7 @@ struct WorkspaceModule: View {
     NavigationStack {
       switch router.currentRoute {
       case .list:
-        WorkspacesListView()
+        WorkspacesListScreen()
       case .create:
         CreateWorkspaceView()
       case .detail:

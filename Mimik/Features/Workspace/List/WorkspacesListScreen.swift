@@ -46,6 +46,6 @@ struct WorkspacesListScreen: View {
 }
 
 #Preview {
-  WorkspacesListView()
+  WorkspacesListScreen()
 }
   

@@ -4,22 +4,31 @@
     "" : {
 
     },
+    "Add new Workspace" : {
+
+    },
     "Add Workspace" : {
 
     },
     "Detail" : {
 
     },
+    "Error: %@" : {
+
+    },
     "Hello, settings!" : {
+
+    },
+    "Hello, SwiftUI!" : {
 
     },
     "Hello, Workspaces!" : {
 
     },
-    "Hello!" : {
+    "New Workspace" : {
 
     },
-    "New Workspace" : {
+    "No items found." : {
 
     },
     "No workspaces found." : {

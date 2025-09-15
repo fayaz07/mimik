@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SplashScreen: View {
-  @State private var shouldNavigate = false
+  @EnvironmentObject var router: AppNavigationRouter
   
   var body: some View {
     VStack {
@@ -21,16 +21,20 @@ struct SplashScreen: View {
         .font(.title)
         .bold()
         .padding(.top, Padding.sm)
+      
+      ProgressView() // Default spinner
+        .progressViewStyle(CircularProgressViewStyle())
+        .scaleEffect(0.75)
+        .padding(.top, Padding.sm)
+        .padding(.bottom, Padding.sm)
     }
     .onAppear {
       // Add a 2-second delay
-      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-        self.shouldNavigate = true
+//      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+      DispatchQueue.main.asyncAfter(deadline: .now()) {
+        // navigate to dashboard
+        router.setRoot(to: AppRoutes.dashboard)
       }
-    }
-
-    NavigationLink(destination: DashboardView(), isActive: $shouldNavigate) {
-      EmptyView()
     }
   }
 }
