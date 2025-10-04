@@ -10,6 +10,7 @@ import Factory
 
 struct DashboardScreen: View {
   
+  @EnvironmentObject var router: AppNavigationRouter
   @InjectedObject(\.dashboardViewModel) private var viewModel
   @Environment(\.managedObjectContext) var moc
     
@@ -57,6 +58,7 @@ struct DashboardScreen: View {
           //          newWorkspace.name = "New Workspace with random name \(UUID().uuidString)"
           //          newWorkspace.id = UUID()
           //          try? moc.save()
+          router.push(to: AppRoutes.Workspace.add)
         },
         label: {
           Text("Add new Workspace")

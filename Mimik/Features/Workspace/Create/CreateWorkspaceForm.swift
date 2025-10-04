@@ -18,28 +18,14 @@ struct CreateWorkspaceForm: View {
             label: "Name",
             value: $viewModel.name,
             error: $viewModel.nameError
-          )
-
+          ).padding(.bottom, 8)
+          
           AppTextEditor(
             label: "Description",
             value: $viewModel.description,
-            error: $viewModel.nameError,
+            error: $viewModel.descriptionError,
             height: 100
           )
-
-          
-          //          Text("Description")
-          //          TextEditor(text: $viewModel.description)
-          //            .padding(.vertical, 4)
-          //            .background(Color.white)
-          //            .scrollContentBackground(.hidden)
-          //            .frame(height: 100)
-          //            .cornerRadius(6)
-          //            .overlay(
-          //              RoundedRectangle(cornerRadius: 6)
-          //                .stroke(Color.gray.opacity(0.3))
-          //            )
-          
         }
         
         FilledButton(text: "Save", width: .infinity) {
@@ -47,6 +33,7 @@ struct CreateWorkspaceForm: View {
         }
         .padding(.top, 16)
       }
+      Spacer()
     }
     .padding()
   }

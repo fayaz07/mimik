@@ -9,10 +9,8 @@ import SwiftUI
 import Factory
 import CoreData
 
-struct CreateWorkspaceView: View {
-  @EnvironmentObject private var router: WorkspaceRouter
-  //  @State var viewModel: CreateWorkspaceVM = CreateWorkspaceVM()
- 
+struct CreateWorkspaceScreen: View {
+  @EnvironmentObject private var router: AppNavigationRouter
   @State private var viewModel: CreateWorkspaceVM
   
   init() {
@@ -31,13 +29,12 @@ struct CreateWorkspaceView: View {
     .navigationTitle("New Workspace")
     .toolbar {
       BackNavButton {
-        router.navigateBack()
+        router.pop()
       }
     }
   }
 }
 
 #Preview {
-  CreateWorkspaceView()
-    .environmentObject(WorkspaceRouter())
+  CreateWorkspaceScreen()
 }

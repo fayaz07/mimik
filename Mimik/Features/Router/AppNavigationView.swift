@@ -14,13 +14,19 @@ struct AppNavigationView: View {
   var body: some View {
     NavigationStack(path: $router.path) {
       SplashScreen()
-        .navigationDestination(for: String.self) { dest in
+        .navigationDestination(for: AppRoute.self) { dest in
           switch dest {
             case AppRoutes.dashboard:
               DashboardScreen()
                 .navigationBarBackButtonHidden(true)
+            
+              
+            case AppRoutes.Workspace.add:
+              CreateWorkspaceScreen()
             case AppRoutes.Workspace.list:
               WorkspacesListScreen()
+              
+              
             default:
               SplashScreen()
           }

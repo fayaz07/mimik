@@ -11,7 +11,7 @@ import Factory
 
 struct WorkspacesListScreen: View {
    
-  @EnvironmentObject private var router: WorkspaceRouter
+  @EnvironmentObject private var router: AppNavigationRouter
   @State private var viewModel: WorkspaceListViewModel
   
   init() {
@@ -39,7 +39,8 @@ struct WorkspacesListScreen: View {
       Text("Hello, Workspaces!")
       
       Button("Add Workspace") {
-        router.navigate(to: .create)
+        router.push(to: AppRoutes.Workspace.add)
+        router.push(to: AppRoutes.dashboard)
       }
     }
   }

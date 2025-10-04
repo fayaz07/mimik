@@ -33,7 +33,7 @@ struct AppTextEditor: View {
       if let err = error.wrappedValue, !err.isEmpty {
         Text(err)
           .foregroundColor(.red)
-          .font(.caption)
+          .font(.footnote)
           .padding(.leading, 8)
       }
     }
