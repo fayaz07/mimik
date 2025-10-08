@@ -2,12 +2,14 @@
 //  WorkspaceEntity+CoreDataClass.swift
 //  Mimik
 //
-//  Created by Mohammad Fayaz on 05/06/25.
+//  Created by Fayaz Mohammad on 06/10/25.
 //
 //
 
-import Foundation
-import CoreData
+public import Foundation
+public import CoreData
+
+public typealias WorkspaceEntityCoreDataClassSet = NSSet
 
 @objc(WorkspaceEntity)
 public class WorkspaceEntity: NSManagedObject {

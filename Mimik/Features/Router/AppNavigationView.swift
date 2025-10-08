@@ -20,12 +20,11 @@ struct AppNavigationView: View {
               DashboardScreen()
                 .navigationBarBackButtonHidden(true)
             
-              
             case AppRoutes.Workspace.add:
               CreateWorkspaceScreen()
+              
             case AppRoutes.Workspace.list:
               WorkspacesListScreen()
-              
               
             default:
               SplashScreen()

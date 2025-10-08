@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Factory
+import Flow
 
 struct DashboardScreen: View {
   
@@ -15,19 +16,22 @@ struct DashboardScreen: View {
   @Environment(\.managedObjectContext) var moc
     
   var body: some View {
-    VStack(alignment: .leading) {
-      HStack(alignment: .top){
-        content
-          .navigationTitle(LocalizedStringKey(SidebarRoutes.dashboard.title))
-        Spacer()
-      }
-      Spacer()
-    }.padding()
-
+    ScrollView {
+      recentWorkspacesSection
+        .navigationTitle(LocalizedStringKey(SidebarRoutes.dashboard.title))
+        .padding(16)
+    }.background(.white)
   }
-    
-  var content: some View {
+   
+  var recentWorkspacesSection: some View {
     VStack {
+      HStack {
+        Text("Recent Workspaces")
+          .font(.title)
+          .padding(.top, 16)
+        Spacer()
+      }.padding(0)
+      
       ViewStateUIBuilder(
         state: viewModel.workspaces,
         forLoading: {
@@ -37,36 +41,39 @@ struct DashboardScreen: View {
           Text("Error: \(error)")
         },
         forData: { items in
-          VStack(alignment: .leading) {
-            if items.isEmpty {
-              Text("No items found.")
-            } else {
-              List(items, id: \.self) { item in
-                Text(item.name)
-              }
-            }
-          }
+          workspacesList(items: items)
         },
         forNoData: {
           Text("No items found.")
         }
-      )
-      
-      Button(
-        action: {
-          //          let newWorkspace = Workspace(context: moc)
-          //          newWorkspace.name = "New Workspace with random name \(UUID().uuidString)"
-          //          newWorkspace.id = UUID()
-          //          try? moc.save()
-          router.push(to: AppRoutes.Workspace.add)
-        },
-        label: {
-          Text("Add new Workspace")
-        }
-      )
+      ).padding(0)
     }
   }
-    
+  
+  private func onAddWorkspace() {
+    router.push(to: AppRoutes.Workspace.add)
+  }
+  
+  @ViewBuilder
+  private func workspacesList(items: [WorkspaceEntity]) -> some View {
+    VStack(alignment: .leading) {
+      if items.isEmpty {
+        Text("No items found.")
+      } else {
+        HStack {
+          HFlow(alignment: .firstTextBaseline, spacing: 16) {
+            ForEach(items, id: \.self) { item in
+              WorkspaceCardView(data: item) { _ in
+                
+              }
+            }
+            AddWorkspaceCardView(action: onAddWorkspace)
+          }
+          Spacer()
+        }
+      }
+    }.padding(0)
+  }
 }
 
 #Preview {

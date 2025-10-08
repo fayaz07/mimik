@@ -31,13 +31,11 @@ struct WorkspacesListScreen: View {
       if viewModel.workspaces.isEmpty {
         Text("No workspaces found.")
       } else {
-        List(viewModel.workspaces, id: \.self) { item in
-          Text(item.name)
-        }
+//        List(viewModel.workspaces, id: \.self) { item in
+//          Text(item.name)
+//        }
       }
-      
-      Text("Hello, Workspaces!")
-      
+      Spacer()
       Button("Add Workspace") {
         router.push(to: AppRoutes.Workspace.add)
         router.push(to: AppRoutes.dashboard)

@@ -2,13 +2,15 @@
 //  WorkspaceEntity+CoreDataProperties.swift
 //  Mimik
 //
-//  Created by Mohammad Fayaz on 05/06/25.
+//  Created by Fayaz Mohammad on 06/10/25.
 //
 //
 
-import Foundation
-import CoreData
+public import Foundation
+public import CoreData
 
+
+public typealias WorkspaceEntityCoreDataPropertiesSet = NSSet
 
 extension WorkspaceEntity {
 
@@ -16,9 +18,10 @@ extension WorkspaceEntity {
         return NSFetchRequest<WorkspaceEntity>(entityName: "WorkspaceEntity")
     }
 
+    @NSManaged public var desc: String
     @NSManaged public var id: UUID
     @NSManaged public var name: String
-    @NSManaged public var desc: String?
+    @NSManaged public var lastAccessed: Date?
 
 }
 

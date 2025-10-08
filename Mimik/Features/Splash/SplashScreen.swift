@@ -29,8 +29,8 @@ struct SplashScreen: View {
         .padding(.bottom, Padding.sm)
     }
     .onAppear {
-//      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-      DispatchQueue.main.async {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//      DispatchQueue.main.async {
         // navigate to dashboard
         router.setRoot(to: AppRoutes.dashboard)
       }

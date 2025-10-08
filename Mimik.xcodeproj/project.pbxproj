@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E246B9D2E95492F000CA3A3 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = 8E246B9C2E95492F000CA3A3 /* Flow */; };
 		8EB66A0F2DF6B71C00A9694E /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 8EB66A0E2DF6B71C00A9694E /* Factory */; };
 		8EB66A112DF6B71C00A9694E /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8EB66A102DF6B71C00A9694E /* FactoryKit */; };
 		8EB66A132DF6B71C00A9694E /* FactoryTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 8EB66A122DF6B71C00A9694E /* FactoryTesting */; };
@@ -60,6 +61,7 @@
 			files = (
 				8EB66A112DF6B71C00A9694E /* FactoryKit in Frameworks */,
 				8EB66A0F2DF6B71C00A9694E /* Factory in Frameworks */,
+				8E246B9D2E95492F000CA3A3 /* Flow in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +125,7 @@
 			packageProductDependencies = (
 				8EB66A0E2DF6B71C00A9694E /* Factory */,
 				8EB66A102DF6B71C00A9694E /* FactoryKit */,
+				8E246B9C2E95492F000CA3A3 /* Flow */,
 			);
 			productName = Mimik;
 			productReference = F48B41742D86AFB0006C16FE /* Mimik.app */;
@@ -210,6 +213,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				8EB66A0D2DF6B71C00A9694E /* XCRemoteSwiftPackageReference "Factory" */,
+				8E246B9B2E95492F000CA3A3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F48B41752D86AFB0006C16FE /* Products */;
@@ -579,6 +583,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8E246B9B2E95492F000CA3A3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tevelee/SwiftUI-Flow";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
 		8EB66A0D2DF6B71C00A9694E /* XCRemoteSwiftPackageReference "Factory" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hmlongco/Factory";
@@ -590,6 +602,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8E246B9C2E95492F000CA3A3 /* Flow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8E246B9B2E95492F000CA3A3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */;
+			productName = Flow;
+		};
 		8EB66A0E2DF6B71C00A9694E /* Factory */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8EB66A0D2DF6B71C00A9694E /* XCRemoteSwiftPackageReference "Factory" */;
