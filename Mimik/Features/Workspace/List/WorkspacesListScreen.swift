@@ -37,8 +37,7 @@ struct WorkspacesListScreen: View {
       }
       Spacer()
       Button("Add Workspace") {
-        router.push(to: AppRoutes.Workspace.add)
-        router.push(to: AppRoutes.dashboard)
+        
       }
     }
   }

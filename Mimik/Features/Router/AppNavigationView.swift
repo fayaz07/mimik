@@ -16,20 +16,34 @@ struct AppNavigationView: View {
       SplashScreen()
         .navigationDestination(for: AppRoute.self) { dest in
           switch dest {
-            case AppRoutes.dashboard:
+            case .splash:
+              SplashScreen()
+              
+            case .dashboard:
               DashboardScreen()
                 .navigationBarBackButtonHidden(true)
-            
-            case AppRoutes.Workspace.add:
-              CreateWorkspaceScreen()
               
-            case AppRoutes.Workspace.list:
-              WorkspacesListScreen()
-              
-            default:
-              SplashScreen()
+            case .workspace(let workspaceRoute):
+              WorkspaceNavigationView(route: workspaceRoute)
           }
         }
+    }
+  }
+}
+
+struct WorkspaceNavigationView: View {
+  let route: AppRoute.WorkspaceRoute
+
+  var body: some View {
+    switch route {
+      case .add:
+        CreateWorkspaceScreen()
+
+      case .list:
+        WorkspacesListScreen()
+
+      case .detail(let id):
+        WorkspaceDetailScreen(id: id)
     }
   }
 }

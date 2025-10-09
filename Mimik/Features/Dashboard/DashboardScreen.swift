@@ -18,7 +18,7 @@ struct DashboardScreen: View {
   var body: some View {
     ScrollView {
       recentWorkspacesSection
-        .navigationTitle(LocalizedStringKey(SidebarRoutes.dashboard.title))
+        .navigationTitle(LocalizedStringKey("screen.dashboard"))
         .padding(16)
     }.background(.white)
   }
@@ -51,7 +51,7 @@ struct DashboardScreen: View {
   }
   
   private func onAddWorkspace() {
-    router.push(to: AppRoutes.Workspace.add)
+    router.push(to: .workspace(.add))
   }
   
   @ViewBuilder

@@ -32,7 +32,7 @@ struct SplashScreen: View {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
 //      DispatchQueue.main.async {
         // navigate to dashboard
-        router.setRoot(to: AppRoutes.dashboard)
+        router.setRoot(to: .dashboard)
       }
     }
   }
