@@ -27,6 +27,10 @@ struct ViewState<T> {
 }
 
 extension ViewState {
+  static func idle() -> ViewState<T> {
+    .init(loading: false, data: nil, error: nil)
+  }
+  
   static func loading() -> ViewState<T> {
     ViewState(loading: true)
   }
@@ -39,4 +43,3 @@ extension ViewState {
     ViewState(loading: false, error: error)
   }
 }
-

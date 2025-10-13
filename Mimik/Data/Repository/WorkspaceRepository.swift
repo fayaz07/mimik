@@ -10,6 +10,7 @@ protocol WorkspaceRepository {
   func getAll() async throws -> [WorkspaceEntity]
   func create(name: String, description: String) async throws
   func delete(id: UUID) async throws
+  func findByName(name: String) async throws -> [WorkspaceEntity]
 }
 
 final class WorkspaceRepositoryImpl: WorkspaceRepository {
@@ -29,5 +30,9 @@ final class WorkspaceRepositoryImpl: WorkspaceRepository {
   
   func delete(id: UUID) async throws {
     try await localSource.delete(id: id)
+  }
+  
+  func findByName(name: String) async throws -> [WorkspaceEntity] {
+    try await localSource.findByName(name: name)
   }
 }

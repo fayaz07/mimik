@@ -23,9 +23,7 @@ struct CreateWorkspaceScreen: View {
     VStack {
       CreateWorkspaceForm(viewModel: viewModel)
     }
-    .padding(
-      EdgeInsets.init(top: 8.0, leading: 8.0, bottom: 8.0, trailing: 8.0)
-    )
+    .background(.white)
     .navigationTitle("New Workspace")
     .toolbar {
       BackNavButton {

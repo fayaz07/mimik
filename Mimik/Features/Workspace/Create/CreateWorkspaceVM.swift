@@ -12,9 +12,7 @@ class CreateWorkspaceVM {
   
   private let workspaceRepository: WorkspaceRepository
     
-  init(
-    workspaceRepository: WorkspaceRepository
-  ) {
+  init(workspaceRepository: WorkspaceRepository) {
     self.workspaceRepository = workspaceRepository
   }
   
@@ -23,6 +21,9 @@ class CreateWorkspaceVM {
 
   var nameError: String? = nil
   var descriptionError: String? = nil
+  
+  var viewState: ViewState<Void> = ViewState.idle()
+  var saveError: String? = nil
   
   private func validateForm() -> Bool {
     var hasError: Bool = false
@@ -43,17 +44,32 @@ class CreateWorkspaceVM {
     return !hasError
   }
   
+  func isNameAlreadyUsed() async throws -> Bool {
+    return !(try await workspaceRepository.findByName(name: name).isEmpty)
+  }
+  
   func saveWorkspace() {
     if !validateForm() {
       return
     }
-    
+  
     Task {
+      do {
+        let nameUsed = try await isNameAlreadyUsed()
+        
+        if nameUsed {
+          self.nameError = "Name is already used"
+          return
+        }
+      } catch {
+        // ignore
+      }
+      
       do {
         try await workspaceRepository
           .create(name: name, description: description)
-        print("Workspace created successfully")
-        
+        name = ""
+        description = ""
       } catch {
         // will handle later
         // log

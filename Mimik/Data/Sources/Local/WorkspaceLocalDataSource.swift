@@ -20,31 +20,25 @@ final class WorkspaceLocalDataSource {
     return results
   }
   
+  func findByName(name: String) async throws -> [WorkspaceEntity] {
+    let request: NSFetchRequest<WorkspaceEntity> = WorkspaceEntity.fetchRequest()
+    request.predicate = NSPredicate(format: "name == %@", name as CVarArg)
+    return try context.fetch(request)
+  }
+  
   func save(name: String, description: String?) async throws {
     let doc = WorkspaceEntity(context: context)
     doc.id = UUID()
     doc.name = name
     doc.desc = description ?? ""
-    print("Saving")
-    //    try await context.perform {
-    //      [weak context] in
-    //      try context?.save()
-    //    }
     
     try await context.perform { [weak context] in
-      print(
-        "[CoreData] Performing save on context: \(String(describing: context))"
-      )
       if context?.hasChanges == true {
         do {
           try context?.save()
-          print("[CoreData] Save successful")
         } catch {
-          print("[CoreData] Save failed: \(error.localizedDescription)")
           throw error
         }
-      } else {
-        print("[CoreData] No changes to save")
       }
     }
   }

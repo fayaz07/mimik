@@ -18,6 +18,11 @@ extension View {
     self
       .padding(.top, -4)
   }
+  
+  func addShadow() -> some View {
+    self
+      .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 4)
+  }
 }
 
 struct AppTextField: View {
@@ -31,6 +36,7 @@ struct AppTextField: View {
         .padding(.leading, 8)
       
       TextField("", text: value)
+        .addShadow()
         .appTextFieldStyle()
         .minusTopPadding()
       
@@ -38,7 +44,7 @@ struct AppTextField: View {
         Text(err)
           .foregroundColor(.red)
           .font(.caption)
-          .padding(.leading, 8)
+          .padding(.leading, 16)
       }
     }
   }

@@ -29,6 +29,7 @@ struct AppTextEditor: View {
           RoundedRectangle(cornerRadius: 6)
             .stroke(Color.gray.opacity(0.3))
         )
+        .addShadow()
       
       if let err = error.wrappedValue, !err.isEmpty {
         Text(err)

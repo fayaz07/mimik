@@ -28,6 +28,7 @@ struct SplashScreen: View {
         .padding(.top, Padding.sm)
         .padding(.bottom, Padding.sm)
     }
+    .background(.white)
     .onAppear {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
 //      DispatchQueue.main.async {
