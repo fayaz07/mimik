@@ -14,13 +14,21 @@ struct DashboardScreen: View {
   @EnvironmentObject var router: AppNavigationRouter
   @InjectedObject(\.dashboardViewModel) private var viewModel
   @Environment(\.managedObjectContext) var moc
-    
+  
   var body: some View {
     ScrollView {
       recentWorkspacesSection
         .navigationTitle(LocalizedStringKey("screen.dashboard"))
         .padding(16)
     }.background(.white)
+      .onAppear {
+        viewModel.fetchWorkspaces()
+      }
+      .onChange(of: router.currentScreen) { _, newPath in
+        if newPath == .dashboard {
+          viewModel.fetchWorkspaces()
+        }
+      }
   }
    
   var recentWorkspacesSection: some View {
@@ -41,7 +49,7 @@ struct DashboardScreen: View {
           Text("Error: \(error)")
         },
         forData: { items in
-          workspacesList(items: items)
+          return WorkspacesList(items: items)
         },
         forNoData: {
           Text("No items found.")
@@ -55,7 +63,7 @@ struct DashboardScreen: View {
   }
   
   @ViewBuilder
-  private func workspacesList(items: [WorkspaceEntity]) -> some View {
+  private func WorkspacesList(items: [WorkspaceDTO]) -> some View {
     VStack(alignment: .leading) {
       if items.isEmpty {
         Text("No items found.")
@@ -64,7 +72,7 @@ struct DashboardScreen: View {
           HFlow(alignment: .firstTextBaseline, spacing: 16) {
             ForEach(items, id: \.self) { item in
               WorkspaceCardView(data: item) { _ in
-                
+                router.push(to: .workspace(.detail(id: item.id)))
               }
             }
             AddWorkspaceCardView(action: onAddWorkspace)

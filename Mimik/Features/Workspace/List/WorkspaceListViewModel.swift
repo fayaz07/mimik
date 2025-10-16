@@ -8,7 +8,7 @@
 import Foundation
 
 class WorkspaceListViewModel: ObservableObject {
-  @Published var workspaces: [WorkspaceEntity] = []
+  @Published var workspaces: [WorkspaceDTO] = []
   
   private var workspaceRepository: WorkspaceRepository
   

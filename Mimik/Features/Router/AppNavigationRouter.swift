@@ -8,23 +8,23 @@ import Foundation
 import SwiftUI
 
 class AppNavigationRouter: ObservableObject {
-  @Published var path = NavigationPath()
+  @Published var path: [AppRoute] = []
    
   func push(to route: AppRoute, replace: Bool = false) {
-    print("push to: \(route)")
+//    print("push to: \(route)")
     if replace {
-      print("replace")
+//      print("replace")
       if !path.isEmpty {
-        print("not empty")
+//        print("not empty")
         path.removeLast()
       }
     }
     path.append(route)
-    print("after push")
+//    print("after push")
   }
 
   func setRoot(to route: AppRoute) {
-    print("setRoot to: \(route)")
+//    print("setRoot to: \(route)")
     popToRoot()
     path.append(route)
   }
@@ -35,8 +35,10 @@ class AppNavigationRouter: ObservableObject {
   }
 
   func popToRoot() {
-    while !path.isEmpty {
-      path.removeLast()
-    }
+    path.removeAll()
+  }
+  
+  var currentScreen: AppRoute? {
+    path.last
   }
 }

@@ -8,38 +8,28 @@
 import Foundation
 
 final class DashboardViewModel: ObservableObject {
-  @Published var workspaces: ViewState<[WorkspaceEntity]> = .init(loading: true)
+  @Published var workspaces: ViewState<[WorkspaceDTO]> = .init(loading: true)
   
   private let workspacesRepo: WorkspaceRepository
   
   init(workspacesRepo: WorkspaceRepository) {
     self.workspacesRepo = workspacesRepo
-    
-    Task {
-      await fetchWorkspaces()
-    }
   }
   
-  @MainActor
-  func fetchWorkspaces() async {
-    print("fetching workspaces")
-
-    // Trigger loading state
+  func fetchWorkspaces() {
     workspaces = .loading()
-    print("set loading")
-
-    do {
-      let result = try await workspacesRepo.getAll()
-          
-      // Trigger success state
-      workspaces = .success(data: result)
-      print("fetch complete")
-
-    } catch {
-      print("Failed to fetch workspaces: \(error)")
-          
-      // Trigger error state
-      workspaces = .failure(error: "Failed to fetch workspaces")
+    Task {
+      do {
+        let result = try await workspacesRepo.getAll()
+        print("Fetch result: \(result.count)")
+        await MainActor.run {
+          workspaces = .success(data: result)
+        }
+      } catch {
+        await MainActor.run {
+          workspaces = .failure(error: "Failed to fetch workspaces")
+        }
+      }
     }
   }
 }

@@ -7,7 +7,8 @@
 import CoreData
 
 protocol WorkspaceRepository {
-  func getAll() async throws -> [WorkspaceEntity]
+  func getById(id: UUID) async throws -> WorkspaceEntity?
+  func getAll() async throws -> [WorkspaceDTO]
   func create(name: String, description: String) async throws
   func delete(id: UUID) async throws
   func findByName(name: String) async throws -> [WorkspaceEntity]
@@ -20,8 +21,13 @@ final class WorkspaceRepositoryImpl: WorkspaceRepository {
     self.localSource = localSource
   }
   
-  func getAll() async throws -> [WorkspaceEntity] {
-    return try await localSource.fetchAll()
+  func getById(id: UUID) async throws -> WorkspaceEntity? {
+    return try await localSource.fetchById(id: id)
+  }
+  
+  func getAll() async throws -> [WorkspaceDTO] {
+    let res = try await localSource.fetchAll()
+    return res.map { $0.toDTO() }
   }
   
   func create(name: String, description: String) async throws {

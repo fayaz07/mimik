@@ -9,9 +9,9 @@ import SwiftUI
 import CoreData
 
 struct WorkspaceCardView: View {
-  var data: WorkspaceEntity
+  var data: WorkspaceDTO
   var showLastAccessed: Bool = false
-  var onClick: (WorkspaceEntity) -> Void
+  var onClick: (WorkspaceDTO) -> Void
   
   var body: some View {
     Button(action: { onClick(data) }) {
@@ -89,30 +89,11 @@ struct AddWorkspaceCardView: View {
 }
 
 #Preview {
-  // 1. Create a mock in-memory Core Data container for the preview
-  let container = NSPersistentContainer(
-    name: "YourDataModelName"
-  ) // Replace with your model name
-  let description = NSPersistentStoreDescription()
-  description.url = URL(fileURLWithPath: "/dev/null") // Use an in-memory store
-  container.persistentStoreDescriptions = [description]
-  container.loadPersistentStores { _, error in
-    if let error = error {
-      fatalError("Failed to load stores: \(error)")
-    }
-  }
-
-  // 2. Get the mock context
-  let viewContext = container.viewContext
-
-  // 3. Create a valid instance of WorkspaceEntity within the context
-  let workspace = WorkspaceEntity(context: viewContext)
-  workspace.id = UUID()
-  workspace.name = "Workspace 1"
-  workspace.desc = "Workspace 1 Description"
-
-  // 4. Pass the valid instance to your view
-  return VStack {
+  let workspace = WorkspaceDTO(
+    id: UUID(), name: "Workspace 1", desc: "", lastAccessed: nil
+  )
+  
+  VStack {
     WorkspaceCardView(data: workspace, onClick: { _ in })
     
     WorkspaceCardView(data: workspace, showLastAccessed: true, onClick: { _ in })

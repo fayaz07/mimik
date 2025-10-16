@@ -9,12 +9,19 @@
 struct ViewState<T> {
   var loading: Bool = false
   var error: String? = nil
+  var success: Bool = false
   var data: T? = nil
   
-  init(loading: Bool, data: T? = nil, error: String? = nil) {
+  init(
+    loading: Bool,
+    data: T? = nil,
+    error: String? = nil,
+    isSuccess: Bool = false
+  ) {
     self.loading = loading
     self.data = data
     self.error = error
+    self.success = isSuccess
   }
 
   var hasData: Bool {
@@ -23,6 +30,10 @@ struct ViewState<T> {
   
   var hasError: Bool {
     return error != nil
+  }
+  
+  var isSuccess: Bool {
+    return hasData && !hasError
   }
 }
 
@@ -36,7 +47,7 @@ extension ViewState {
   }
 
   static func success(data: T) -> ViewState<T> {
-    ViewState(loading: false, data: data)
+    ViewState(loading: false, data: data, isSuccess: true)
   }
 
   static func failure(error: String) -> ViewState<T> {

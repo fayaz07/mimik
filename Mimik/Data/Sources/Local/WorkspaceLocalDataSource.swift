@@ -5,13 +5,20 @@
 //  Created by Mohammad Fayaz on 05/06/25.
 //
 
-import CoreData
+@preconcurrency import CoreData
 
 final class WorkspaceLocalDataSource {
   private let context: NSManagedObjectContext
   
   init(context: NSManagedObjectContext) {
     self.context = context
+  }
+  
+  func fetchById(id: UUID) async throws -> WorkspaceEntity? {
+    let request: NSFetchRequest<WorkspaceEntity> = WorkspaceEntity.fetchRequest()
+    request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+    let results = try context.fetch(request)
+    return results.first
   }
   
   func fetchAll() async throws -> [WorkspaceEntity] {
