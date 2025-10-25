@@ -21,9 +21,9 @@ extension Container {
     self { WorkspaceRepositoryImpl(localSource: self.workspaceLocalSource()) }
   }
 
-  var dashboardViewModel: Factory<DashboardViewModel> {
-    self { DashboardViewModel(workspacesRepo: self.workspaceRepository()) }
-      .scope(.shared) // optional: .shared or .singleton
+  var homeViewModel: Factory<HomeViewModel> {
+    self { HomeViewModel(workspacesRepo: self.workspaceRepository()) }
+      .scope(.shared)
   }
 }
 

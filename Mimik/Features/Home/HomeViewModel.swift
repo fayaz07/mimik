@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class DashboardViewModel: ObservableObject {
+final class HomeViewModel: ObservableObject {
   @Published var workspaces: ViewState<[WorkspaceDTO]> = .init(loading: true)
   
   private let workspacesRepo: WorkspaceRepository
@@ -21,9 +21,12 @@ final class DashboardViewModel: ObservableObject {
     Task {
       do {
         let result = try await workspacesRepo.getAll()
-        print("Fetch result: \(result.count)")
         await MainActor.run {
           workspaces = .success(data: result)
+        }
+        
+        result.forEach { it in
+          print("Workspace: \(it.name) - \(it.lastAccessed)")
         }
       } catch {
         await MainActor.run {

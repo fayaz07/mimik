@@ -11,5 +11,18 @@ struct WorkspaceDTO: Identifiable, Sendable, Hashable {
   let id: UUID
   let name: String
   let desc: String
-  let lastAccessed: Date?
+  let createdAt: Date
+  let lastAccessed: Date
+}
+
+extension WorkspaceEntity {
+  func toDTO() -> WorkspaceDTO {
+    WorkspaceDTO(
+      id: id,
+      name: name,
+      desc: desc,
+      createdAt: createdAt,
+      lastAccessed: lastAccessed
+    )
+  }
 }

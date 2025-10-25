@@ -8,6 +8,7 @@
 enum WorkspaceDetailRoute: Hashable {
   case dashboard
   case apps
+  case variables
   case translations
   case users
   case settings
@@ -20,6 +21,8 @@ extension WorkspaceDetailRoute {
         return "Dashboard"
       case .apps:
         return "Apps"
+      case .variables:
+        return "Variables"
       case .translations:
         return "Translations"
       case .users:
@@ -35,6 +38,8 @@ extension WorkspaceDetailRoute {
         return "house"
       case .apps:
         return "apps.iphone"
+      case .variables:
+        return "text.bubble"
       case .translations:
         return "translate"
       case .users:

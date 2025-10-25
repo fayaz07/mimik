@@ -21,6 +21,11 @@ class WorkspaceDetailViewModel {
   func fetchWorkspaceById(id: UUID) {
     Task {
       viewState = .loading()
+      
+      Task {
+        try await workspaceRepository.saveAccessTime(id: id)
+      }
+      
       do {
         let result = try await workspaceRepository.getById(id: id)
         if result != nil {

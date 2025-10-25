@@ -9,23 +9,23 @@ import SwiftUI
 import Factory
 import Flow
 
-struct DashboardScreen: View {
+struct HomeScreen: View {
   
   @EnvironmentObject var router: AppNavigationRouter
-  @InjectedObject(\.dashboardViewModel) private var viewModel
+  @InjectedObject(\.homeViewModel) private var viewModel
   @Environment(\.managedObjectContext) var moc
   
   var body: some View {
     ScrollView {
       recentWorkspacesSection
-        .navigationTitle(LocalizedStringKey("screen.dashboard"))
+        .navigationTitle(LocalizedStringKey("screen.home"))
         .padding(16)
     }.background(.white)
       .onAppear {
         viewModel.fetchWorkspaces()
       }
       .onChange(of: router.currentScreen) { _, newPath in
-        if newPath == .dashboard {
+        if newPath == .home {
           viewModel.fetchWorkspaces()
         }
       }
@@ -33,6 +33,7 @@ struct DashboardScreen: View {
    
   var recentWorkspacesSection: some View {
     VStack {
+      Text("1 + 2 = \(LibMimik.add(1, 2))")
       HStack {
         Text("Recent Workspaces")
           .font(.title)
@@ -66,12 +67,17 @@ struct DashboardScreen: View {
   private func WorkspacesList(items: [WorkspaceDTO]) -> some View {
     VStack(alignment: .leading) {
       if items.isEmpty {
-        Text("No items found.")
+        VStack(alignment: .center) {
+          Text("No items found.")
+            .padding(.top, 16)
+            .padding(.bottom, 16)
+          AddWorkspaceCardView(action: onAddWorkspace)
+        }
       } else {
         HStack {
           HFlow(alignment: .firstTextBaseline, spacing: 16) {
             ForEach(items, id: \.self) { item in
-              WorkspaceCardView(data: item) { _ in
+              WorkspaceCardView(data: item, showLastAccessed: true) { _ in
                 router.push(to: .workspace(.detail(id: item.id)))
               }
             }
@@ -85,5 +91,5 @@ struct DashboardScreen: View {
 }
 
 #Preview {
-  DashboardScreen()
+  HomeScreen()
 }

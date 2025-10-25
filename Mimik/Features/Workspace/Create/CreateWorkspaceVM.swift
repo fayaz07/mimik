@@ -23,7 +23,7 @@ class CreateWorkspaceVM {
   var descriptionError: String? = nil
   
   var viewState: ViewState<Void> = ViewState.idle()
-  var saveError: String? = nil
+  var viewEvents: ViewEvent<CreateWorkspaceEvents> = .init(isError: false, data: nil)
   
   private func validateForm() -> Bool {
     var hasError: Bool = false
@@ -66,14 +66,14 @@ class CreateWorkspaceVM {
       }
       
       do {
-        try await workspaceRepository
+        let result = try await workspaceRepository
           .create(name: name, description: description)
         name = ""
         description = ""
+        viewState = .success(data: ())
+        viewEvents = .push(CreateWorkspaceEvents.created(result.id))
       } catch {
-        // will handle later
-        // log
-        print("Error creating workspace: \(error)")
+        viewState = .failure(error: "Failed to create workspace, please try again")
       }
     }
   }

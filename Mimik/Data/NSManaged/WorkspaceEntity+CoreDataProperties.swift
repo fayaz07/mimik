@@ -2,7 +2,7 @@
 //  WorkspaceEntity+CoreDataProperties.swift
 //  Mimik
 //
-//  Created by Fayaz Mohammad on 06/10/25.
+//  Created by Fayaz Mohammad on 16/10/25.
 //
 //
 
@@ -20,18 +20,11 @@ extension WorkspaceEntity {
 
   @NSManaged public var desc: String
   @NSManaged public var id: UUID
+  @NSManaged public var lastAccessed: Date
   @NSManaged public var name: String
-  @NSManaged public var lastAccessed: Date?
-
+  @NSManaged public var createdAt: Date
 }
 
 extension WorkspaceEntity : Identifiable {
-  func toDTO() -> WorkspaceDTO {
-    WorkspaceDTO(
-      id: self.id,
-      name: self.name,
-      desc: self.desc,
-      lastAccessed: self.lastAccessed ?? Date()
-    )
-  }
+
 }

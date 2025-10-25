@@ -37,7 +37,12 @@ struct WorkspaceCardView: View {
           Spacer()
           if showLastAccessed {
             Text(
-              "Last accessed: \(customRelativeTimeString(from: data.lastAccessed ?? Date()))"
+              "Created at: \(customRelativeTimeString(from: data.createdAt))"
+            )
+            .font(.caption)
+            .foregroundColor(.secondary)
+            Text(
+              "Last accessed: \(customRelativeTimeString(from: data.lastAccessed))"
             )
             .font(.caption)
             .foregroundColor(.secondary)
@@ -90,13 +95,21 @@ struct AddWorkspaceCardView: View {
 
 #Preview {
   let workspace = WorkspaceDTO(
-    id: UUID(), name: "Workspace 1", desc: "", lastAccessed: nil
+    id: UUID(),
+    name: "Workspace 1",
+    desc: "",
+    createdAt: Date(),
+    lastAccessed: Date()
   )
   
   VStack {
     WorkspaceCardView(data: workspace, onClick: { _ in })
     
-    WorkspaceCardView(data: workspace, showLastAccessed: true, onClick: { _ in })
+    WorkspaceCardView(
+      data: workspace,
+      showLastAccessed: true,
+      onClick: { _ in
+      })
     
     AddWorkspaceCardView {
       

@@ -19,8 +19,8 @@ struct AppNavigationView: View {
             case .splash:
               SplashScreen()
               
-            case .dashboard:
-              DashboardScreen()
+            case .home:
+              HomeScreen()
                 .navigationBarBackButtonHidden(true)
               
             case .workspace(let workspaceRoute):

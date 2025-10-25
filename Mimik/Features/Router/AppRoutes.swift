@@ -8,7 +8,7 @@ import CoreData
 
 enum AppRoute: Hashable {
   case splash
-  case dashboard
+  case home
   case workspace(WorkspaceRoute)
 
   enum WorkspaceRoute: Hashable {

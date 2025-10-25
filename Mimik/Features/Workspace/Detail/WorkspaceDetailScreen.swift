@@ -29,6 +29,7 @@ struct WorkspaceDetailScreen: View {
   let routes = [
     WorkspaceDetailRoute.dashboard,
     WorkspaceDetailRoute.apps,
+    WorkspaceDetailRoute.variables,
     WorkspaceDetailRoute.users,
     WorkspaceDetailRoute.translations,
     WorkspaceDetailRoute.settings
@@ -65,6 +66,8 @@ struct WorkspaceDetailScreen: View {
           WorkspaceDashboardScreen(data: data)
         case .apps:
           WorkspaceAppsScreen(data: data)
+        case .variables:
+          WorkspaceVariablesScreen(data: data)
         case .translations:
           WorkspaceTranslationsScreen(data: data)
         case .users:

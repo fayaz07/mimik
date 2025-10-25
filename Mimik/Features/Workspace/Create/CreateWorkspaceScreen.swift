@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Factory
-import CoreData
 
 struct CreateWorkspaceScreen: View {
   @EnvironmentObject private var router: AppNavigationRouter
@@ -15,7 +14,9 @@ struct CreateWorkspaceScreen: View {
   
   init() {
     self._viewModel = State(
-      wrappedValue: CreateWorkspaceVM(workspaceRepository: Container.shared.workspaceRepository.resolve())
+      wrappedValue: CreateWorkspaceVM(
+        workspaceRepository: Container.shared.workspaceRepository.resolve()
+      )
     )
   }
   
@@ -28,6 +29,14 @@ struct CreateWorkspaceScreen: View {
     .toolbar {
       BackNavButton {
         router.pop()
+      }
+    }
+    .onChange(of: viewModel.viewEvents) { _, newEvent in
+      guard let eventData = newEvent.data else { return }
+      
+      switch eventData {
+        case .created(let id):
+          router.push(to: .workspace(.detail(id: id)), replace: true)
       }
     }
   }

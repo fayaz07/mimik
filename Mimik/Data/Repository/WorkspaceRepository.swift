@@ -9,9 +9,10 @@ import CoreData
 protocol WorkspaceRepository {
   func getById(id: UUID) async throws -> WorkspaceEntity?
   func getAll() async throws -> [WorkspaceDTO]
-  func create(name: String, description: String) async throws
+  func create(name: String, description: String) async throws -> WorkspaceDTO
   func delete(id: UUID) async throws
   func findByName(name: String) async throws -> [WorkspaceEntity]
+  func saveAccessTime(id: UUID) async throws
 }
 
 final class WorkspaceRepositoryImpl: WorkspaceRepository {
@@ -30,8 +31,8 @@ final class WorkspaceRepositoryImpl: WorkspaceRepository {
     return res.map { $0.toDTO() }
   }
   
-  func create(name: String, description: String) async throws {
-    try await localSource.save(name: name, description: description)
+  func create(name: String, description: String) async throws -> WorkspaceDTO {
+    return try await localSource.save(name: name, description: description)
   }
   
   func delete(id: UUID) async throws {
@@ -40,5 +41,9 @@ final class WorkspaceRepositoryImpl: WorkspaceRepository {
   
   func findByName(name: String) async throws -> [WorkspaceEntity] {
     try await localSource.findByName(name: name)
+  }
+  
+  func saveAccessTime(id: UUID) async throws {
+    try await localSource.saveAccessTime(id: id)
   }
 }
