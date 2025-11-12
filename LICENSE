@@ -1,21 +1,59 @@
-MIT License
+Custom Non-Commercial, Non-Redistribution Software License
 
-Copyright (c) 2023 草鞋没号
+Copyright (c) 2025 Mohammad Fayaz
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. Definitions
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+* "Software": Refers to the original code, source files, documentation,
+  and all associated materials provided in this GitHub repository.
+* "Licensee" (or "You"): Refers to any individual or entity exercising
+  permissions granted by this License.
+* "Commercial Use": Use of the Software for financial gain, including
+  selling the Software or any derivative work, incorporating it into
+  commercial products, or using it for a freelancing/client project.
+* "Personal Use": Use solely for individual learning, educational
+  purposes, personal experimentation, and non-freelance, non-client
+  internal projects.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. License Grant
+
+The Licensee is hereby granted a non-exclusive, non-transferable, and
+revocable license to use the Software only for Personal Use.
+
+3. Restrictions
+
+The Licensee MAY NOT do any of the following:
+
+* Commercial Use: Use the Software for Commercial Use, including any form
+  of freelancing, client work, or projects intended for payment, without
+  a separate, explicit commercial license or written permission from the
+  Licensor.
+* Redistribution: Redistribute, sublicense, transfer, or sell the
+  Software or any derivative work based on the Software.
+* Copying/Cloning: Create an exact or near-exact copy/clone of the entire
+  codebase or its core structural design/idea for the purpose of
+  distribution or competitive advantage.
+* Reverse Engineering: Reverse engineer, decompile, or disassemble the
+  Software, except and only to the extent that such activity is expressly
+  permitted by applicable law notwithstanding this limitation.
+
+4. Open Source Notice
+
+While the Software is hosted in a publicly accessible GitHub repository,
+this availability does not grant the permissions associated with standard
+Open Source Initiative (OSI) licenses. The terms of this Custom License
+strictly apply.
+
+5. Copyright and Idea Protection
+
+All rights, title, and interest in and to the Software, including
+copyright, remain exclusively with the Licensor. The core ideas, design,
+and intellectual property embodied in the Software are protected and may
+not be copied or used to create competing software, even if the
+implementation details differ, without express written permission.
+
+6. Termination
+
+This License is effective until terminated. Your rights under this
+License will terminate automatically without notice from the Licensor if
+you fail to comply with any term(s) of this License.
