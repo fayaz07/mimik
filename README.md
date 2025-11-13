@@ -1,9 +1,8 @@
 <p align="center">
   <img src="https://github.com/fayaz07/mimik/blob/main/Mimik/Assets.xcassets/AppIcon.appiconset/mimik-256.png?raw=true"  />
 </p>
+<p align="center">🚧 Work in progress</p>
 <h2 align="center">Mimik</h2>
-
-> 🚧 Work in progress
 
 An app that will help developers fasten their workflows, simpler for non-developers for changing content. 
 
@@ -25,3 +24,26 @@ all that you can think of.
 3. API calls
 
 Want to propose more features? Become a contributor. You are always welcome.
+
+### Proposed Architecture
+
+> Note: Will add a clean arch diagram later
+
+[Mimik macOS app](https://github.com/fayaz07/mimik) <- [Mimik Engine](https://github.com/fayaz07/libmimik) -> [Mimik Windows app](https://github.com/fayaz07/mimik-windows)
+
+[Mimik Engine](https://github.com/fayaz07/libmimik) will act as a shared C++ library between different applications (macOS, Windows...) 
+and will include all the common code that is required for the apps to run. 
+
+I wanted the app to be fully offline, if you ask me why? I wanted the app to be free for all individuals, non-profit and non-commercial use 
+while enterprises(except Thoughtworks), commericals can choose to pay and use the app or claim an exception or I might introduce a different app for them in future. (thinking too big, haha)
+
+### Current Progress
+1. **macOS:** Native SwiftUI app: Basic Setup is done with CoreData and Workspace page is added, waiting for [libmimik](https://github.com/fayaz07/libmimik)'s
+   development on Supported Languages to initiate the Translations feature (I am new to swift and xcode)
+2. **Windows:** Native Windows app: Initial commit
+3. **libmimik:** Initially started with `GoLang`, later found that `cgo` support for later versions of GoLang after 1.23 was abandoned, now the project is setup
+   to run on `C++`(again new to core C++).
+
+### Plans
+1. Hopeful to complete Translations feature in 3 months. Again it depends on my free time from work.
+   
