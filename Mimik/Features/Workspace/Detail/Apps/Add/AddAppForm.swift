@@ -1,33 +1,29 @@
 //
-//  CreateWorkspaceForm.swift
+//  AddAppForm.swift
 //  Mimik
 //
-//  Created by Mohammad Fayaz on 11/08/25.
+//  Created by Fayaz Mohammad on 19/11/25.
 //
 
 import SwiftUI
-import Factory
 
-struct CreateWorkspaceForm: View {
-  @Injected(\.createWorkspaceViewModel)
-  var viewModel: CreateWorkspaceVM
+struct AddAppForm: View {
+  @Bindable var viewModel: AddAppViewModel
   
   var body: some View {
-    @Bindable var vm = viewModel
-    
     VStack {
       Form {
         Section {
           AppTextField(
             label: "Name",
-            value: $vm.name,
-            error: $vm.nameError
+            value: $viewModel.name,
+            error: $viewModel.nameError
           ).padding(.bottom, 8)
           
           AppTextEditor(
             label: "Description",
-            value: $vm.description,
-            error: $vm.descriptionError,
+            value: $viewModel.description,
+            error: $viewModel.descriptionError,
             height: 100
           )
         }
@@ -44,5 +40,5 @@ struct CreateWorkspaceForm: View {
 }
 
 #Preview {
-  CreateWorkspaceForm()
+//    AddAppForm()
 }

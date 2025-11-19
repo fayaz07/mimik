@@ -22,7 +22,7 @@ struct WorkspaceAppsScreen: View {
   
   var content: some View {
     VStack {
-      Text("Workspace Dashboard")
+      
     }
     .padding(8)
   }

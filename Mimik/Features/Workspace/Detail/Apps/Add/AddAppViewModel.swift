@@ -1,0 +1,80 @@
+//
+//  AddAppViewModel.swift
+//  Mimik
+//
+//  Created by Fayaz Mohammad on 19/11/25.
+//
+
+import Foundation
+
+@Observable
+class AddAppViewModel {
+  
+  private let workspaceRepository: WorkspaceRepository
+    
+  init(workspaceRepository: WorkspaceRepository) {
+    self.workspaceRepository = workspaceRepository
+  }
+  
+  var name: String = ""
+  var description: String = ""
+
+  var nameError: String? = nil
+  var descriptionError: String? = nil
+  
+  var viewState: ViewState<Void> = ViewState.idle()
+  var viewEvents: ViewEvent<CreateWorkspaceEvents> = .init(isError: false, data: nil)
+  
+  private func validateForm() -> Bool {
+    var hasError: Bool = false
+    if name.isEmpty {
+      nameError = "Name is required"
+      hasError = true
+    } else {
+      nameError = nil
+    }
+    
+    if description.isEmpty {
+      descriptionError = "Description is required"
+      hasError = true
+    } else {
+      descriptionError = nil
+    }
+    
+    return !hasError
+  }
+  
+  func isNameAlreadyUsed() async throws -> Bool {
+    return !(try await workspaceRepository.findByName(name: name).isEmpty)
+  }
+  
+  func saveWorkspace() {
+    if !validateForm() {
+      return
+    }
+  
+    Task {
+      do {
+        let nameUsed = try await isNameAlreadyUsed()
+        
+        if nameUsed {
+          self.nameError = "Name is already used"
+          return
+        }
+      } catch {
+        // ignore
+      }
+      
+      do {
+        let result = try await workspaceRepository
+          .create(name: name, description: description)
+        name = ""
+        description = ""
+        viewState = .success(data: ())
+        viewEvents = .push(CreateWorkspaceEvents.created(result.id))
+      } catch {
+        viewState = .failure(error: "Failed to create workspace, please try again")
+      }
+    }
+  }
+}

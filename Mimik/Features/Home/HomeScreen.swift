@@ -33,7 +33,6 @@ struct HomeScreen: View {
    
   var recentWorkspacesSection: some View {
     VStack {
-      Text("1 + 2 = \(LibMimik.add(1, 2))")
       HStack {
         Text("Recent Workspaces")
           .font(.title)

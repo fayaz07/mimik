@@ -1,25 +1,31 @@
 //
-//  CreateWorkspace.swift
+//  AddAppScreen.swift
 //  Mimik
 //
-//  Created by Mohammad Fayaz on 10/06/25.
+//  Created by Fayaz Mohammad on 19/11/25.
 //
 
 import SwiftUI
 import Factory
 
-struct CreateWorkspaceScreen: View {
+struct AddAppScreen: View {
   @EnvironmentObject private var router: AppNavigationRouter
+  @State private var viewModel: AddAppViewModel
   
-  @Injected(\.createWorkspaceViewModel)
-  private var viewModel: CreateWorkspaceVM
+  init() {
+    self._viewModel = State(
+      wrappedValue: AddAppViewModel(
+        workspaceRepository: Container.shared.workspaceRepository.resolve()
+      )
+    )
+  }
   
   var body: some View {
     VStack {
-      CreateWorkspaceForm()
+      AddAppForm(viewModel: viewModel)
     }
     .background(.white)
-    .navigationTitle("New Workspace")
+    .navigationTitle("Add App")
     .toolbar {
       BackNavButton {
         router.pop()
@@ -35,7 +41,3 @@ struct CreateWorkspaceScreen: View {
     }
   }
 }
-
-//#Preview {
-//  CreateWorkspaceScreen()
-//}
