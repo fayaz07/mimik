@@ -33,6 +33,16 @@ final class WorkspaceAppsLocalDataSource {
     return results
   }
   
+  func fetchByWorkspaceId(workspaceId: UUID) async throws -> [AppEntity] {
+    let request: NSFetchRequest<AppEntity> = AppEntity.fetchRequest()
+    request.predicate = NSPredicate(
+      format: "workspaceId == %@",
+      workspaceId as CVarArg,
+    )
+    let results = try context.fetch(request)
+    return results
+  }
+  
   func findByName(
     name: String,
     workspaceId: UUID,

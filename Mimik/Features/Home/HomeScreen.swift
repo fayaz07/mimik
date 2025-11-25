@@ -70,7 +70,7 @@ struct HomeScreen: View {
           Text("No items found.")
             .padding(.top, 16)
             .padding(.bottom, 16)
-          AddWorkspaceCardView(action: onAddWorkspace)
+          AddAppCardView(action: onAddWorkspace)
         }
       } else {
         HStack {
@@ -80,7 +80,7 @@ struct HomeScreen: View {
                 router.push(to: .workspace(.detail(id: item.id)))
               }
             }
-            AddWorkspaceCardView(action: onAddWorkspace)
+            AddAppCardView(action: onAddWorkspace)
           }
           Spacer()
         }

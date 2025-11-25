@@ -13,4 +13,9 @@ extension Container {
     self { CreateWorkspaceVM(usecase: self.createUsecase()) }
       .scope(.shared)
   }
+  
+  var workspaceAppsViewModel: Factory<WorkspaceAppsViewModel> {
+    self { WorkspaceAppsViewModel(repo: self.appsRepository()) }
+      .scope(.shared)
+  }
 }

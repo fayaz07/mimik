@@ -25,9 +25,9 @@ final class HomeViewModel: ObservableObject {
           workspaces = .success(data: result)
         }
         
-        result.forEach { it in
-          print("Workspace: \(it.name) - \(it.lastAccessed)")
-        }
+//        result.forEach { it in
+//          print("Workspace: \(it.name) - \(it.lastAccessed)")
+//        }
       } catch {
         await MainActor.run {
           workspaces = .failure(error: "Failed to fetch workspaces")

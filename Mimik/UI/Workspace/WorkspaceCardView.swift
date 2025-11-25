@@ -57,7 +57,7 @@ struct WorkspaceCardView: View {
   }
 }
 
-struct AddWorkspaceCardView: View {
+struct AddAppCardView: View {
   let action: () -> Void
   
   var body: some View {
@@ -112,7 +112,7 @@ struct AddWorkspaceCardView: View {
       onClick: { _ in
       })
     
-    AddWorkspaceCardView {
+    AddAppCardView {
       
     }
   }
