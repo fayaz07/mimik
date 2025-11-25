@@ -40,9 +40,11 @@
     <entity name="WorkspaceLangEntity" representedClassName="WorkspaceLangEntity" syncable="YES" codeGenerationType="class">
         <attribute name="active" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="author" attributeType="String" defaultValueString=""/>
+        <attribute name="code" attributeType="String"/>
         <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="785767980" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lang" attributeType="String" defaultValueString=""/>
+        <attribute name="rtl" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
 </model>
