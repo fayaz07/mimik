@@ -12,7 +12,7 @@ struct WorkspaceTranslationsScreen: View {
   var data: WorkspaceDTO
   
   var body: some View {
-    Text("Translations Screen")
+    Text("Translations Screen, for \(data.name)")
   }
 }
 

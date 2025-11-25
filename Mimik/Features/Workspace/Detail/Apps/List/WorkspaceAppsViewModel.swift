@@ -18,7 +18,6 @@ final class WorkspaceAppsViewModel {
   }
   
   func fetchWorkspaceApps(workspaceId: UUID) {
-    print("Fetching workspace apps")
     apps = .loading()
     Task {
       do {
@@ -26,12 +25,10 @@ final class WorkspaceAppsViewModel {
         await MainActor.run {
           apps = .success(data: result)
         }
-        print("fetched, count: \(result.count)")
       } catch {
         await MainActor.run {
           apps = .failure(error: "Failed to fetch workspace apps")
         }
-        print("error: \(error) ")
       }
     }
   }
