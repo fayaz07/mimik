@@ -10,6 +10,25 @@
         <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="workspaceId" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
+    <entity name="TranslationKeyEntity" representedClassName="TranslationKeyEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="785767320" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="key" attributeType="String"/>
+        <attribute name="updatedAt" attributeType="Date" defaultDateTimeInterval="785767320" usesScalarValueType="NO"/>
+        <attribute name="workspaceId" attributeType="UUID" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="TranslationValueEntity" representedClassName="TranslationValueEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="approved" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="approvedBy" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="ignoredApps" optional="YES" attributeType="String"/>
+        <attribute name="lang" optional="YES" attributeType="String"/>
+        <attribute name="source" optional="YES" attributeType="String"/>
+        <attribute name="translatedBy" optional="YES" attributeType="String"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="value" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="WorkspaceEntity" representedClassName="WorkspaceEntity" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="desc" attributeType="String" defaultValueString=""/>
@@ -17,5 +36,13 @@
         <attribute name="lastAccessed" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String" defaultValueString=""/>
         <attribute name="updatedAt" attributeType="Date" defaultDateTimeInterval="785398260" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="WorkspaceLangEntity" representedClassName="WorkspaceLangEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="active" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="author" attributeType="String" defaultValueString=""/>
+        <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="785767980" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="lang" attributeType="String" defaultValueString=""/>
+        <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
 </model>
