@@ -99,6 +99,7 @@ struct AddWorkspaceCardView: View {
     name: "Workspace 1",
     desc: "",
     createdAt: Date(),
+    updatedAt: Date(),
     lastAccessed: Date()
   )
   

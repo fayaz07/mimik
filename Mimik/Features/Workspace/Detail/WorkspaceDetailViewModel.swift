@@ -16,7 +16,7 @@ class WorkspaceDetailViewModel {
     self.workspaceRepository = workspaceRepository
   }
   
-  var viewState: ViewState<WorkspaceEntity> = ViewState.idle()
+  var viewState: ViewState<WorkspaceDTO> = ViewState.idle()
   
   func fetchWorkspaceById(id: UUID) {
     Task {
@@ -29,7 +29,7 @@ class WorkspaceDetailViewModel {
       do {
         let result = try await workspaceRepository.getById(id: id)
         if result != nil {
-          viewState = .success(data: result!)
+          viewState = .success(data: result!.toDTO())
         } else {
           viewState = .failure(error: "Workspace not found")
         }

@@ -9,7 +9,9 @@ import SwiftUI
 import CoreData
 
 struct WorkspaceAppsScreen: View {
-  var data: WorkspaceEntity
+  @EnvironmentObject private var router: AppNavigationRouter
+  
+  var data: WorkspaceDTO
   
   var body: some View {
     VStack {
@@ -22,7 +24,9 @@ struct WorkspaceAppsScreen: View {
   
   var content: some View {
     VStack {
-      
+      Button("Add App") {
+        router.push(to: .workspace(.apps(.add(workspaceId: data.id))))
+      }
     }
     .padding(8)
   }

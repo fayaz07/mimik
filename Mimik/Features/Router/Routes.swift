@@ -6,7 +6,7 @@
 //
 import CoreData
 
-enum AppRoute: Hashable {
+enum Route: Hashable {
   case splash
   case home
   case workspace(WorkspaceRoute)
@@ -15,5 +15,11 @@ enum AppRoute: Hashable {
     case add
     case list
     case detail(id: UUID)
+    case apps(AppsRoute)
+    
+    enum AppsRoute: Hashable {
+      case add(workspaceId: UUID)
+      case detail(id: UUID)
+    }
   }
 }

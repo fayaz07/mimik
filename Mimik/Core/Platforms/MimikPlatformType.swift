@@ -6,7 +6,7 @@
 //
 import AppKit
 
-struct MimikPlatformType {
+struct MimikPlatformType: Hashable {
   let id: String
   let name: String
   let icon: String

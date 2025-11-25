@@ -9,20 +9,19 @@ import SwiftUI
 import Factory
 
 struct AddAppScreen: View {
-  @EnvironmentObject private var router: AppNavigationRouter
-  @State private var viewModel: AddAppViewModel
+  var workspaceId: UUID
   
-  init() {
-    self._viewModel = State(
-      wrappedValue: AddAppViewModel(
-        workspaceRepository: Container.shared.workspaceRepository.resolve()
-      )
-    )
-  }
+  @EnvironmentObject private var router: AppNavigationRouter
+
+  @Injected(\.addAppViewModel)
+  private var viewModel: AddAppViewModel
   
   var body: some View {
     VStack {
-      AddAppForm(viewModel: viewModel)
+      AddAppForm(
+        workspaceId: workspaceId,
+        viewModel: viewModel
+      )
     }
     .background(.white)
     .navigationTitle("Add App")
@@ -36,7 +35,8 @@ struct AddAppScreen: View {
       
       switch eventData {
         case .created(let id):
-          router.push(to: .workspace(.detail(id: id)), replace: true)
+//          router.push(to: .workspace(.detail(id: id)), replace: true)
+          router.pop()
       }
     }
   }

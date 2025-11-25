@@ -1,50 +1,66 @@
 //
-//  WorkspaceLocalSource.swift
+//  WorkspaceAppsLocalDataSource.swift
 //  Mimik
 //
-//  Created by Mohammad Fayaz on 05/06/25.
+//  Created by Fayaz Mohammad on 24/11/25.
 //
 
 @preconcurrency import CoreData
 
-final class WorkspaceLocalDataSource {
+final class WorkspaceAppsLocalDataSource {
   private let context: NSManagedObjectContext
   
   init(context: NSManagedObjectContext) {
     self.context = context
   }
-  
-  private func _fetchOneByIdRequest(id: UUID) -> NSFetchRequest<WorkspaceEntity> {
-    let request: NSFetchRequest<WorkspaceEntity> = WorkspaceEntity.fetchRequest()
+    
+  private func _fetchOneByIdRequest(id: UUID) -> NSFetchRequest<AppEntity> {
+    let request: NSFetchRequest<AppEntity> = AppEntity.fetchRequest()
     request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
     request.fetchLimit = 1
     
     return request
   }
   
-  func fetchById(id: UUID) async throws -> WorkspaceEntity? {
+  func fetchById(id: UUID) async throws -> AppEntity? {
     let results = try context.fetch(_fetchOneByIdRequest(id: id))
     return results.first
   }
-  
-  func fetchAll() async throws -> [WorkspaceEntity] {
-    let request: NSFetchRequest<WorkspaceEntity> = WorkspaceEntity.fetchRequest()
+
+  func fetchAll() async throws -> [AppEntity] {
+    let request: NSFetchRequest<AppEntity> = AppEntity.fetchRequest()
     let results = try context.fetch(request)
     return results
   }
   
-  func findByName(name: String) async throws -> [WorkspaceEntity] {
-    let request: NSFetchRequest<WorkspaceEntity> = WorkspaceEntity.fetchRequest()
-    request.predicate = NSPredicate(format: "name == %@", name as CVarArg)
+  func findByName(
+    name: String,
+    workspaceId: UUID,
+    appPlatformId: String
+  ) async throws -> [AppEntity] {
+    let request: NSFetchRequest<AppEntity> = AppEntity.fetchRequest()
+    request.predicate = NSPredicate(
+      format: "name == %@ and workspaceId == %@ and appPlatformId == %@",
+      name as CVarArg,
+      workspaceId as CVarArg,
+      appPlatformId as CVarArg
+    )
     return try context.fetch(request)
   }
   
-  func create(name: String, description: String?) async throws -> WorkspaceDTO {
-    let doc = WorkspaceEntity(context: context)
+  func create(
+    name: String, description: String?,
+    workspaceId: UUID,
+    appPlatformId: String
+  ) async throws -> WorkspaceAppDTO {
+    let doc = AppEntity(context: context)
     doc.id = UUID()
     doc.name = name
     doc.desc = description ?? ""
+    doc.appPlatformId = appPlatformId
+    doc.workspaceId = workspaceId
     doc.createdAt = Date()
+    doc.updatedAt = Date()
     doc.lastAccessed = Date()
     
     try await context.perform { [weak context] in

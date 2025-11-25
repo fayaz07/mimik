@@ -9,12 +9,6 @@ import Factory
 import CoreData
 
 extension Container {
-  var createUsecase: Factory<CreateWorkspaceUsecase> {
-    self {
-      CreateWorkspaceUsecase(repo: self.workspaceRepository())
-    }
-  }
-  
   var createWorkspaceViewModel: Factory<CreateWorkspaceVM> {
     self { CreateWorkspaceVM(usecase: self.createUsecase()) }
       .scope(.shared)

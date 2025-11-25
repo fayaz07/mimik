@@ -55,7 +55,7 @@ struct WorkspaceDetailScreen: View {
     }
   }
   
-  func WorkspaceNavView(data: WorkspaceEntity) -> some View {
+  func WorkspaceNavView(data: WorkspaceDTO) -> some View {
     NavigationSplitView {
       List(routes, id: \.self, selection: $selectedTab) { route in
         Label(route.title(), systemImage: route.iconName())

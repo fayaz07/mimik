@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct WorkspaceTranslationsScreen: View {
-  var data: WorkspaceEntity
+  var data: WorkspaceDTO
   
   var body: some View {
     Text("Translations Screen")

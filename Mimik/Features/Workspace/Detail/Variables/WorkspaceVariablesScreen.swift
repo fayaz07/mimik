@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WorkspaceVariablesScreen: View {
-  var data: WorkspaceEntity
+  var data: WorkspaceDTO
   
   var body: some View {
     VStack {

@@ -27,4 +27,17 @@ class SupportedPlatforms {
     IOS,
     REACT
   ]
+  
+  static func getImage(for platformId: String) -> String {
+    switch platformId {
+      case ANDROID.id:
+        return ANDROID.icon
+      case IOS.id:
+        return IOS.icon
+      case REACT.id:
+        return REACT.icon
+      default:
+        return ""
+    }
+  }
 }

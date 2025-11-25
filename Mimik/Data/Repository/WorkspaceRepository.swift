@@ -32,7 +32,7 @@ final class WorkspaceRepositoryImpl: WorkspaceRepository {
   }
   
   func create(name: String, description: String) async throws -> WorkspaceDTO {
-    return try await localSource.save(name: name, description: description)
+    return try await localSource.create(name: name, description: description)
   }
   
   func delete(id: UUID) async throws {

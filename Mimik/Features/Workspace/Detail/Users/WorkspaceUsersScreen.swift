@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WorkspaceUsersScreen: View {
-  var data: WorkspaceEntity
+  var data: WorkspaceDTO
   
   var body: some View {
     Text("Workspace Users Screen")

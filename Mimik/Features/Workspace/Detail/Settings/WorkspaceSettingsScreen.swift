@@ -9,12 +9,12 @@ import SwiftUI
 import Factory
 
 struct WorkspaceSettingsScreen: View {
-  var data: WorkspaceEntity
+  var data: WorkspaceDTO
   
   @EnvironmentObject var router: AppNavigationRouter
   @State private var viewModel: WorkspaceSettingsViewModel
   
-  init(data: WorkspaceEntity) {
+  init(data: WorkspaceDTO) {
     self.data = data
     self._viewModel = State(
       wrappedValue: WorkspaceSettingsViewModel(
@@ -95,21 +95,16 @@ struct WorkspaceSettingsScreen: View {
 }
 
 #Preview {
-  // 1. Create a mock in-memory Core Data container for the preview
-  let container = NSPersistentContainer(
-    name: "YourDataModelName"
-  ) // Replace with your model name
+  let workspace = WorkspaceDTO(
+    id: UUID(),
+    name: "Workspace 1",
+    desc: "Workspace 1 Description",
+    createdAt: Date(),
+    updatedAt: Date(),
+    lastAccessed: Date()
+  )
 
-  // 2. Get the mock context
-  let viewContext = container.viewContext
-
-  // 3. Create a valid instance of WorkspaceEntity within the context
-  let workspace = WorkspaceEntity(context: viewContext)
-  workspace.id = UUID()
-  workspace.name = "Workspace 1"
-  workspace.desc = "Workspace 1 Description"
-
-  return VStack {
+  VStack {
     WorkspaceSettingsScreen(data: workspace)
   }
 }

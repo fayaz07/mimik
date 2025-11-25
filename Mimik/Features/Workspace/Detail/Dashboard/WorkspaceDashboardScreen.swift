@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct WorkspaceDashboardScreen: View {
-  var data: WorkspaceEntity
+  var data: WorkspaceDTO
   
   var body: some View {
     VStack {

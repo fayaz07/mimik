@@ -14,7 +14,7 @@ struct AppNavigationView: View {
   var body: some View {
     NavigationStack(path: $router.path) {
       SplashScreen()
-        .navigationDestination(for: AppRoute.self) { dest in
+        .navigationDestination(for: Route.self) { dest in
           switch dest {
             case .splash:
               SplashScreen()
@@ -27,23 +27,6 @@ struct AppNavigationView: View {
               WorkspaceNavigationView(route: workspaceRoute)
           }
         }
-    }
-  }
-}
-
-struct WorkspaceNavigationView: View {
-  let route: AppRoute.WorkspaceRoute
-
-  var body: some View {
-    switch route {
-      case .add:
-        CreateWorkspaceScreen()
-
-      case .list:
-        WorkspacesListScreen()
-
-      case .detail(let id):
-        WorkspaceDetailScreen(id: id)
     }
   }
 }
