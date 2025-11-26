@@ -18,4 +18,9 @@ extension Container {
     self { WorkspaceAppsViewModel(repo: self.appsRepository()) }
       .scope(.shared)
   }
+  
+  var workspaceLanguagesViewModel: Factory<WorkspaceLanguagesViewModel> {
+    self { WorkspaceLanguagesViewModel(usecase: self.addLangUsecase()) }
+      .scope(.shared)
+  }
 }

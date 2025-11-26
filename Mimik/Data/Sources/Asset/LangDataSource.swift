@@ -8,15 +8,16 @@
 import Foundation
 
 final class LangDataSource {
-  private let languages: [LangDTO]
+  private let languages: [String: LangDTO]
   
   init() {
     let url = Bundle.main.url(forResource: "lang", withExtension: "json")!
     let data = try! Data(contentsOf: url)
-    languages = try! JSONDecoder().decode([LangDTO].self, from: data)
+    let list = try! JSONDecoder().decode([LangDTO].self, from: data)
+    languages = Dictionary(uniqueKeysWithValues: list.map{ ($0.code, $0) })
   }
   
-  func getAll() -> [LangDTO] {
+  func getAll() -> [String: LangDTO] {
     return languages
   }
 }

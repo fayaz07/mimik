@@ -26,13 +26,14 @@ struct WorkspaceDetailScreen: View {
     self.viewModel.fetchWorkspaceById(id: id)
   }
     
-  let routes = [
-    WorkspaceDetailRoute.dashboard,
-    WorkspaceDetailRoute.apps,
-    WorkspaceDetailRoute.variables,
-    WorkspaceDetailRoute.users,
-    WorkspaceDetailRoute.translations,
-    WorkspaceDetailRoute.settings
+  let routes: [WorkspaceDetailRoute] = [
+    .dashboard,
+    .apps,
+    .languages,
+    .translations,
+    .variables,
+    .users,
+    .settings
   ]
   
   var body: some View {
@@ -68,6 +69,8 @@ struct WorkspaceDetailScreen: View {
           WorkspaceAppsScreen(data: data)
         case .variables:
           WorkspaceVariablesScreen(data: data)
+        case .languages:
+          WorkspaceLanguagesScreen(data: data)
         case .translations:
           WorkspaceTranslationsScreen(data: data)
         case .users:

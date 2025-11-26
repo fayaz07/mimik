@@ -12,7 +12,11 @@ class LangRepository {
     self.dataSource = dataSource
   }
   
-  func getAll() -> [LangDTO] {
+  func getAll() -> [String: LangDTO] {
     return dataSource.getAll()
+  }
+  
+  func get(code: String) -> LangDTO {
+    return getAll()[code] ?? .init(code: code, name: "Unknown", rtl: false)
   }
 }

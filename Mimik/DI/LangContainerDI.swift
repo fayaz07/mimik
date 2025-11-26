@@ -17,4 +17,17 @@ extension Container {
     self { LangRepository(dataSource: self.langDataSource()) }
       .scope(.shared)
   }
+  
+  var workspaceLanguagesLocalDataSource: Factory<WorkspaceLanguagesLocalDataSource> {
+    self { WorkspaceLanguagesLocalDataSource(context: self.managedObjectContext()) }
+  }
+  
+  var workspaceLangRepo: Factory<WorkspaceLanguagesRepository> {
+    self { WorkspaceLanguagesRepositoryImpl(localSource: self.workspaceLanguagesLocalDataSource()) }
+  }
+  
+  var addLangUsecase: Factory<AddLanguageUsecase> {
+    self { AddLanguageUsecase(repo: self.workspaceLangRepo(), langRepo: self.langRepo()) }
+      .scope(.shared)
+  }
 }
