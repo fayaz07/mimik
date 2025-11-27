@@ -17,7 +17,7 @@ private let _columns : [GridItem] = [
 ]
 
 struct AddedLanguages: View {
-  let data: [String: WorkspaceLangDTO]
+  let data: [String: WSLangDTO]
   
   var body: some View {
     let list = Array(data.values)
@@ -48,7 +48,7 @@ struct AddedLanguages: View {
     }
   }
 
-  func langRow(index: Int, item: WorkspaceLangDTO) -> some View {
+  func langRow(index: Int, item: WSLangDTO) -> some View {
     return LazyVGrid(columns: _columns, spacing: 0) {
       Text("\(index + 1)").padding(.vertical, 5)
       Text(item.code).padding(.vertical, 5)

@@ -1,5 +1,5 @@
 //
-//  WorkspaceAppsRepository.swift
+//  WSAppsRepo.swift
 //  Mimik
 //
 //  Created by Fayaz Mohammad on 24/11/25.
@@ -7,19 +7,19 @@
 
 import CoreData
 
-protocol WorkspaceAppsRepository {
+protocol WSAppsRepo {
   func getById(id: UUID) async throws -> AppEntity?
-  func getByWorkspaceId(workspaceId: UUID) async throws -> [WorkspaceAppDTO]
-  func create(name: String, description: String, workspaceId: UUID, appPlatformId: String) async throws -> WorkspaceAppDTO
+  func getByWorkspaceId(workspaceId: UUID) async throws -> [WSAppDTO]
+  func create(name: String, description: String, workspaceId: UUID, appPlatformId: String) async throws -> WSAppDTO
   func delete(id: UUID) async throws
   func findByName(name: String, workspaceId: UUID, appPlatformId: String) async throws -> [AppEntity]
   func saveAccessTime(id: UUID) async throws
 }
 
-final class WorkspaceAppsRepositoryImpl: WorkspaceAppsRepository {
-  private let localSource: WorkspaceAppsLocalDataSource
+final class WSAppsRepoImpl: WSAppsRepo {
+  private let localSource: WSAppsLocalDataSource
   
-  init(localSource: WorkspaceAppsLocalDataSource) {
+  init(localSource: WSAppsLocalDataSource) {
     self.localSource = localSource
   }
   
@@ -27,7 +27,7 @@ final class WorkspaceAppsRepositoryImpl: WorkspaceAppsRepository {
     return try await localSource.fetchById(id: id)
   }
   
-  func getByWorkspaceId(workspaceId: UUID) async throws -> [WorkspaceAppDTO] {
+  func getByWorkspaceId(workspaceId: UUID) async throws -> [WSAppDTO] {
     let res = try await localSource.fetchByWorkspaceId(workspaceId: workspaceId)
     return res.map { $0.toDTO() }
   }
@@ -37,7 +37,7 @@ final class WorkspaceAppsRepositoryImpl: WorkspaceAppsRepository {
     description: String,
     workspaceId: UUID,
     appPlatformId: String
-  ) async throws -> WorkspaceAppDTO {
+  ) async throws -> WSAppDTO {
     return try await localSource.create(
       name: name,
       description: description,

@@ -14,13 +14,13 @@ extension Container {
       .scope(.shared)
   }
   
-  var workspaceAppsViewModel: Factory<WorkspaceAppsViewModel> {
-    self { WorkspaceAppsViewModel(repo: self.appsRepository()) }
+  var workspaceAppsViewModel: Factory<WSAppsViewModel> {
+    self { WSAppsViewModel(repo: self.appsRepository()) }
       .scope(.shared)
   }
   
-  var workspaceLanguagesViewModel: Factory<WorkspaceLanguagesViewModel> {
-    self { WorkspaceLanguagesViewModel(usecase: self.addLangUsecase()) }
+  var workspaceLanguagesViewModel: Factory<WSLanguagesViewModel> {
+    self { WSLanguagesViewModel(usecase: self.addLangUsecase()) }
       .scope(.shared)
   }
 }

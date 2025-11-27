@@ -1,0 +1,91 @@
+name: Build macOS App and Upload DMG
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      # 1. Checkout
+      - uses: actions/checkout@v4
+
+      # 2. Select Xcode (optional)
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode.app
+
+      # 3. Generate ExportOptions.plist dynamically using secrets
+      - name: Generate ExportOptions.plist
+        run: |
+          cat <<EOF > ExportOptions.plist
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>${{ secrets.EXPORT_METHOD }}</string>
+              
+              <key>teamID</key>
+              <string>${{ secrets.APPLE_TEAM_ID }}</string>
+
+              <key>signingStyle</key>
+              <string>${{ secrets.SIGNING_STYLE }}</string>
+
+              <key>destination</key>
+              <string>export</string>
+
+              <key>compileBitcode</key>
+              <false/>
+
+              <key>manageAppVersionAndBuildNumber</key>
+              <false/>
+          </dict>
+          </plist>
+          EOF
+
+      # 4. Build App + Archive
+      - name: Build macOS App
+        run: |
+          xcodebuild \
+            -scheme "Mimik" \
+            -configuration Release \
+            -archivePath build/App.xcarchive \
+            archive
+
+      # 5. Export the archive using generated plist
+      - name: Export App
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath build/App.xcarchive \
+            -exportPath build/export \
+            -exportOptionsPlist ExportOptions.plist
+
+      # 6. Create DMG
+      - name: Create DMG
+        run: |
+          mkdir dmg
+          cp -R build/export/*.app dmg/
+          hdiutil create \
+            -volname "Mimik" \
+            -srcfolder dmg \
+            -ov \
+            -format UDZO \
+            mimik.dmg
+
+      # 7. Delete Previous Artifacts
+      - name: Delete Previous Artifacts
+        uses: geekyeggo/delete-artifact@v4
+        with:
+          name: macos-build
+          failOnError: false
+
+      # 8. Upload new DMG artifact
+      - name: Upload DMG Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: YourApp.dmg
+          retention-days: 7

@@ -8,15 +8,15 @@
 import CoreData
 
 final class AddLanguageUsecase {
-  private let repo: WorkspaceLanguagesRepository
+  private let repo: WSLanguagesRepo
   private let langRepo: LangRepository
   
-  init(repo: WorkspaceLanguagesRepository, langRepo: LangRepository) {
+  init(repo: WSLanguagesRepo, langRepo: LangRepository) {
     self.repo = repo
     self.langRepo = langRepo
   }
  
-  func getAddedLanguages(workspaceId: UUID) async throws -> [String: WorkspaceLangDTO] {
+  func getAddedLanguages(workspaceId: UUID) async throws -> [String: WSLangDTO] {
     let selected = try await repo.getByWorkspaceId(workspaceId: workspaceId)
     
     return Dictionary(uniqueKeysWithValues: selected.map {
@@ -28,7 +28,7 @@ final class AddLanguageUsecase {
     return langRepo.getAll()
   }
   
-  func add(lang: String, workspaceId: UUID) async throws -> WorkspaceLangDTO {
+  func add(lang: String, workspaceId: UUID) async throws -> WSLangDTO {
     return try await repo.add(workspaceId: workspaceId, lang: lang).toDTO(lang: langRepo.get(code: lang))
   }
 }

@@ -64,19 +64,19 @@ struct WorkspaceDetailScreen: View {
     } detail: {
       switch selectedTab {
         case .dashboard:
-          WorkspaceDashboardScreen(data: data)
+          WSDashboardScreen(data: data)
         case .apps:
-          WorkspaceAppsScreen(data: data)
+          WSAppsScreen(data: data)
         case .variables:
-          WorkspaceVariablesScreen(data: data)
+          WSVariablesScreen(data: data)
         case .languages:
-          WorkspaceLanguagesScreen(data: data)
+          WSLanguagesScreen(data: data)
         case .translations:
-          WorkspaceTranslationsScreen(data: data)
+          WSTranslationsScreen(data: data)
         case .users:
-          WorkspaceUsersScreen(data: data)
+          WSUsersScreen(data: data)
         case .settings:
-          WorkspaceSettingsScreen(data: data)
+          WSSettingsScreen(data: data)
       }
     }
   }

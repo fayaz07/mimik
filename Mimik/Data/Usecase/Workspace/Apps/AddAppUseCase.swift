@@ -8,9 +8,9 @@ import CoreData
 
 class AddAppUseCase {
   private let workspacesRepo: WorkspaceRepository
-  private let appsRepo: WorkspaceAppsRepository
+  private let appsRepo: WSAppsRepo
   
-  init(repo: WorkspaceRepository, appsRepo: WorkspaceAppsRepository) {
+  init(repo: WorkspaceRepository, appsRepo: WSAppsRepo) {
     self.workspacesRepo = repo
     self.appsRepo = appsRepo
   }
@@ -53,7 +53,7 @@ class AddAppUseCase {
     description: String,
     workspaceId: UUID,
     appPlatformId: String,
-  ) async throws -> (WorkspaceAppDTO?, String, String, String?) {
+  ) async throws -> (WSAppDTO?, String, String, String?) {
     
     let (formValid, nameError, descriptionError) = validate(name: name, desc: description)
     if !formValid {

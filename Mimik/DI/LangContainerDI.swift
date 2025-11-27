@@ -18,12 +18,12 @@ extension Container {
       .scope(.shared)
   }
   
-  var workspaceLanguagesLocalDataSource: Factory<WorkspaceLanguagesLocalDataSource> {
-    self { WorkspaceLanguagesLocalDataSource(context: self.managedObjectContext()) }
+  var workspaceLanguagesLocalDataSource: Factory<WSLanguagesLocalDataSource> {
+    self { WSLanguagesLocalDataSource(context: self.managedObjectContext()) }
   }
   
-  var workspaceLangRepo: Factory<WorkspaceLanguagesRepository> {
-    self { WorkspaceLanguagesRepositoryImpl(localSource: self.workspaceLanguagesLocalDataSource()) }
+  var workspaceLangRepo: Factory<WSLanguagesRepo> {
+    self { WSLanguagesRepoImpl(localSource: self.workspaceLanguagesLocalDataSource()) }
   }
   
   var addLangUsecase: Factory<AddLanguageUsecase> {

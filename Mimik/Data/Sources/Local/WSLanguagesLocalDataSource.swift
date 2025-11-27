@@ -7,7 +7,7 @@
 
 @preconcurrency import CoreData
 
-final class WorkspaceLanguagesLocalDataSource {
+final class WSLanguagesLocalDataSource {
   private let context: NSManagedObjectContext
   
   init(context: NSManagedObjectContext) {

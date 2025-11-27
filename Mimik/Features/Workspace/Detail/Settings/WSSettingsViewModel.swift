@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 @Observable
-class WorkspaceSettingsViewModel {
+class WSSettingsViewModel {
   private let workspaceRepository: WorkspaceRepository
   
   init(workspaceRepository: WorkspaceRepository) {
@@ -17,7 +17,7 @@ class WorkspaceSettingsViewModel {
   }
   
   var deleteState: ViewState<Void> = ViewState.idle()
-  var events: ViewEvent<WorkspaceSettingsEvents> = .init(
+  var events: ViewEvent<WSSettingsEvents> = .init(
     isError: false,
     data: nil
   )
@@ -29,7 +29,7 @@ class WorkspaceSettingsViewModel {
       do {
         try await workspaceRepository.delete(id: id)
         deleteState = .success(data: ())
-        events = .push(WorkspaceSettingsEvents.deleted)
+        events = .push(WSSettingsEvents.deleted)
       } catch {
         deleteState = .failure(error: "Unable to delete workspace")
         

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct AppView: View {
-  var data: WorkspaceAppDTO
-  var onClick: (WorkspaceAppDTO) -> Void
+  var data: WSAppDTO
+  var onClick: (WSAppDTO) -> Void
   
   var body: some View {
     Button(action: { onClick(data) }) {
@@ -70,7 +70,7 @@ struct AppView: View {
 
 #Preview {
   AppView(
-    data: WorkspaceAppDTO(
+    data: WSAppDTO(
       id: UUID(),
       name: "Mimik Android",
       desc: "Just an Android app",

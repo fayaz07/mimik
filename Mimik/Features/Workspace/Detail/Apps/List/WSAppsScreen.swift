@@ -10,11 +10,11 @@ import CoreData
 import Flow
 import Factory
 
-struct WorkspaceAppsScreen: View {
+struct WSAppsScreen: View {
   @EnvironmentObject private var router: AppNavigationRouter
   
   @Injected(\.workspaceAppsViewModel)
-  private var viewModel: WorkspaceAppsViewModel
+  private var viewModel: WSAppsViewModel
   
   var data: WorkspaceDTO
   
@@ -60,12 +60,12 @@ struct WorkspaceAppsScreen: View {
     router.push(to: .workspace(.apps(.add(workspaceId: data.id))))
   }
   
-  private func onAppClicked(data: WorkspaceAppDTO) {
+  private func onAppClicked(data: WSAppDTO) {
     
   }
   
   @ViewBuilder
-  private func AppsListBuilder(items: [WorkspaceAppDTO]) -> some View {
+  private func AppsListBuilder(items: [WSAppDTO]) -> some View {
     VStack(alignment: .leading) {
       if items.isEmpty {
         VStack(alignment: .center) {

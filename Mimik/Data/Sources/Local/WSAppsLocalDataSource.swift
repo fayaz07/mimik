@@ -1,5 +1,5 @@
 //
-//  WorkspaceAppsLocalDataSource.swift
+//  WSAppsLocalDataSource.swift
 //  Mimik
 //
 //  Created by Fayaz Mohammad on 24/11/25.
@@ -7,7 +7,7 @@
 
 @preconcurrency import CoreData
 
-final class WorkspaceAppsLocalDataSource {
+final class WSAppsLocalDataSource {
   private let context: NSManagedObjectContext
   
   init(context: NSManagedObjectContext) {
@@ -62,7 +62,7 @@ final class WorkspaceAppsLocalDataSource {
     name: String, description: String?,
     workspaceId: UUID,
     appPlatformId: String
-  ) async throws -> WorkspaceAppDTO {
+  ) async throws -> WSAppDTO {
     let doc = AppEntity(context: context)
     doc.id = UUID()
     doc.name = name

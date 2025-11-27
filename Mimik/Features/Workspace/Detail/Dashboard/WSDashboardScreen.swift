@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreData
 
-struct WorkspaceDashboardScreen: View {
+struct WSDashboardScreen: View {
   var data: WorkspaceDTO
   
   var body: some View {

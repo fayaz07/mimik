@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreData
 
-struct WorkspaceTranslationsScreen: View {
+struct WSTranslationsScreen: View {
   var data: WorkspaceDTO
   
   var body: some View {

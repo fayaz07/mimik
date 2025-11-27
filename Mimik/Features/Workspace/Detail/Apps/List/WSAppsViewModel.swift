@@ -8,12 +8,12 @@
 import Foundation
 
 @Observable
-final class WorkspaceAppsViewModel {
-  var apps: ViewState<[WorkspaceAppDTO]> = .init(loading: true)
+final class WSAppsViewModel {
+  var apps: ViewState<[WSAppDTO]> = .init(loading: true)
   
-  private let repo: WorkspaceAppsRepository
+  private let repo: WSAppsRepo
   
-  init(repo: WorkspaceAppsRepository) {
+  init(repo: WSAppsRepo) {
     self.repo = repo
   }
   

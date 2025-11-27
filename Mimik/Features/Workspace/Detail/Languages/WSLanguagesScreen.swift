@@ -9,11 +9,11 @@ import SwiftUI
 import CoreData
 import Factory
 
-struct WorkspaceLanguagesScreen: View {
+struct WSLanguagesScreen: View {
   var data: WorkspaceDTO
   
   @Injected(\.workspaceLanguagesViewModel)
-  private var viewModel: WorkspaceLanguagesViewModel
+  private var viewModel: WSLanguagesViewModel
   
   var body: some View {
     List {

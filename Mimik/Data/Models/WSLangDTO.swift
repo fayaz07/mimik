@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WorkspaceLangDTO: Identifiable, Sendable, Hashable {
+struct WSLangDTO: Identifiable, Sendable, Hashable {
   let id: UUID
   let workspaceId: UUID
   let code: String
@@ -20,8 +20,8 @@ struct WorkspaceLangDTO: Identifiable, Sendable, Hashable {
 }
 
 extension WorkspaceLangEntity {
-  func toDTO(lang: LangDTO) -> WorkspaceLangDTO {
-    WorkspaceLangDTO(
+  func toDTO(lang: LangDTO) -> WSLangDTO {
+    WSLangDTO(
       id: id!,
       workspaceId: workspaceId!,
       code: code!,

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WorkspaceAppDTO: Identifiable, Sendable, Hashable {
+struct WSAppDTO: Identifiable, Sendable, Hashable {
   let id: UUID
   let name: String
   let desc: String
@@ -19,8 +19,8 @@ struct WorkspaceAppDTO: Identifiable, Sendable, Hashable {
 }
 
 extension AppEntity {
-  func toDTO() -> WorkspaceAppDTO {
-    WorkspaceAppDTO(
+  func toDTO() -> WSAppDTO {
+    WSAppDTO(
       id: id!,
       name: name!,
       desc: desc!,

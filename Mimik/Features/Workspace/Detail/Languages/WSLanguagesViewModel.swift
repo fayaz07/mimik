@@ -9,14 +9,14 @@ import CoreData
 import Foundation
 
 @Observable
-class WorkspaceLanguagesViewModel {
+class WSLanguagesViewModel {
   private let usecase: AddLanguageUsecase
   
   init(usecase: AddLanguageUsecase) {
     self.usecase = usecase
   }
 
-  var addedLangs: ViewState<[String: WorkspaceLangDTO]> = .init(loading: true)
+  var addedLangs: ViewState<[String: WSLangDTO]> = .init(loading: true)
   var allLangs: ViewState<[String: LangDTO]> = .init(loading: true)
   
   var availableLangs: [String: LangDTO] {

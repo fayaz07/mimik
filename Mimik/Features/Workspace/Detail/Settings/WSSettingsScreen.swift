@@ -8,16 +8,16 @@
 import SwiftUI
 import Factory
 
-struct WorkspaceSettingsScreen: View {
+struct WSSettingsScreen: View {
   var data: WorkspaceDTO
   
   @EnvironmentObject var router: AppNavigationRouter
-  @State private var viewModel: WorkspaceSettingsViewModel
+  @State private var viewModel: WSSettingsViewModel
   
   init(data: WorkspaceDTO) {
     self.data = data
     self._viewModel = State(
-      wrappedValue: WorkspaceSettingsViewModel(
+      wrappedValue: WSSettingsViewModel(
         workspaceRepository: Container.shared.workspaceRepository.resolve()
       )
     )
@@ -105,6 +105,6 @@ struct WorkspaceSettingsScreen: View {
   )
 
   VStack {
-    WorkspaceSettingsScreen(data: workspace)
+    WSSettingsScreen(data: workspace)
   }
 }

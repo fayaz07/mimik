@@ -7,16 +7,16 @@
 
 import CoreData
 
-protocol WorkspaceLanguagesRepository {
+protocol WSLanguagesRepo {
   func getByWorkspaceId(workspaceId: UUID) async throws -> [WorkspaceLangEntity]
   func add(workspaceId: UUID, lang: String) async throws -> WorkspaceLangEntity
   func disable(id: UUID) async throws
 }
 
-final class WorkspaceLanguagesRepositoryImpl: WorkspaceLanguagesRepository {
-  private let localSource: WorkspaceLanguagesLocalDataSource
+final class WSLanguagesRepoImpl: WSLanguagesRepo {
+  private let localSource: WSLanguagesLocalDataSource
   
-  init(localSource: WorkspaceLanguagesLocalDataSource) {
+  init(localSource: WSLanguagesLocalDataSource) {
     self.localSource = localSource
   }
   

@@ -5,7 +5,7 @@
 //  Created by Fayaz Mohammad on 15/10/25.
 //
 
-enum WorkspaceSettingsEvents: Equatable {
+enum WSSettingsEvents: Equatable {
   case deleted
   case deleteFailed(String)
   

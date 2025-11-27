@@ -9,13 +9,13 @@ import Factory
 import CoreData
 
 extension Container {
-  var appsLocalSource: Factory<WorkspaceAppsLocalDataSource> {
-    self { WorkspaceAppsLocalDataSource(context: self.managedObjectContext()) }
+  var appsLocalSource: Factory<WSAppsLocalDataSource> {
+    self { WSAppsLocalDataSource(context: self.managedObjectContext()) }
   }
   
-  var appsRepository: Factory<WorkspaceAppsRepository> {
+  var appsRepository: Factory<WSAppsRepo> {
     self {
-      WorkspaceAppsRepositoryImpl(localSource: self.appsLocalSource())
+      WSAppsRepoImpl(localSource: self.appsLocalSource())
     }
   }
   

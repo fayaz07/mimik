@@ -1,5 +1,5 @@
 //
-//  WorkspaceUsersScreen.swift
+//  WSVariablesScreen.swift
 //  Mimik
 //
 //  Created by Fayaz Mohammad on 14/10/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WorkspaceVariablesScreen: View {
+struct WSVariablesScreen: View {
   var data: WorkspaceDTO
   
   var body: some View {
