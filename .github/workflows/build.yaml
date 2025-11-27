@@ -3,6 +3,7 @@ name: Build macOS App and Upload DMG
 on:
   push:
     branches: [ "main" ]
+  pull_request: 
   workflow_dispatch:
 
 jobs:
