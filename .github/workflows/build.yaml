@@ -1,4 +1,6 @@
 name: Build macOS App and Upload DMG
+permissions:
+  contents: read
 
 on:
   push:
