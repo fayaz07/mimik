@@ -13,6 +13,7 @@
     <entity name="TranslationKeyEntity" representedClassName="TranslationKeyEntity" syncable="YES" codeGenerationType="class">
         <attribute name="author" optional="YES" attributeType="String"/>
         <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="785767320" usesScalarValueType="NO"/>
+        <attribute name="excludedApps" attributeType="Transformable" valueTransformerName="UUIDArrayTransformer"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="key" attributeType="String"/>
         <attribute name="updatedAt" attributeType="Date" defaultDateTimeInterval="785767320" usesScalarValueType="NO"/>
@@ -20,12 +21,11 @@
     </entity>
     <entity name="TranslationValueEntity" representedClassName="TranslationValueEntity" syncable="YES" codeGenerationType="class">
         <attribute name="approved" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="approvedBy" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="approvedBy" optional="YES" attributeType="String"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="ignoredApps" optional="YES" attributeType="String"/>
+        <attribute name="keyId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lang" optional="YES" attributeType="String"/>
-        <attribute name="source" optional="YES" attributeType="String"/>
         <attribute name="translatedBy" optional="YES" attributeType="String"/>
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="value" optional="YES" attributeType="String"/>

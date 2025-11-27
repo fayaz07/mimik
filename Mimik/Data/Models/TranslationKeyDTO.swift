@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct TranslationsDTO: Identifiable, Sendable, Hashable {
+struct TranslationKeyDTO: Identifiable, Sendable, Hashable {
   let id: UUID
   let key: String
   let author: String
@@ -16,8 +16,13 @@ struct TranslationsDTO: Identifiable, Sendable, Hashable {
 }
 
 extension TranslationKeyEntity {
-  func toDTO() -> TranslationsDTO {
-    TranslationsDTO(
+  var excludedAppsArray: [UUID] {
+          get { excludedApps as? [UUID] ?? [] }
+          set { excludedApps = newValue }
+      }
+  
+  func toDTO() -> TranslationKeyDTO {
+    TranslationKeyDTO(
       id: id!,
       key: key!,
       author: author!,
