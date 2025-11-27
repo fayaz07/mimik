@@ -98,6 +98,7 @@ struct AddAppCardView: View {
     id: UUID(),
     name: "Workspace 1",
     desc: "",
+    defLang: "en",
     createdAt: Date(),
     updatedAt: Date(),
     lastAccessed: Date()

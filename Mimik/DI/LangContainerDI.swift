@@ -23,11 +23,25 @@ extension Container {
   }
   
   var workspaceLangRepo: Factory<WSLanguagesRepo> {
-    self { WSLanguagesRepoImpl(localSource: self.workspaceLanguagesLocalDataSource()) }
+    self {
+      WSLanguagesRepoImpl(localSource: self.workspaceLanguagesLocalDataSource())
+    }
   }
   
   var addLangUsecase: Factory<AddLanguageUsecase> {
-    self { AddLanguageUsecase(repo: self.workspaceLangRepo(), langRepo: self.langRepo()) }
-      .scope(.shared)
+    self {
+      AddLanguageUsecase(
+        repo: self.workspaceLangRepo(),
+        langRepo: self.langRepo()
+      )
+    }
+    .scope(.shared)
+  }
+  
+  var toggleLangStatusUsecase: Factory<ToggleLangStatusUsecase> {
+    self {
+      ToggleLangStatusUsecase(repo: self.workspaceLangRepo())
+    }
+    .scope(.shared)
   }
 }

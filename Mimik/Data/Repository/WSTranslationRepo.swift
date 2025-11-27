@@ -17,4 +17,12 @@ protocol WSTranslationRepo {
 
 class WSTranslationRepoImpl: WSTranslationRepo {
   private let localKeySource: WSTranslationKeyLocalDataSource
+ 
+  init(localKeySource: WSTranslationKeyLocalDataSource) {
+    self.localKeySource = localKeySource
+  }
+  
+  func addTranslation(key: String, workspaceId: UUID, excludedApps: [UUID]) async throws -> TranslationKeyDTO {
+    return try await localKeySource.create(key: key, workspaceId: workspaceId, excludedApps: excludedApps)
+  }
 }

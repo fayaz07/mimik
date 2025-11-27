@@ -14,10 +14,23 @@ extension Container {
   }
   
   var workspaceRepository: Factory<WorkspaceRepository> {
-    self { WorkspaceRepositoryImpl(localSource: self.workspaceLocalSource()) }
+    self {
+      WorkspaceRepositoryImpl(
+        localSource: self.workspaceLocalSource(),
+        langRepo: self.langRepo(),
+      )
+    }
   }
   
   var createUsecase: Factory<CreateWorkspaceUsecase> {
     self { CreateWorkspaceUsecase(repo: self.workspaceRepository()) }
+  }
+  
+  var getUsecase: Factory<GetWorkspaceUsecase> {
+    self { GetWorkspaceUsecase(repo: self.workspaceRepository()) }
+  }
+  
+  var switchDefLangUsecase: Factory<SwitchDefaultLanguageUsecase> {
+    self { SwitchDefaultLanguageUsecase(repo: self.workspaceRepository()) }
   }
 }

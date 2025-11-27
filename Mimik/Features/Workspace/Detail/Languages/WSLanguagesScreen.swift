@@ -38,11 +38,21 @@ struct WSLanguagesScreen: View {
       } forError: { error in
         Text(error)
       } forData: { addedLangMap in
-        AddedLanguages(data: addedLangMap)
+        AddedLanguages(
+          data: addedLangMap,
+          defLang: viewModel.wsData.data?.defLang ?? "",
+          onToggleActiveStatus: { langId in
+            viewModel.toggleLangActiveStatus(id: langId)
+          },
+          onSwitchDefault: { langCode in
+            viewModel.switchDefaultLang(lang: langCode, workspaceId: data.id)
+          }
+        )
       } forNoData: {
         Text("No data")
       }
       .onAppear {
+        viewModel.fetchWorkspace(workspaceId: data.id)
         viewModel.loadAddedLanguages(workspaceId: data.id)
       }
   }

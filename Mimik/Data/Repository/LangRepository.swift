@@ -19,4 +19,8 @@ class LangRepository {
   func get(code: String) -> LangDTO {
     return getAll()[code] ?? .init(code: code, name: "Unknown", rtl: false)
   }
+  
+  func isValid(code: String) -> Bool {
+    return getAll().keys.contains(code)
+  }
 }

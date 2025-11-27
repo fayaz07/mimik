@@ -17,6 +17,14 @@ This app will use AI to generate translations, write in English and AI will take
 you can selectively filter where this translation might be used too, uncheck some of the apps to save memory and file size,
 all that you can think of.
 
+### Screenshots
+![](.github/screenshots/Screenshot 2025-11-27 at 7.36.41 PM.png)
+![](.github/screenshots/Screenshot 2025-11-27 at 7.36.46 PM.png)
+![](.github/screenshots/Screenshot 2025-11-27 at 7.37.08 PM.png)
+![](.github/screenshots/Screenshot 2025-11-27 at 7.37.29 PM.png)
+![](.github/screenshots/Screenshot 2025-11-27 at 7.37.34 PM.png)
+![](.github/screenshots/Screenshot 2025-11-27 at 7.37.39 PM.png)
+
 ### Proposed Features
 
 1. Translations

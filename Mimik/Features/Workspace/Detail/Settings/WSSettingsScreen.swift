@@ -99,6 +99,7 @@ struct WSSettingsScreen: View {
     id: UUID(),
     name: "Workspace 1",
     desc: "Workspace 1 Description",
+    defLang: "en",
     createdAt: Date(),
     updatedAt: Date(),
     lastAccessed: Date()

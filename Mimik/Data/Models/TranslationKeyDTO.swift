@@ -18,7 +18,7 @@ struct TranslationKeyDTO: Identifiable, Sendable, Hashable {
 extension TranslationKeyEntity {
   var excludedAppsArray: [UUID] {
           get { excludedApps as? [UUID] ?? [] }
-          set { excludedApps = newValue }
+          set { excludedApps = newValue as NSObject? }
       }
   
   func toDTO() -> TranslationKeyDTO {

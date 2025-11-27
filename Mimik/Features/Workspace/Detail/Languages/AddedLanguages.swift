@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 private let _columns : [GridItem] = [
   GridItem(.fixed(30), alignment: .trailing),
@@ -18,6 +19,9 @@ private let _columns : [GridItem] = [
 
 struct AddedLanguages: View {
   let data: [String: WSLangDTO]
+  let defLang: String
+  let onToggleActiveStatus: (UUID) -> Void
+  let onSwitchDefault: (String) -> Void
   
   var body: some View {
     let list = Array(data.values)
@@ -49,22 +53,48 @@ struct AddedLanguages: View {
   }
 
   func langRow(index: Int, item: WSLangDTO) -> some View {
+    let isDefault = item.code == defLang
+    
     return LazyVGrid(columns: _columns, spacing: 0) {
       Text("\(index + 1)").padding(.vertical, 5)
       Text(item.code).padding(.vertical, 5)
-      Text(item.name).padding(.vertical, 5)
+      HStack {
+        Text(item.name).padding(.vertical, 5)
+        if isDefault {
+          Text("Default")
+            .font(.caption)
+            .foregroundColor(.white)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .background(Color.green)
+            .clipShape(Capsule())
+        }
+      }
       Text(item.rtl ? "Right to Left" : "Left to Right")
         .padding(.vertical, 5)
       Text(ParseAuthorDTO(from: item.author).name)
         .padding(.vertical, 5)
       
-      Button(item.active ? "Disable" : "Enable") { }
-        .buttonStyle(.bordered)
-        .tint(item.active ? .red : .green)
-        .padding(.vertical, 5)
+      HStack {
+        if !isDefault {
+          Button(item.active ? "Disable" : "Enable") {
+            onToggleActiveStatus(item.id)
+          }
+          .buttonStyle(.bordered)
+          .tint(item.active ? .red : .green)
+          .padding(.vertical, 5)
+
+          Button("Set as Default") {
+            onSwitchDefault(item.code)
+          }
+          .buttonStyle(.bordered)
+          .tint(.blue)
+          .padding(.vertical, 5)
+        }
+      }
     }
     .background(index.isMultiple(of: 2)
                 ? Color.white
-                : Color.gray.opacity(0.06))   // full-row background
+                : Color.gray.opacity(0.06))
   }
 }

@@ -20,7 +20,14 @@ extension Container {
   }
   
   var workspaceLanguagesViewModel: Factory<WSLanguagesViewModel> {
-    self { WSLanguagesViewModel(usecase: self.addLangUsecase()) }
-      .scope(.shared)
+    self {
+      WSLanguagesViewModel(
+        usecase: self.addLangUsecase(),
+        getWorkspaceUsecase: self.getUsecase(),
+        switchLanguageUsecase: self.switchDefLangUsecase(),
+        toggleLangStatusUsecase: self.toggleLangStatusUsecase(),
+      )
+    }
+    .scope(.shared)
   }
 }

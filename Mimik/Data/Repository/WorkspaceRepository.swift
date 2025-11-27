@@ -13,13 +13,16 @@ protocol WorkspaceRepository {
   func delete(id: UUID) async throws
   func findByName(name: String) async throws -> [WorkspaceEntity]
   func saveAccessTime(id: UUID) async throws
+  func switchDefaultLang(id: UUID, lang: String) async throws -> WorkspaceDTO?
 }
 
 final class WorkspaceRepositoryImpl: WorkspaceRepository {
   private let localSource: WorkspaceLocalDataSource
+  private let langRepo: LangRepository
   
-  init(localSource: WorkspaceLocalDataSource) {
+  init(localSource: WorkspaceLocalDataSource, langRepo: LangRepository) {
     self.localSource = localSource
+    self.langRepo = langRepo
   }
   
   func getById(id: UUID) async throws -> WorkspaceEntity? {
@@ -45,5 +48,21 @@ final class WorkspaceRepositoryImpl: WorkspaceRepository {
   
   func saveAccessTime(id: UUID) async throws {
     try await localSource.saveAccessTime(id: id)
+  }
+  
+  func switchDefaultLang(id: UUID, lang: String) async throws -> WorkspaceDTO? {
+    // check if lang is valid
+    if !langRepo.isValid(code: lang) {
+      return nil
+    }
+    
+    let doc = try await localSource.fetchById(id: id)
+    if doc == nil {
+      return nil
+    }
+    
+    doc?.defLang = lang
+    doc?.updatedAt = Date()
+    return doc!.toDTO()
   }
 }

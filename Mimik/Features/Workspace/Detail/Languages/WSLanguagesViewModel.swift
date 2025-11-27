@@ -11,13 +11,25 @@ import Foundation
 @Observable
 class WSLanguagesViewModel {
   private let usecase: AddLanguageUsecase
+  private let getWorkspaceUsecase: GetWorkspaceUsecase
+  private let switchLanguageUsecase: SwitchDefaultLanguageUsecase
+  private let toggleLangStatusUsecase: ToggleLangStatusUsecase
   
-  init(usecase: AddLanguageUsecase) {
+  init(
+    usecase: AddLanguageUsecase,
+    getWorkspaceUsecase: GetWorkspaceUsecase,
+    switchLanguageUsecase: SwitchDefaultLanguageUsecase,
+    toggleLangStatusUsecase: ToggleLangStatusUsecase
+  ) {
     self.usecase = usecase
+    self.getWorkspaceUsecase = getWorkspaceUsecase
+    self.switchLanguageUsecase = switchLanguageUsecase
+    self.toggleLangStatusUsecase = toggleLangStatusUsecase
   }
 
   var addedLangs: ViewState<[String: WSLangDTO]> = .init(loading: true)
   var allLangs: ViewState<[String: LangDTO]> = .init(loading: true)
+  var wsData: ViewState<WorkspaceDTO> = .init(loading: true)
   
   var availableLangs: [String: LangDTO] {
     guard let all = allLangs.data,
@@ -60,6 +72,7 @@ class WSLanguagesViewModel {
     }
   }
   
+  // TODO: handle error
   func addLanguage(lang: LangDTO, workspaceId: UUID) {
     if addedLangs.data?.keys.contains(lang.code) == true {
       return
@@ -74,6 +87,72 @@ class WSLanguagesViewModel {
         }
       } catch {
         
+      }
+    }
+  }
+  
+  func fetchWorkspace(workspaceId: UUID) {
+    if wsData.hasData {
+      return
+    }
+    wsData = .loading()
+    Task {
+      do {
+        let result = try await getWorkspaceUsecase.get(id: workspaceId)
+        await MainActor.run {
+          self.wsData = .success(data: result)
+        }
+      }
+    }
+  }
+  
+  // TODO: handle error
+  func switchDefaultLang(lang: String, workspaceId: UUID) {
+    Task {
+      do {
+        await MainActor.run {
+          wsData = .init(loading: true, data: nil)
+        }
+        let workspaceRes = try await switchLanguageUsecase.execute(
+          id: workspaceId,
+          lang: lang
+        )
+        await MainActor.run {
+          self.wsData = .success(data: workspaceRes!)
+        }
+      } catch {
+        fetchWorkspace(workspaceId: workspaceId)
+      }
+    }
+  }
+  
+  // TODO: handle error
+  func toggleLangActiveStatus(id: UUID) {
+    Task {
+      do {
+        guard let entity = try await toggleLangStatusUsecase.execute(
+          languageId: id
+        )
+        else { return }
+        
+        let langDoc = allLangs.data?[entity.code!]
+
+        let dto = entity.toDTO(lang: langDoc!)
+        
+        // 3. Now safely update UI on MainActor
+        await MainActor.run {
+          var addedLangsList = addedLangs.data ?? [:]
+
+          guard let old = addedLangsList.first(where: { $0.value.id == id })
+          else { return }
+          addedLangsList.removeValue(forKey: old.key)
+ 
+          addedLangsList[dto.code] = dto
+          
+          addedLangs = .success(data: addedLangsList)
+        }
+      } catch {
+        print(error)
       }
     }
   }

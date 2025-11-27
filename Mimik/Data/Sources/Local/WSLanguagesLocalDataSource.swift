@@ -58,7 +58,7 @@ final class WSLanguagesLocalDataSource {
   
   func create(
     workspaceId: UUID,
-    code: String
+    code: String,
   ) async throws -> WorkspaceLangEntity {
     let doc = WorkspaceLangEntity(context: context)
     doc.id = UUID()
@@ -81,16 +81,19 @@ final class WSLanguagesLocalDataSource {
     return doc
   }
 
-  func disable(id: UUID) async throws {
+  func toggleActiveStatus(id: UUID) throws -> WorkspaceLangEntity? {
     let request = _fetchOneByIdRequest(id: id)
-    
-    try await context.perform {
-      [weak context] in
-      
-      if let object = try context?.fetch(request).first {
-        object.active = false
-        try context?.save()
+
+    var result: WorkspaceLangEntity?
+
+    try context.performAndWait {
+      if let object = try context.fetch(request).first {
+        object.active.toggle()
+        try context.save()
+        result = object
       }
     }
+
+    return result
   }
 }

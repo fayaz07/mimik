@@ -11,6 +11,7 @@ struct WorkspaceDTO: Identifiable, Sendable, Hashable {
   let id: UUID
   let name: String
   let desc: String
+  let defLang: String
   let createdAt: Date
   let updatedAt: Date
   let lastAccessed: Date
@@ -22,6 +23,7 @@ extension WorkspaceEntity {
       id: id!,
       name: name!,
       desc: desc!,
+      defLang: defLang ?? "",
       createdAt: createdAt!,
       updatedAt: updatedAt ?? createdAt!,
       lastAccessed: lastAccessed!

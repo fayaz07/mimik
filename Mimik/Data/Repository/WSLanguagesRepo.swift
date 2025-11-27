@@ -10,7 +10,7 @@ import CoreData
 protocol WSLanguagesRepo {
   func getByWorkspaceId(workspaceId: UUID) async throws -> [WorkspaceLangEntity]
   func add(workspaceId: UUID, lang: String) async throws -> WorkspaceLangEntity
-  func disable(id: UUID) async throws
+  func toggleActiveStatus(id: UUID) async throws -> WorkspaceLangEntity?
 }
 
 final class WSLanguagesRepoImpl: WSLanguagesRepo {
@@ -27,18 +27,22 @@ final class WSLanguagesRepoImpl: WSLanguagesRepo {
     return result
   }
   
-  func add(workspaceId: UUID, lang: String) async throws -> WorkspaceLangEntity {
+  func add(
+    workspaceId: UUID,
+    lang: String
+  ) async throws -> WorkspaceLangEntity {
     let existingRecord = try await localSource.findByCode(code: lang, workspaceId: workspaceId)
     if !existingRecord.isEmpty {
       return existingRecord.first!
     }
+    
     return try await localSource.create(
       workspaceId: workspaceId,
       code: lang,
     )
   }
   
-  func disable(id: UUID) async throws {
-    try await localSource.disable(id: id)
+  func toggleActiveStatus(id: UUID) async throws -> WorkspaceLangEntity? {
+    return try await localSource.toggleActiveStatus(id: id)
   }
 }
