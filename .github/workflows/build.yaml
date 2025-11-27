@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    environment: dev
 
     steps:
       # 1. Checkout
