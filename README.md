@@ -18,12 +18,12 @@ you can selectively filter where this translation might be used too, uncheck som
 all that you can think of.
 
 ### Screenshots
-![](.github/screenshots/Screenshot 2025-11-27 at 7.36.41 PM.png)
-![](.github/screenshots/Screenshot 2025-11-27 at 7.36.46 PM.png)
-![](.github/screenshots/Screenshot 2025-11-27 at 7.37.08 PM.png)
-![](.github/screenshots/Screenshot 2025-11-27 at 7.37.29 PM.png)
-![](.github/screenshots/Screenshot 2025-11-27 at 7.37.34 PM.png)
-![](.github/screenshots/Screenshot 2025-11-27 at 7.37.39 PM.png)
+<img src=".github/screenshots/Screenshot 2025-11-27 at 7.36.41 PM.png" />
+<img src=".github/screenshots/Screenshot 2025-11-27 at 7.36.46 PM.png" />
+<img src=".github/screenshots/Screenshot 2025-11-27 at 7.37.08 PM.png" />
+<img src=".github/screenshots/Screenshot 2025-11-27 at 7.37.29 PM.png" />
+<img src=".github/screenshots/Screenshot 2025-11-27 at 7.37.34 PM.png" />
+<img src=".github/screenshots/Screenshot 2025-11-27 at 7.37.39 PM.png" />
 
 ### Proposed Features
 
