@@ -9,5 +9,44 @@ import CoreData
 
 @Observable
 class WSTranslationsViewModel {
-//  var translations: ViewState<[WorkspaceTran]
+  
+  private let listUseCase: ListTranslationsUsecase
+  private let createUseCase: CreateTranslationUsecase
+  
+  init(
+    listUseCase: ListTranslationsUsecase,
+    createUseCase: CreateTranslationUsecase
+  ) {
+    self.listUseCase = listUseCase
+    self.createUseCase = createUseCase
+  }
+  
+  var groups: ViewState<(TranslationGroupDTO, [TranslationGroupDTO])> = .loading()
+ 
+  func fetchGroups(workspaceId: UUID) {
+    groups = .loading()
+    Task {
+      do {
+        let result = try await listUseCase.getGroups(workspaceId: workspaceId)
+        await MainActor.run {
+          groups = .success(data: result)
+        }
+      } catch {
+        await MainActor.run {
+          groups = .failure(error: "Failed to fetch translations")
+        }
+      }
+    }
+  }
+  
+  func addGroup(workspaceId: UUID, name: String, parentId: UUID? = nil) {
+    Task {
+      try await createUseCase.create(
+        workspaceId: workspaceId,
+        key: name,
+        parentGroupId: parentId
+      )
+      fetchGroups(workspaceId: workspaceId)
+    }
+  }
 }

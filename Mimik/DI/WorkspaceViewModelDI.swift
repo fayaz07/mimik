@@ -30,4 +30,13 @@ extension Container {
     }
     .scope(.shared)
   }
+  
+  var trlsnScreenViewModel: Factory<WSTranslationsViewModel> {
+    self {
+      WSTranslationsViewModel(
+        listUseCase: self.listTrslnUsecase(),
+        createUseCase: self.createTrslnUsecase()
+      )
+    }
+  }
 }

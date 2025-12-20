@@ -10,6 +10,14 @@
         <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="workspaceId" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
+    <entity name="TranslationGroupEntity" representedClassName="TranslationGroupEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="786011760" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="key" attributeType="String" defaultValueString=""/>
+        <attribute name="parentGroupId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="updatedAt" attributeType="Date" defaultDateTimeInterval="786011760" usesScalarValueType="NO"/>
+        <attribute name="workspaceId" attributeType="UUID" usesScalarValueType="NO"/>
+    </entity>
     <entity name="TranslationKeyEntity" representedClassName="TranslationKeyEntity" syncable="YES" codeGenerationType="class">
         <attribute name="author" optional="YES" attributeType="String"/>
         <attribute name="createdAt" attributeType="Date" defaultDateTimeInterval="785767320" usesScalarValueType="NO"/>
