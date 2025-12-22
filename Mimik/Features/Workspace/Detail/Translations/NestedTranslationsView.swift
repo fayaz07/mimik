@@ -13,6 +13,7 @@ struct NestedTree: View {
   let onAddGroup: (UUID) -> Void
   
   @State private var isExpanded: Bool = false
+//  key: n7, workspaceId: 49C32806-C68C-4459-80A7-14FFABFB5DB1, parentGroupId: Optional(744C4D3F-9C10-4A8E-B457-5D310ECFA2A0)
 
   var body: some View {
     VStack(alignment: .leading, spacing: 4) {
@@ -34,12 +35,13 @@ struct NestedTree: View {
             .font(.title3)
           Spacer()
           Button("Add Translation") {
-            onAddGroup(group.id)
+//            onAddGroup(group.id)
           }
           .buttonStyle(.bordered)
           .tint(.green)
           .padding(.vertical, 5)
           Button("Add Group") {
+            print("adding on level: \(level), with group id: \(group.id)")
             onAddGroup(group.id)
           }
           .buttonStyle(.bordered)

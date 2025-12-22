@@ -56,6 +56,7 @@ class WSTranslationGroupLocalDataSource {
     workspaceId: UUID,
     parentGroupId: UUID? = nil
   ) async throws -> TranslationGroupDTO {
+    print("key: \(key), workspaceId: \(workspaceId), parentGroupId: \(String(describing: parentGroupId))")
     let doc = TranslationGroupEntity(context: context)
     doc.id = UUID()
     doc.key = key
@@ -67,8 +68,11 @@ class WSTranslationGroupLocalDataSource {
     try await context.perform { [weak context] in
       if context?.hasChanges == true {
         do {
+          print("saving")
           try context?.save()
+          print("saved")
         } catch {
+          print(error)
           throw error
         }
       }

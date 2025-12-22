@@ -15,59 +15,59 @@ struct WSTranslationsScreen: View {
   @Injected(\.trlsnScreenViewModel)
   var viewModel: WSTranslationsViewModel
   
+  
+  
   @State private var showDetails: Bool = false
   
-  var translations: some View {
-    ViewStateUIBuilder(state: viewModel.groups) {
-      ProgressView()
-    } forError: { error in
-      Text(error)
-    } forData: { allGroups in
-      return TranslationTree(
-        rootGroup: allGroups.0,
-        groups: allGroups.1
-      )
-    } forNoData: {
-      Text("No groups, please add a group")
+  var body: some View {
+    ScrollView {
+      ViewStateUIBuilder(state: viewModel.groups) {
+        ProgressView()
+      } forError: { error in
+        Text(error)
+      } forData: { allGroups in
+        return TranslationTree(
+          rootGroup: allGroups.0,
+          groups: allGroups.1,
+        )
+      } forNoData: {
+        Text("No groups, please add a group")
+      }
+      .onAppear {
+        viewModel.fetchGroups(workspaceId: data.id)
+      }
+    }.onReceive(viewModel.$addGroupEvent) { event in
+      if case .added = event.data {
+        closeDialog()
+      }
     }
-    .onAppear {
-      viewModel.fetchGroups(workspaceId: data.id)
+  }
+
+  func showDialog(
+    parentGroupId: UUID? = nil,
+    groups: [TranslationGroupDTO]
+  ) {
+    @Bindable var vm = viewModel
+    
+    showCustomDialog {
+      AddGroupForm(
+        apiResult: $vm.addGroupResult,
+        parentGroupID: parentGroupId,
+        allGroups: groups,
+        onClose: closeDialog
+      ) { name, _ in
+        viewModel
+          .addGroup(
+            workspaceId: data.id,
+            name: name,
+            parentId: parentGroupId
+          )
+      }
     }
   }
   
-  func RootGroupView(
-    rootGroup: TranslationGroupDTO
-  ) -> some View {
-    return Section {
-      HStack {
-        Text("Translations at Root")
-          .font(.headline)
-        Spacer()
-        
-        Button("Add Translation") {
-
-        }
-        .buttonStyle(.bordered)
-        .tint(.green)
-        .padding(.vertical, 5)
-        Button("Add Group") {
-          showCustomDialog {
-            AddGroupForm(
-              parentGroupID: nil,
-              allGroups: [],
-              onClose:{
-                NSApp.keyWindow?.close()
-              }
-            ) { name, _ in
-              print("Adding group with name: \(name)")
-            }
-          }
-        }
-        .buttonStyle(.bordered)
-        .tint(.blue)
-        .padding(.vertical, 5)
-      }
-    }
+  func closeDialog() {
+//    NSApp.keyWindow?.close()
   }
   
   func TranslationTree(
@@ -85,24 +85,7 @@ struct WSTranslationsScreen: View {
           allGroups: groups,
           group: group,
           onAddGroup: { parentGroupId in
-            showCustomDialog {
-              AddGroupForm(
-                parentGroupID: parentGroupId,
-                allGroups: groups,
-                onClose: {
-                  // close callback
-                  NSApp.keyWindow?.close()
-                }
-              ) { name, _ in
-                
-              }
-            }
-            //            viewModel
-            //              .addGroup(
-            //                workspaceId: data.id,
-            //                name: name,
-            //                parentId: parentGroupId
-            //              )
+            showDialog(parentGroupId: parentGroupId, groups: groups)
           }
         )
       }
@@ -113,10 +96,29 @@ struct WSTranslationsScreen: View {
       )
       .padding(8.0)
   }
-  
-  var body: some View {
-    ScrollView {
-      translations
+
+  func RootGroupView(
+    rootGroup: TranslationGroupDTO
+  ) -> some View {
+    return Section {
+      HStack {
+        Text("Translations at Root")
+          .font(.headline)
+        Spacer()
+        
+        Button("Add Translation") {
+          
+        }
+        .buttonStyle(.bordered)
+        .tint(.green)
+        .padding(.vertical, 5)
+        Button("Add Group") {
+          showDialog(parentGroupId: nil, groups: [])
+        }
+        .buttonStyle(.bordered)
+        .tint(.blue)
+        .padding(.vertical, 5)
+      }
     }
   }
 }

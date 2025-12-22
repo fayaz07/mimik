@@ -27,6 +27,7 @@ func showCustomDialog<Content: View>(
 }
 
 struct AddGroupForm: View {
+  let apiResult: Binding<ViewState<String>>
   let parentGroupID: UUID?
   let allGroups: [TranslationGroupDTO]
   @State private var name = ""
@@ -56,7 +57,7 @@ struct AddGroupForm: View {
   }
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 12) {
+    return VStack(alignment: .leading, spacing: 12) {
       if getParentGroupName() != nil {
         Text(getParentGroupName() ?? "")
           .font(.title2)
@@ -65,15 +66,35 @@ struct AddGroupForm: View {
 
       TextField("Group Name", text: $name)
         .textFieldStyle(.roundedBorder)
-
+      
+      if apiResult.wrappedValue.hasError {
+        Text(
+          apiResult.wrappedValue.error ?? "Something went wrong. Please try again."
+        )
+        .foregroundColor(.red)
+        .multilineTextAlignment(.leading)
+        .lineLimit(nil)
+        .fixedSize(horizontal: false, vertical: true)
+      }
+      
       HStack {
         Spacer()
         
         Button("Cancel") { onClose() }
-        Button("Submit") {
+          .disabled(apiResult.wrappedValue.loading)
+
+        
+        Button(action: {
           onSubmit(name, parentGroupID)
-          onClose()
+        }) {
+          if apiResult.wrappedValue.loading {
+            ProgressView()
+              .progressViewStyle(CircularProgressViewStyle())
+          } else {
+            Text("Submit")
+          }
         }
+        .disabled(apiResult.wrappedValue.loading)
         .keyboardShortcut(.defaultAction)
       }
     }

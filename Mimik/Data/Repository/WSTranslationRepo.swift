@@ -20,6 +20,11 @@ protocol WSTranslationRepo {
   func fetchAllGroups(workspaceId: UUID) async throws -> [TranslationGroupDTO]
 }
 
+enum ValidationError: Error {
+  case EmptyKey
+  case AlreadyExists
+}
+
 class WSTranslationRepoImpl: WSTranslationRepo {
   private let localGroupSource: WSTranslationGroupLocalDataSource
   private let localKeySource: WSTranslationKeyLocalDataSource
@@ -50,15 +55,14 @@ class WSTranslationRepoImpl: WSTranslationRepo {
     parentId: UUID?
   ) async throws -> TranslationGroupDTO {
     if name.isEmpty {
-      fatalError("Empty key is not allowed")
+      throw ValidationError.EmptyKey
     }
     let existingDoc = try await localGroupSource.findByKey(
       key: name, workspaceId: workspaceId, parentGroupId: parentId
     )
     if !existingDoc.isEmpty {
-      return existingDoc.first!.toDTO()
+      throw ValidationError.AlreadyExists
     }
-    
     return try await localGroupSource.create(key: name, workspaceId: workspaceId, parentGroupId: parentId)
   }
   
