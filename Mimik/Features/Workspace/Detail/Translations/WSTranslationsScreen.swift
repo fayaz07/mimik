@@ -12,10 +12,10 @@ import Factory
 struct WSTranslationsScreen: View {
   var data: WorkspaceDTO
   
+  @EnvironmentObject var router: AppNavigationRouter
+  
   @Injected(\.trlsnScreenViewModel)
   var viewModel: WSTranslationsViewModel
-  
-  
   
   @State private var showDetails: Bool = false
   
@@ -36,38 +36,21 @@ struct WSTranslationsScreen: View {
       .onAppear {
         viewModel.fetchGroups(workspaceId: data.id)
       }
-    }.onReceive(viewModel.$addGroupEvent) { event in
-      if case .added = event.data {
-        closeDialog()
-      }
-    }
-  }
-
-  func showDialog(
-    parentGroupId: UUID? = nil,
-    groups: [TranslationGroupDTO]
-  ) {
-    @Bindable var vm = viewModel
-    
-    showCustomDialog {
-      AddGroupForm(
-        apiResult: $vm.addGroupResult,
-        parentGroupID: parentGroupId,
-        allGroups: groups,
-        onClose: closeDialog
-      ) { name, _ in
-        viewModel
-          .addGroup(
-            workspaceId: data.id,
-            name: name,
-            parentId: parentGroupId
-          )
-      }
     }
   }
   
-  func closeDialog() {
-//    NSApp.keyWindow?.close()
+  func onAddGroup(parentGroupId: UUID?, groups: [TranslationGroupDTO]) {
+    router.push(
+      to: .workspace(
+        .translations(
+          .addGroup(
+            workspaceId: data.id,
+            parentGroupId: parentGroupId,
+            groups: groups
+          )
+        )
+      )
+    )
   }
   
   func TranslationTree(
@@ -85,7 +68,7 @@ struct WSTranslationsScreen: View {
           allGroups: groups,
           group: group,
           onAddGroup: { parentGroupId in
-            showDialog(parentGroupId: parentGroupId, groups: groups)
+            onAddGroup(parentGroupId: parentGroupId, groups: groups)
           }
         )
       }
@@ -113,7 +96,7 @@ struct WSTranslationsScreen: View {
         .tint(.green)
         .padding(.vertical, 5)
         Button("Add Group") {
-          showDialog(parentGroupId: nil, groups: [])
+          onAddGroup(parentGroupId: nil, groups: [])
         }
         .buttonStyle(.bordered)
         .tint(.blue)

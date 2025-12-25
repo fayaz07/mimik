@@ -34,7 +34,14 @@ extension Container {
   var trlsnScreenViewModel: Factory<WSTranslationsViewModel> {
     self {
       WSTranslationsViewModel(
-        listUseCase: self.listTrslnUsecase(),
+        listUseCase: self.listTrslnUsecase()
+      )
+    }
+  }
+  
+  var addTrslnGroupViewModel: Factory<AddTranslationGroupViewModel> {
+    self {
+      AddTranslationGroupViewModel(
         createUseCase: self.createTrslnUsecase()
       )
     }

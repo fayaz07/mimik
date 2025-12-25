@@ -23,6 +23,9 @@ struct WorkspaceNavigationView: View {
         
       case .apps(let route):
         WorkspaceAppsNavigationView(route: route)
+        
+      case .translations(let route):
+        WorkspaceTranslationsNavigationView(route: route)
     }
   }
 }
@@ -37,7 +40,22 @@ struct WorkspaceAppsNavigationView: View {
         
       case .detail(let id):
         VStack{ Text("Detail") }
-//        WorkspaceAppDetailScreen(appId: id)
+        //        WorkspaceAppDetailScreen(appId: id)
+    }
+  }
+}
+
+struct WorkspaceTranslationsNavigationView: View {
+  let route: Route.WorkspaceRoute.TranslationsRoute
+  
+  var body: some View {
+    switch route {
+      case .addGroup(let workspaceId, let parentGroupId,let groups):
+        AddTranslationGroupScreen(
+          workspaceId: workspaceId,
+          parentGroupID: parentGroupId,
+          allGroups: groups
+        )
     }
   }
 }
