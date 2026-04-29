@@ -19,6 +19,16 @@ class WSTranslationsViewModel {
   }
   
   var groups: ViewState<(TranslationGroupDTO, [TranslationGroupDTO])> = .loading()
+  var rootGroup: ViewState<TranslationGroupDTO> = .loading()
+  
+  func fetchRootGroup(workspaceId: UUID) {
+    rootGroup = .loading()
+    Task {
+      do {
+        let result =
+      }
+    }
+  }
   
   func fetchGroups(workspaceId: UUID) {
     groups = .loading()

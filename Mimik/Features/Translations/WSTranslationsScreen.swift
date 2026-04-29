@@ -26,9 +26,13 @@ struct WSTranslationsScreen: View {
       } forError: { error in
         Text(error)
       } forData: { allGroups in
-        return TranslationTree(
-          rootGroup: allGroups.0,
-          groups: allGroups.1,
+//        return TranslationTree(
+//          rootGroup: allGroups.0,
+//          groups: allGroups.1,
+//        )
+        return TrslnGroupDetailView(
+          currentGroup: allGroups.0,
+          parentGroups: []
         )
       } forNoData: {
         Text("No groups, please add a group")

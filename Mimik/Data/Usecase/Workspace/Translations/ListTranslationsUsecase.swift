@@ -13,6 +13,21 @@ class ListTranslationsUsecase {
     self.repo = repo
   }
   
+  func getRootGroup(workspaceId: UUID) async throws -> TranslationGroupDTO {
+    var allGroups = try await repo.fetchAllGroups(workspaceId: workspaceId)
+    
+    let rootGroupIndex = allGroups.firstIndex(
+      where: { $0.key == DEFAULT_KEY_ROOT_TRANSLATION_GROUP })
+    
+    // If root group exists, return it; otherwise create a new default one
+    if let index = rootGroupIndex, index != -1 {
+      return allGroups[index]
+    } else {
+      // No root group found - create the default root group
+      return try await repo.addDefGroup(workspaceId: workspaceId)
+    }
+  }
+  
   /**
    - t1
    - t2
