@@ -648,7 +648,7 @@
 			repositoryURL = "https://github.com/apple/swift-protobuf.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.32.0;
+				minimumVersion = 1.37.0;
 			};
 		};
 		8EB66A0D2DF6B71C00A9694E /* XCRemoteSwiftPackageReference "Factory" */ = {
