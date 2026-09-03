@@ -22,6 +22,38 @@ class WSTranslationGroupLocalDataSource {
     return request
   }
   
+  func printAll() async throws {
+    let request: NSFetchRequest<TranslationGroupEntity> = TranslationGroupEntity.fetchRequest()
+    request.sortDescriptors = [
+      NSSortDescriptor(key: "createdAt", ascending: true)
+    ]
+    let results = try context.fetch(request)
+    for result in results {
+      print("ID: \(result.id), parent: \(result.parentGroupId?.uuidString ?? "nil"), key: \(result.key) \n")
+    }
+  }
+  
+  func fetchRootGroupsByWorkspaceId(workspaceId: UUID) async throws -> [TranslationGroupEntity] {
+    let request: NSFetchRequest<TranslationGroupEntity> = TranslationGroupEntity.fetchRequest()
+    request.predicate = NSPredicate(format: "workspaceId == %@ and parentGroupId == nil", workspaceId as CVarArg)
+    request.sortDescriptors = [
+      NSSortDescriptor(key: "createdAt", ascending: true)
+    ]
+    let results = try context.fetch(request)
+    return results
+  }
+  
+  func fetchByParentId(id: UUID) async throws -> [TranslationGroupEntity] {
+    try await printAll()
+    let request: NSFetchRequest<TranslationGroupEntity> = TranslationGroupEntity.fetchRequest()
+    request.predicate = NSPredicate(format: "parentGroupId == %@", id as CVarArg)
+    request.sortDescriptors = [
+      NSSortDescriptor(key: "createdAt", ascending: true)
+    ]
+    let results = try context.fetch(request)
+    return results
+  }
+  
   func fetchById(id: UUID) async throws -> TranslationGroupEntity? {
     let results = try context.fetch(_fetchOneByIdRequest(id: id))
     return results.first

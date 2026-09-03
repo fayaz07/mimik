@@ -46,4 +46,10 @@ extension Container {
       CreateTranslationUsecase(repo: self.trslnRepo())
     }
   }
+  
+  var trslnGroupDetailUsecase: Factory<TranslationGroupDetailUsecase> {
+    self {
+      TranslationGroupDetailUsecase(repo: self.trslnRepo())
+    }
+  }
 }

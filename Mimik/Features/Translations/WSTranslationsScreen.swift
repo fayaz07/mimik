@@ -31,8 +31,10 @@ struct WSTranslationsScreen: View {
 //          groups: allGroups.1,
 //        )
         return TrslnGroupDetailView(
+          isWorkspaceRoot: true,
+          workspaceId: data.id,
           currentGroup: allGroups.0,
-          parentGroups: []
+          parentGroups: [],
         )
       } forNoData: {
         Text("No groups, please add a group")

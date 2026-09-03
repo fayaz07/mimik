@@ -18,6 +18,9 @@ protocol WSTranslationRepo {
   func addDefGroup(workspaceId: UUID) async throws -> TranslationGroupDTO
   func addGroup(workspaceId: UUID, name: String, parentId: UUID?) async throws -> TranslationGroupDTO
   func fetchAllGroups(workspaceId: UUID) async throws -> [TranslationGroupDTO]
+  func fetchGroup(id: UUID) async throws -> TranslationGroupDTO?
+  func fetchGroupsByParent(parentId: UUID) async throws -> [TranslationGroupDTO]
+  func fetchRootGroupsByWorkspaceId(workspaceId: UUID) async throws -> [TranslationGroupDTO]
 }
 
 enum ValidationError: Error {
@@ -73,5 +76,17 @@ class WSTranslationRepoImpl: WSTranslationRepo {
   
   func addTranslation(key: String, workspaceId: UUID, excludedApps: [UUID]) async throws -> TranslationKeyDTO {
     return try await localKeySource.create(key: key, workspaceId: workspaceId, excludedApps: excludedApps)
+  }
+  
+  func fetchGroup(id: UUID) async throws -> TranslationGroupDTO? {
+    return try await localGroupSource.fetchById(id: id)?.toDTO() ?? nil
+  }
+  
+  func fetchGroupsByParent(parentId: UUID) async throws -> [TranslationGroupDTO] {
+    return try await localGroupSource.fetchByParentId(id: parentId).map { $0.toDTO() }
+  }
+  
+  func fetchRootGroupsByWorkspaceId(workspaceId: UUID) async throws -> [TranslationGroupDTO] {
+    return try await localGroupSource.fetchRootGroupsByWorkspaceId(workspaceId: workspaceId).map { $0.toDTO() }
   }
 }

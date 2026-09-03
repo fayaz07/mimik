@@ -25,7 +25,7 @@ class WSTranslationsViewModel {
     rootGroup = .loading()
     Task {
       do {
-        let result =
+//        let result =
       }
     }
   }

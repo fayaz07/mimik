@@ -46,7 +46,7 @@ struct BreadcrumbItemView: View {
 
         Text(label)
           .font(.body)
-          .foregroundStyle(isHovered ? Color.accentColor : Color.primary)
+          .foregroundStyle(isHovered ? Color.accentColor : Color.secondary)
       }
       .frame(alignment: .leading)
     }
@@ -80,8 +80,6 @@ struct Breadcrumb: View {
         }
       }
     }
-    .padding(.vertical, 8)
-    .padding(.horizontal, 12)
     .background(Color(.white))
     .clipShape(RoundedRectangle(cornerRadius: 8))
   }
