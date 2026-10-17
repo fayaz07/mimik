@@ -28,7 +28,7 @@ extension Container {
         toggleLangStatusUsecase: self.toggleLangStatusUsecase(),
       )
     }
-    .scope(.shared)
+    .scope(.singleton)
   }
   
   var trlsnScreenViewModel: Factory<WSTranslationsViewModel> {

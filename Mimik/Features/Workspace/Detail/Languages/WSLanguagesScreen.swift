@@ -59,7 +59,7 @@ struct WSLanguagesScreen: View {
   
   var availableLangs: some View {
     ViewStateUIBuilder(
-      state: viewModel.addedLangs) {
+      state: viewModel.allLangs) {
         ProgressView()
       } forError: { error in
         Text(error)

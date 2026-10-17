@@ -55,14 +55,7 @@ final class WorkspaceRepositoryImpl: WorkspaceRepository {
     if !langRepo.isValid(code: lang) {
       return nil
     }
-    
-    let doc = try await localSource.fetchById(id: id)
-    if doc == nil {
-      return nil
-    }
-    
-    doc?.defLang = lang
-    doc?.updatedAt = Date()
-    return doc!.toDTO()
+
+    return try await localSource.switchDefaultLang(id: id, lang: lang)
   }
 }

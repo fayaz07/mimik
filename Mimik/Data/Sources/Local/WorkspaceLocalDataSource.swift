@@ -74,12 +74,33 @@ final class WorkspaceLocalDataSource {
   
   func saveAccessTime(id: UUID) async throws {
     let doc = try context.fetch(_fetchOneByIdRequest(id: id)).first
-    
+
     if doc != nil {
       let now = Date()
       doc?.lastAccessed = now
-      
+
       _ = try? context.save()
     }
+  }
+
+  func switchDefaultLang(id: UUID, lang: String) async throws -> WorkspaceDTO? {
+    let request = _fetchOneByIdRequest(id: id)
+
+    var result: WorkspaceDTO?
+
+    try await context.perform { [weak context] in
+      guard let doc = try context?.fetch(request).first else { return }
+
+      doc.defLang = lang
+      doc.updatedAt = Date()
+
+      if context?.hasChanges == true {
+        try context?.save()
+      }
+
+      result = doc.toDTO()
+    }
+
+    return result
   }
 }

@@ -30,7 +30,20 @@ class WSLanguagesViewModel {
   var addedLangs: ViewState<[String: WSLangDTO]> = .init(loading: true)
   var allLangs: ViewState<[String: LangDTO]> = .init(loading: true)
   var wsData: ViewState<WorkspaceDTO> = .init(loading: true)
-  
+
+  // Tracks which workspace the data above belongs to. This view model is
+  // registered as a singleton (so revisiting the screen doesn't re-flash a
+  // loading indicator), but its state is per-workspace, so we need to reset
+  // it ourselves whenever the caller asks for a different workspace.
+  private var loadedWorkspaceId: UUID?
+
+  private func resetStateIfWorkspaceChanged(workspaceId: UUID) {
+    guard loadedWorkspaceId != workspaceId else { return }
+    loadedWorkspaceId = workspaceId
+    addedLangs = .init(loading: true)
+    wsData = .init(loading: true)
+  }
+
   var availableLangs: [String: LangDTO] {
     guard let all = allLangs.data,
           let added = addedLangs.data else {
@@ -52,6 +65,7 @@ class WSLanguagesViewModel {
   }
     
   func loadAddedLanguages(workspaceId: UUID) {
+    resetStateIfWorkspaceChanged(workspaceId: workspaceId)
     if addedLangs.hasData {
       return
     }
@@ -92,6 +106,7 @@ class WSLanguagesViewModel {
   }
   
   func fetchWorkspace(workspaceId: UUID) {
+    resetStateIfWorkspaceChanged(workspaceId: workspaceId)
     if wsData.hasData {
       return
     }
