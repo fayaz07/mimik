@@ -50,11 +50,19 @@ struct WorkspaceTranslationsNavigationView: View {
   
   var body: some View {
     switch route {
-      case .addGroup(let workspaceId, let parentGroupId,let groups):
-        AddTranslationGroupScreen(
+      case .editKey(let workspaceId, let key, let groupName, let parentGroups):
+        EditTranslationsScreen(
           workspaceId: workspaceId,
-          parentGroupID: parentGroupId,
-          allGroups: groups
+          key: key,
+          groupName: groupName,
+          parentGroups: parentGroups
+        )
+
+      case .groupDetail(let workspaceId, let group, let parentGroups):
+        TrslnGroupDetailView(
+          workspaceId: workspaceId,
+          currentGroup: group,
+          parentGroups: parentGroups
         )
     }
   }

@@ -7,4 +7,5 @@
 
 enum AddTranslationEvents: Equatable {
   case added
+  case saved
 }

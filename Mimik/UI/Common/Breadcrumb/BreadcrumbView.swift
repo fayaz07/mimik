@@ -5,7 +5,7 @@ import SwiftUI
 ///   - id: Unique identifier for navigation
 ///   - label: Display text for the breadcrumb
 ///   - icon: Optional SF Symbol name
-public struct BreadcrumbItem {
+public struct BreadcrumbItem: Hashable {
   public let id: String
   public let label: String
   public let icon: String?
@@ -23,41 +23,57 @@ public struct BreadcrumbItem {
 ///   - id: Unique identifier for navigation
 ///   - label: Display text for the breadcrumb
 ///   - icon: Optional SF Symbol name
+///   - isCurrent: true for the last/current item - rendered as plain text,
+///     not clickable, since you're already there
 struct BreadcrumbItemView: View {
   let id: String
   let label: String
   var icon: String?
+  var isCurrent: Bool = false
+  var onTap: (String) -> Void = { _ in }
 
   @State private var isHovered = false
 
   var body: some View {
-    Button(action: {
-      // Navigation handler - pass id for navigation logic
-      print("Navigate to: \(id)")
-    }) {
+    Button(action: { onTap(id) }) {
       HStack(spacing: 8) {
         if let icon = icon {
           Image(systemName: icon)
             .font(.caption)
             .foregroundStyle(
-              isHovered ? Color.accentColor : Color.secondary.opacity(0.7)
+              isCurrent
+                ? Color.primary
+                : (isHovered ? AppColors.primaryStart : Color.secondary.opacity(0.7))
             )
         }
 
         Text(label)
-          .font(.body)
-          .foregroundStyle(isHovered ? Color.accentColor : Color.secondary)
+          .font(isCurrent ? .body.weight(.semibold) : .body)
+          .foregroundStyle(
+            isCurrent
+              ? Color.primary
+              : (isHovered ? AppColors.primaryStart : Color.secondary)
+          )
+          .lineLimit(1)
+          .truncationMode(.tail)
       }
       .frame(alignment: .leading)
     }
     .buttonStyle(.plain)
+    .disabled(isCurrent)
+    .onHover { isHovered = $0 }
+    .help(label)
   }
 }
 
 /// Breadcrumb - The full breadcrumb navigation component
-/// - Parameter items: Array of BreadcrumbItem instances
+/// - Parameters:
+///   - items: Array of BreadcrumbItem instances, oldest ancestor first
+///   - onTap: called with the tapped item's id - the last item is treated
+///     as the current page and isn't tappable
 struct Breadcrumb: View {
   let items: [BreadcrumbItem]
+  var onTap: (String) -> Void = { _ in }
 
   @Environment(\.colorScheme) private var colorScheme
 
@@ -67,7 +83,9 @@ struct Breadcrumb: View {
         BreadcrumbItemView(
           id: item.id,
           label: item.label,
-          icon: item.icon
+          icon: item.icon,
+          isCurrent: items.last?.id == item.id,
+          onTap: onTap
         )
 
         // Add chevron separator if not the last item
@@ -97,7 +115,7 @@ struct Breadcrumb: View {
       BreadcrumbItem(id: "analytics", label: "Analytics", icon: nil)
     ]
   )
-  
+
   Breadcrumb(
     items: [
       BreadcrumbItem(id: "home", label: "Home"),

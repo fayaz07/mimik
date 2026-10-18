@@ -27,30 +27,52 @@ class WSTranslationValueLocalDataSource {
     return results.first
   }
   
-  func fetchByWorkspaceId(workspaceId: UUID) async throws -> [TranslationValueEntity] {
+  func fetchByKeyIds(_ keyIds: [UUID]) async throws -> [TranslationValueEntity] {
+    guard !keyIds.isEmpty else { return [] }
     let request: NSFetchRequest<TranslationValueEntity> = TranslationValueEntity.fetchRequest()
-    request.predicate = NSPredicate(format: "workspaceId == %@", workspaceId as CVarArg)
-    let results = try context.fetch(request)
-    return results
-  }
-  
-  func findByKey(key: String, workspaceId: UUID) async throws -> [TranslationValueEntity] {
-    let request: NSFetchRequest<TranslationValueEntity> = TranslationValueEntity.fetchRequest()
-    request.predicate = NSPredicate(format: "key == %@ and workspaceId == %@", key as CVarArg, workspaceId as CVarArg)
+    request.predicate = NSPredicate(format: "keyId IN %@", keyIds as CVarArg)
     return try context.fetch(request)
   }
-  
-  func create(
+
+  func findByKeyAndLang(keyId: UUID, lang: String) async throws -> [TranslationValueEntity] {
+    let request: NSFetchRequest<TranslationValueEntity> = TranslationValueEntity.fetchRequest()
+    request.predicate = NSPredicate(
+      format: "keyId == %@ and lang == %@",
+      keyId as CVarArg,
+      lang as CVarArg
+    )
+    request.fetchLimit = 1
+    return try context.fetch(request)
+  }
+
+  /// Creates the value row for (keyId, lang) if it doesn't exist yet,
+  /// otherwise updates the existing one. Translations are always edited
+  /// in place rather than appended, since there's exactly one value per
+  /// key per language.
+  func upsert(
     keyId: UUID,
+    lang: String,
     value: String,
-    translatedBy: String,
+    translatedBy: String
   ) async throws -> TranslationValueDTO {
-    let doc = TranslationValueEntity(context: context)
-    doc.id = UUID()
-    doc.createdAt = Date()
-    doc.updatedAt = Date()
-        
+    let existing = try await findByKeyAndLang(keyId: keyId, lang: lang)
+
+    var result: TranslationValueDTO!
+
     try await context.perform { [weak context] in
+      let doc = existing.first ?? TranslationValueEntity(context: context!)
+      if existing.isEmpty {
+        doc.id = UUID()
+        doc.keyId = keyId
+        doc.lang = lang
+        doc.createdAt = Date()
+        doc.approved = false
+        doc.approvedBy = ""
+      }
+      doc.value = value
+      doc.translatedBy = translatedBy
+      doc.updatedAt = Date()
+
       if context?.hasChanges == true {
         do {
           try context?.save()
@@ -58,8 +80,10 @@ class WSTranslationValueLocalDataSource {
           throw error
         }
       }
+      result = doc.toDTO()
     }
-    return doc.toDTO()
+
+    return result
   }
 
   func delete(id: UUID) async throws {

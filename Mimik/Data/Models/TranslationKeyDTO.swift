@@ -11,6 +11,7 @@ struct TranslationKeyDTO: Identifiable, Sendable, Hashable {
   let key: String
   let author: String
   let workspaceId: UUID
+  let groupId: UUID?
   let createdAt: Date
   let updatedAt: Date
 }
@@ -20,13 +21,14 @@ extension TranslationKeyEntity {
           get { excludedApps as? [UUID] ?? [] }
           set { excludedApps = newValue as NSObject? }
       }
-  
+
   func toDTO() -> TranslationKeyDTO {
     TranslationKeyDTO(
       id: id!,
       key: key!,
-      author: author!,
+      author: author ?? "",
       workspaceId: workspaceId!,
+      groupId: groupId,
       createdAt: createdAt!,
       updatedAt: updatedAt!
     )

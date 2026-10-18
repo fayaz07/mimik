@@ -12,9 +12,18 @@ let DEFAULT_KEY_ROOT_TRANSLATION_GROUP: String = "root"
 protocol WSTranslationRepo {
   func addTranslation(
     key: String,
+    groupId: UUID,
     workspaceId: UUID,
     excludedApps: [UUID]
   ) async throws -> TranslationKeyDTO
+  func fetchKeysByGroupId(groupId: UUID) async throws -> [TranslationKeyDTO]
+  func fetchValues(forKeyIds keyIds: [UUID]) async throws -> [TranslationValueDTO]
+  func upsertValue(
+    keyId: UUID,
+    lang: String,
+    value: String,
+    translatedBy: String
+  ) async throws -> TranslationValueDTO
   func addDefGroup(workspaceId: UUID) async throws -> TranslationGroupDTO
   func addGroup(workspaceId: UUID, name: String, parentId: UUID?) async throws -> TranslationGroupDTO
   func fetchAllGroups(workspaceId: UUID) async throws -> [TranslationGroupDTO]
@@ -74,8 +83,52 @@ class WSTranslationRepoImpl: WSTranslationRepo {
       .map { $0.toDTO() }
   }
   
-  func addTranslation(key: String, workspaceId: UUID, excludedApps: [UUID]) async throws -> TranslationKeyDTO {
-    return try await localKeySource.create(key: key, workspaceId: workspaceId, excludedApps: excludedApps)
+  func addTranslation(
+    key: String,
+    groupId: UUID,
+    workspaceId: UUID,
+    excludedApps: [UUID]
+  ) async throws -> TranslationKeyDTO {
+    let trimmed = key.trimmingCharacters(in: .whitespacesAndNewlines)
+    if trimmed.isEmpty {
+      throw ValidationError.EmptyKey
+    }
+
+    let existingDoc = try await localKeySource.findByKey(
+      key: trimmed, workspaceId: workspaceId, groupId: groupId
+    )
+    if !existingDoc.isEmpty {
+      throw ValidationError.AlreadyExists
+    }
+
+    return try await localKeySource.create(
+      key: trimmed,
+      workspaceId: workspaceId,
+      groupId: groupId,
+      excludedApps: excludedApps
+    )
+  }
+
+  func fetchKeysByGroupId(groupId: UUID) async throws -> [TranslationKeyDTO] {
+    return try await localKeySource.fetchByGroupId(groupId: groupId).map { $0.toDTO() }
+  }
+
+  func fetchValues(forKeyIds keyIds: [UUID]) async throws -> [TranslationValueDTO] {
+    return try await localValueSource.fetchByKeyIds(keyIds).map { $0.toDTO() }
+  }
+
+  func upsertValue(
+    keyId: UUID,
+    lang: String,
+    value: String,
+    translatedBy: String
+  ) async throws -> TranslationValueDTO {
+    return try await localValueSource.upsert(
+      keyId: keyId,
+      lang: lang,
+      value: value,
+      translatedBy: translatedBy
+    )
   }
   
   func fetchGroup(id: UUID) async throws -> TranslationGroupDTO? {

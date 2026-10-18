@@ -38,12 +38,4 @@ extension Container {
       )
     }
   }
-  
-  var addTrslnGroupViewModel: Factory<AddTranslationGroupViewModel> {
-    self {
-      AddTranslationGroupViewModel(
-        createUseCase: self.createTrslnUsecase()
-      )
-    }
-  }
 }

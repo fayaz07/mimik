@@ -27,6 +27,10 @@ class TranslationGroupDetailUsecase {
   func getChildren(id: UUID) async throws -> [TranslationGroupDTO] {
     return try await repo.fetchGroupsByParent(parentId: id)
   }
+
+  func getKeys(groupId: UUID) async throws -> [TranslationKeyDTO] {
+    return try await repo.fetchKeysByGroupId(groupId: groupId)
+  }
   
   func getRootGroupsByWorkspaceId(workspaceId: UUID) async throws -> [TranslationGroupDTO] {
     return try await repo.fetchRootGroupsByWorkspaceId(workspaceId: workspaceId)

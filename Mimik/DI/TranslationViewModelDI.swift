@@ -11,7 +11,20 @@ extension Container {
   var trslnGroupDetailViewModel: Factory<TrslnGroupDetailViewModel> {
     self {
       TrslnGroupDetailViewModel(
-        detailUsecase: self.trslnGroupDetailUsecase()
+        detailUsecase: self.trslnGroupDetailUsecase(),
+        getWorkspaceUsecase: self.getUsecase(),
+        langUsecase: self.addLangUsecase(),
+        valueUsecase: self.trslnValueUsecase()
+      )
+    }
+  }
+
+  var editTranslationsViewModel: Factory<EditTranslationsViewModel> {
+    self {
+      EditTranslationsViewModel(
+        getWorkspaceUsecase: self.getUsecase(),
+        langUsecase: self.addLangUsecase(),
+        valueUsecase: self.trslnValueUsecase()
       )
     }
   }

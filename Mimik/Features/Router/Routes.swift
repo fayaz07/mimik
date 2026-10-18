@@ -24,7 +24,17 @@ enum Route: Hashable {
     
     case translations(TranslationsRoute)
     enum TranslationsRoute: Hashable {
-      case addGroup(workspaceId: UUID, parentGroupId: UUID?, groups: [TranslationGroupDTO])
+      case editKey(
+        workspaceId: UUID,
+        key: TranslationKeyDTO,
+        groupName: String,
+        parentGroups: [BreadcrumbItem]
+      )
+      case groupDetail(
+        workspaceId: UUID,
+        group: TranslationGroupDTO,
+        parentGroups: [BreadcrumbItem]
+      )
     }
   }
 }

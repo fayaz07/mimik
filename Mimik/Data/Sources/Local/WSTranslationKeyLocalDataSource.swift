@@ -39,15 +39,43 @@ class WSTranslationKeyLocalDataSource {
     request.predicate = NSPredicate(format: "key == %@ and workspaceId == %@", key as CVarArg, workspaceId as CVarArg)
     return try context.fetch(request)
   }
-  
-  func create(key: String, workspaceId: UUID, excludedApps: [UUID]) async throws -> TranslationKeyDTO {
+
+  func findByKey(key: String, workspaceId: UUID, groupId: UUID) async throws -> [TranslationKeyEntity] {
+    let request: NSFetchRequest<TranslationKeyEntity> = TranslationKeyEntity.fetchRequest()
+    request.predicate = NSPredicate(
+      format: "key == %@ and workspaceId == %@ and groupId == %@",
+      key as CVarArg,
+      workspaceId as CVarArg,
+      groupId as CVarArg
+    )
+    return try context.fetch(request)
+  }
+
+  func fetchByGroupId(groupId: UUID) async throws -> [TranslationKeyEntity] {
+    let request: NSFetchRequest<TranslationKeyEntity> = TranslationKeyEntity.fetchRequest()
+    request.predicate = NSPredicate(format: "groupId == %@", groupId as CVarArg)
+    request.sortDescriptors = [
+      NSSortDescriptor(key: "createdAt", ascending: true)
+    ]
+    return try context.fetch(request)
+  }
+
+  func create(
+    key: String,
+    workspaceId: UUID,
+    groupId: UUID,
+    excludedApps: [UUID]
+  ) async throws -> TranslationKeyDTO {
     let doc = TranslationKeyEntity(context: context)
     doc.id = UUID()
     doc.key = key
+    doc.workspaceId = workspaceId
+    doc.groupId = groupId
+    doc.author = "{}"
     doc.createdAt = Date()
     doc.updatedAt = Date()
     doc.excludedAppsArray = excludedApps
-        
+
     try await context.perform { [weak context] in
       if context?.hasChanges == true {
         do {

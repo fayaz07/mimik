@@ -7,76 +7,104 @@
 import SwiftUI
 import Factory
 
+struct GradientPillButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .font(.subheadline.weight(.semibold))
+      .foregroundColor(.white)
+      .padding(.horizontal, 18)
+      .padding(.vertical, 10)
+      .background(AppColors.primaryGradient)
+      .clipShape(Capsule())
+      .shadow(
+        color: AppColors.primaryStart.opacity(0.35),
+        radius: configuration.isPressed ? 2 : 6,
+        y: configuration.isPressed ? 1 : 3
+      )
+      .scaleEffect(configuration.isPressed ? 0.96 : 1.0)
+      .opacity(configuration.isPressed ? 0.9 : 1.0)
+  }
+}
+
+struct GhostButtonStyle: ButtonStyle {
+  var color: Color
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .font(.subheadline.weight(.medium))
+      .foregroundColor(color)
+      .padding(.horizontal, 14)
+      .padding(.vertical, 9)
+      .background(
+        Capsule().fill(color.opacity(configuration.isPressed ? 0.16 : 0.08))
+      )
+      .opacity(configuration.isPressed ? 0.85 : 1.0)
+  }
+}
+
 struct GroupBreadcrumb : View {
-  
+
   let group: TranslationGroupDTO
   let parentGroups: [BreadcrumbItem]
-  
+  var onAddGroup: () -> Void = {}
+  var onAddKey: () -> Void = {}
+  var onBreadcrumbTap: (String) -> Void = { _ in }
+
   var body: some View {
-    HStack {
+    HStack(alignment: .top) {
       headerLeftSection()
       Spacer()
       headerRightSection()
     }
-    .padding(.all, 16)
+    .padding(.all, 20)
+    .background(
+      Rectangle()
+        .fill(.white)
+        .shadow(color: .black.opacity(0.04), radius: 6, y: 3)
+    )
   }
-  
-  struct CustomBorderButtonStyle: ButtonStyle {
-    var color: Color
-    
-    func makeBody(configuration: Configuration) -> some View {
-      configuration.label
-        .padding(.horizontal, 24)
-        .padding(.vertical, 10)
-        .foregroundColor(color)
-        .background(
-          RoundedRectangle(cornerRadius: 6)
-            .fill(configuration.isPressed ? color.opacity(0.15) : Color.clear)
-        )
-        .overlay(
-          RoundedRectangle(cornerRadius: 6)
-            .stroke(color, lineWidth: 0.35)
-        )
-        .opacity(configuration.isPressed ? 0.8 : 1.0)
-    }
-  }
-  
+
   func headerRightSection() -> some View {
-    return VStack {
-      HStack {
-        Button(action: {}, label: {Text("Rename")})
-          .buttonStyle(CustomBorderButtonStyle(color: .black))
-        Button(
-          action: {},
-          label: {
-            Text("Delete")
-          }
-        ).buttonStyle(CustomBorderButtonStyle(color: .red))
-        
-        Button(action: {}, label: {Text("+ Add key")})
-          .buttonStyle(CustomBorderButtonStyle(color: .black))
+    return HStack(spacing: 10) {
+      Button(action: {}) {
+        Label("Rename", systemImage: "pencil")
       }
-      Spacer()
+      .buttonStyle(GhostButtonStyle(color: .black.opacity(0.65)))
+
+      Button(action: {}) {
+        Label("Delete", systemImage: "trash")
+      }
+      .buttonStyle(GhostButtonStyle(color: AppColors.danger))
+
+      Button(action: onAddGroup) {
+        Label("Add Group", systemImage: "folder.badge.plus")
+      }
+      .buttonStyle(GradientPillButtonStyle())
+
+      Button(action: onAddKey) {
+        Label("Add Key", systemImage: "plus.circle.fill")
+      }
+      .buttonStyle(GradientPillButtonStyle())
     }
   }
-  
-  func headerLeftSection() -> VStack<TupleView<(Text, Breadcrumb, Spacer)>> {
-    return VStack(alignment: .leading, spacing: 0) {
+
+  func headerLeftSection() -> VStack<TupleView<(Text, Breadcrumb)>> {
+    return VStack(alignment: .leading, spacing: 6) {
       Text(
-        group.key,
+        group.displayLabel,
       )
       .font(.title2)
       .bold()
-      
+
       Breadcrumb(
         items: parentGroups + [
           BreadcrumbItem(
             id: group.id.uuidString,
-            label: group.key
+            label: group.displayLabel
           )
-        ]
+        ],
+        onTap: onBreadcrumbTap
       )
-      Spacer()
     }
   }
 }

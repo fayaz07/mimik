@@ -21,15 +21,15 @@ struct TranslationValueDTO: Identifiable, Sendable, Hashable {
 extension TranslationValueEntity {
   func toDTO() -> TranslationValueDTO {
     TranslationValueDTO(
-      id: id!,
-      keyId: keyId!,
-      lang: lang!,
+      id: id ?? UUID(),
+      keyId: keyId ?? UUID(),
+      lang: lang ?? "",
       value: value ?? "",
       approved: approved,
-      approvedBy: approvedBy!,
-      translatedBy: translatedBy!,
-      createdAt: createdAt!,
-      updatedAt: updatedAt!
+      approvedBy: approvedBy ?? "",
+      translatedBy: translatedBy ?? "",
+      createdAt: createdAt ?? Date(),
+      updatedAt: updatedAt ?? Date()
     )
   }
 }
