@@ -21,4 +21,12 @@ struct KeyListItem: Identifiable {
   var isFullyTranslated: Bool {
     totalLanguages > 0 && translatedCount == totalLanguages
   }
+
+  /// Whether this key shows up for `app` - true for every key when `app`
+  /// is nil (no filter/"All Apps"), otherwise false if this key has been
+  /// specifically excluded from that app.
+  func isIncluded(in app: WSAppDTO?) -> Bool {
+    guard let app else { return true }
+    return !key.excludedApps.contains(app.id)
+  }
 }

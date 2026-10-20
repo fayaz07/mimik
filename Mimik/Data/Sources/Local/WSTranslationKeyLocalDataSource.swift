@@ -90,14 +90,29 @@ class WSTranslationKeyLocalDataSource {
 
   func delete(id: UUID) async throws {
     let request = _fetchOneByIdRequest(id: id)
-    
+
     try await context.perform {
       [weak context] in
-      
+
       if let object = try context?.fetch(request).first {
         context?.delete(object)
         try context?.save()
       }
     }
+  }
+
+  func updateExcludedApps(id: UUID, excludedApps: [UUID]) async throws -> TranslationKeyDTO {
+    guard let doc = try await fetchById(id: id) else {
+      throw FetchError.NotFound
+    }
+    doc.excludedAppsArray = excludedApps
+    doc.updatedAt = Date()
+
+    try await context.perform { [weak context] in
+      if context?.hasChanges == true {
+        try context?.save()
+      }
+    }
+    return doc.toDTO()
   }
 }

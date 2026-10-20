@@ -12,18 +12,22 @@ class EditTranslationsViewModel {
   private let getWorkspaceUsecase: GetWorkspaceUsecase
   private let langUsecase: AddLanguageUsecase
   private let valueUsecase: TranslationValueUsecase
+  private let listAppsUsecase: ListWorkspaceAppsUsecase
 
   init(
     getWorkspaceUsecase: GetWorkspaceUsecase,
     langUsecase: AddLanguageUsecase,
     valueUsecase: TranslationValueUsecase,
+    listAppsUsecase: ListWorkspaceAppsUsecase,
   ) {
     self.getWorkspaceUsecase = getWorkspaceUsecase
     self.langUsecase = langUsecase
     self.valueUsecase = valueUsecase
+    self.listAppsUsecase = listAppsUsecase
   }
 
   var languages: ViewState<[WSLangDTO]> = .loading()
+  var workspaceApps: ViewState<[WSAppDTO]> = .loading()
   var defaultLang: String = ""
   private var values: [String: String] = [:]
 
@@ -41,14 +45,16 @@ class EditTranslationsViewModel {
 
   func load(workspaceId: UUID, keyId: UUID) {
     languages = .loading()
+    workspaceApps = .loading()
     Task {
       do {
         async let workspaceTask = getWorkspaceUsecase.get(id: workspaceId)
         async let addedLangsTask = langUsecase.getAddedLanguages(workspaceId: workspaceId)
         async let existingValuesTask = valueUsecase.getValues(forKeyId: keyId)
+        async let appsTask = listAppsUsecase.list(workspaceId: workspaceId)
 
-        let (workspace, addedLangs, existingValues) = try await (
-          workspaceTask, addedLangsTask, existingValuesTask
+        let (workspace, addedLangs, existingValues, apps) = try await (
+          workspaceTask, addedLangsTask, existingValuesTask, appsTask
         )
 
         let activeLangs = addedLangs.values
@@ -68,10 +74,12 @@ class EditTranslationsViewModel {
           self.defaultLang = workspace.defLang
           self.values = initialValues
           self.languages = .success(data: activeLangs)
+          self.workspaceApps = .success(data: apps)
         }
       } catch {
         await MainActor.run {
           self.languages = .failure(error: "Failed to load languages for this workspace")
+          self.workspaceApps = .failure(error: "Failed to load this workspace's apps")
         }
       }
     }

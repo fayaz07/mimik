@@ -64,6 +64,12 @@ extension Container {
       CreateTranslationKeyUsecase(repo: self.trslnRepo())
     }
   }
+
+  var updateKeyExcludedAppsUsecase: Factory<UpdateKeyExcludedAppsUsecase> {
+    self {
+      UpdateKeyExcludedAppsUsecase(repo: self.trslnRepo())
+    }
+  }
   
   var trslnGroupDetailUsecase: Factory<TranslationGroupDetailUsecase> {
     self {

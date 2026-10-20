@@ -97,6 +97,10 @@ struct KeysSectionView: View {
   let state: ViewState<[KeyListItem]>
   let workspaceId: UUID
   let groupId: UUID
+  let allApps: [WSAppDTO]
+  /// When set, only keys included in this app are shown - lets the app
+  /// filter in GroupBreadcrumb scope this list to one app at a time.
+  let selectedAppFilter: WSAppDTO?
   @Binding var isAddingKey: Bool
   let onAdded: () -> Void
   let onEditKey: (TranslationKeyDTO) -> Void
@@ -110,8 +114,10 @@ struct KeysSectionView: View {
         Text(error)
           .foregroundColor(.red)
           .padding(.horizontal, 16)
-      } forData: { items in
-        VStack(spacing: 8) {
+      } forData: { allItems in
+        return VStack(spacing: 8) {
+          let items = allItems.filter { $0.isIncluded(in: selectedAppFilter) }
+
           if items.isEmpty {
             EmptyKeysPlaceholder()
           }
@@ -134,6 +140,7 @@ struct KeysSectionView: View {
     AddKeyRowView(
       workspaceId: workspaceId,
       groupId: groupId,
+      allApps: allApps,
       isEditing: $isAddingKey,
       onAdded: onAdded
     )

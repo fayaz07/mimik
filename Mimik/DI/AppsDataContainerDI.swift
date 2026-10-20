@@ -26,5 +26,11 @@ extension Container {
         appsRepo: self.appsRepository()
       )
     }
-  }  
+  }
+
+  var listWorkspaceAppsUsecase: Factory<ListWorkspaceAppsUsecase> {
+    self {
+      ListWorkspaceAppsUsecase(repo: self.appsRepository())
+    }
+  }
 }

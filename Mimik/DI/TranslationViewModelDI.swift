@@ -14,7 +14,8 @@ extension Container {
         detailUsecase: self.trslnGroupDetailUsecase(),
         getWorkspaceUsecase: self.getUsecase(),
         langUsecase: self.addLangUsecase(),
-        valueUsecase: self.trslnValueUsecase()
+        valueUsecase: self.trslnValueUsecase(),
+        listAppsUsecase: self.listWorkspaceAppsUsecase()
       )
     }
   }
@@ -24,7 +25,8 @@ extension Container {
       EditTranslationsViewModel(
         getWorkspaceUsecase: self.getUsecase(),
         langUsecase: self.addLangUsecase(),
-        valueUsecase: self.trslnValueUsecase()
+        valueUsecase: self.trslnValueUsecase(),
+        listAppsUsecase: self.listWorkspaceAppsUsecase()
       )
     }
   }

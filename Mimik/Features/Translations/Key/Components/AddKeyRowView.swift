@@ -16,10 +16,12 @@ import Factory
 struct AddKeyRowView: View {
   let workspaceId: UUID
   let groupId: UUID
+  var allApps: [WSAppDTO] = []
   @Binding var isEditing: Bool
   var onAdded: () -> Void = {}
 
   @State private var name = ""
+  @State private var excludedAppIds: Set<UUID> = []
   @State private var isSubmitting = false
   @State private var errorMessage: String?
   @State private var isHovered = false
@@ -96,6 +98,26 @@ struct AddKeyRowView: View {
         .keyboardShortcut(.defaultAction)
       }
 
+      if !allApps.isEmpty {
+        VStack(alignment: .leading, spacing: 4) {
+          Text("Included in")
+            .font(.caption2.weight(.semibold))
+            .foregroundColor(.secondary)
+
+          AppInclusionPicker(
+            apps: allApps,
+            excludedAppIds: excludedAppIds,
+            isDisabled: isSubmitting
+          ) { app in
+            if excludedAppIds.contains(app.id) {
+              excludedAppIds.remove(app.id)
+            } else {
+              excludedAppIds.insert(app.id)
+            }
+          }
+        }
+      }
+
       if let errorMessage {
         Text(errorMessage)
           .font(.caption2)
@@ -129,11 +151,13 @@ struct AddKeyRowView: View {
         _ = try await createUsecase.create(
           workspaceId: workspaceId,
           groupId: groupId,
-          key: trimmed
+          key: trimmed,
+          excludedApps: Array(excludedAppIds)
         )
         await MainActor.run {
           isSubmitting = false
           name = ""
+          excludedAppIds = []
           isEditing = false
           onAdded()
         }
@@ -157,6 +181,7 @@ struct AddKeyRowView: View {
 
   private func cancel() {
     name = ""
+    excludedAppIds = []
     errorMessage = nil
     isEditing = false
   }

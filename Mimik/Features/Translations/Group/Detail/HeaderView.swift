@@ -18,6 +18,13 @@ struct GroupBreadcrumb : View {
   var onRenamed: (TranslationGroupDTO) -> Void = { _ in }
   var onDeleted: () -> Void = {}
 
+  /// Lets the Keys section below be scoped to one app at a time - "show me
+  /// only what the Driver app actually ships with" - rather than having to
+  /// read each key's own included/excluded apps one row at a time.
+  var allApps: [WSAppDTO] = []
+  var selectedApp: WSAppDTO? = nil
+  var onSelectApp: (WSAppDTO?) -> Void = { _ in }
+
   @State private var isRenaming = false
   @State private var renameText = ""
   @State private var isSubmittingRename = false
@@ -68,6 +75,10 @@ struct GroupBreadcrumb : View {
 
   func headerRightSection() -> some View {
     return HStack(spacing: 10) {
+      if !allApps.isEmpty {
+        appFilterPicker
+      }
+
       // Rename/Delete act on the current group itself, so they only make
       // sense for nested groups - the workspace's root group isn't a real,
       // user-created group and can't be renamed or deleted.
@@ -99,6 +110,41 @@ struct GroupBreadcrumb : View {
         Label("Add Key", systemImage: "plus.circle.fill")
       }
       .buttonStyle(GradientPillButtonStyle())
+    }
+  }
+
+  /// Native macOS menu Picker rather than a hand-styled dropdown - gets the
+  /// checkmark-on-selected-item behavior for free, and reads as a filter
+  /// control rather than another action button next to Rename/Delete.
+  ///
+  /// The Picker's own `label:` isn't shown alongside the menu button on
+  /// macOS the way a Form row's label would be - left as-is it rendered as
+  /// a second, redundant "pill" showing the same selected value next to the
+  /// actual menu button. `.labelsHidden()` drops that duplicate, and a
+  /// plain caption in front explains what the control does instead.
+  private var appFilterPicker: some View {
+    HStack(spacing: 6) {
+      Text("Filter by App")
+        .font(.caption.weight(.medium))
+        .foregroundColor(.secondary)
+
+      Picker(
+        selection: Binding(
+          get: { selectedApp },
+          set: { onSelectApp($0) }
+        )
+      ) {
+        Text("All Apps").tag(Optional<WSAppDTO>.none)
+        ForEach(allApps) { app in
+          Text(app.name).tag(Optional(app))
+        }
+      } label: {
+        EmptyView()
+      }
+      .labelsHidden()
+      .pickerStyle(.menu)
+      .tint(selectedApp == nil ? Color.secondary : AppColors.primaryStart)
+      .fixedSize()
     }
   }
 

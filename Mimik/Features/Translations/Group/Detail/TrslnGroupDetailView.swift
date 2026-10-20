@@ -44,6 +44,11 @@ struct TrslnGroupDetailView: View {
   @State private var isAddingGroup = false
   @State private var isAddingKey = false
 
+  /// Scopes the Keys section to one app at a time, driven by the picker in
+  /// GroupBreadcrumb. nil shows every key regardless of which apps it's
+  /// excluded from.
+  @State private var selectedAppFilter: WSAppDTO?
+
   init(workspaceId: UUID, currentGroup: TranslationGroupDTO, parentGroups: [BreadcrumbItem]) {
     self.workspaceId = workspaceId
     self._currentGroup = State(wrappedValue: currentGroup)
@@ -71,6 +76,12 @@ struct TrslnGroupDetailView: View {
 
   private func reload() {
     viewModel.load(groupId: currentGroup.id, workspaceId: workspaceId)
+  }
+
+  /// Count for the Keys section header - reflects the app filter, so it
+  /// doesn't show a total that disagrees with what's actually listed below.
+  private var filteredKeyCount: Int? {
+    viewModel.keys.data?.filter { $0.isIncluded(in: selectedAppFilter) }.count
   }
 
   func onAddGroup() {
@@ -163,7 +174,10 @@ struct TrslnGroupDetailView: View {
           onAddKey: onAddKey,
           onBreadcrumbTap: onBreadcrumbTap,
           onRenamed: onGroupRenamed,
-          onDeleted: onGroupDeleted
+          onDeleted: onGroupDeleted,
+          allApps: viewModel.workspaceApps.data ?? [],
+          selectedApp: selectedAppFilter,
+          onSelectApp: { selectedAppFilter = $0 }
         )
 
         SectionHeaderView(title: "Groups", icon: "folder.fill", count: viewModel.childGroups.data?.count)
@@ -176,11 +190,13 @@ struct TrslnGroupDetailView: View {
           onGroupTap: onGroupTap
         )
 
-        SectionHeaderView(title: "Keys", icon: "character.book.closed.fill", count: viewModel.keys.data?.count)
+        SectionHeaderView(title: "Keys", icon: "character.book.closed.fill", count: filteredKeyCount)
         KeysSectionView(
           state: viewModel.keys,
           workspaceId: workspaceId,
           groupId: currentGroup.id,
+          allApps: viewModel.workspaceApps.data ?? [],
+          selectedAppFilter: selectedAppFilter,
           isAddingKey: $isAddingKey,
           onAdded: reload,
           onEditKey: onEditKey

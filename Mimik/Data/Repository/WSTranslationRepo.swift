@@ -17,6 +17,7 @@ protocol WSTranslationRepo {
     excludedApps: [UUID]
   ) async throws -> TranslationKeyDTO
   func fetchKeysByGroupId(groupId: UUID) async throws -> [TranslationKeyDTO]
+  func updateExcludedApps(keyId: UUID, excludedApps: [UUID]) async throws -> TranslationKeyDTO
   func fetchValues(forKeyIds keyIds: [UUID]) async throws -> [TranslationValueDTO]
   func upsertValue(
     keyId: UUID,
@@ -146,6 +147,10 @@ class WSTranslationRepoImpl: WSTranslationRepo {
 
   func fetchKeysByGroupId(groupId: UUID) async throws -> [TranslationKeyDTO] {
     return try await localKeySource.fetchByGroupId(groupId: groupId).map { $0.toDTO() }
+  }
+
+  func updateExcludedApps(keyId: UUID, excludedApps: [UUID]) async throws -> TranslationKeyDTO {
+    return try await localKeySource.updateExcludedApps(id: keyId, excludedApps: excludedApps)
   }
 
   func fetchValues(forKeyIds keyIds: [UUID]) async throws -> [TranslationValueDTO] {
