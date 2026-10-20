@@ -48,7 +48,7 @@ struct WorkspaceDetailScreen: View {
     } forNoData: {
       Text("Unable to show workspace details")
     }
-    .navigationTitle("Workspace Detail")
+    .navigationTitle(viewModel.viewState.data?.name ?? "Workspace")
     .toolbar {
       BackNavButton {
         router.pop()

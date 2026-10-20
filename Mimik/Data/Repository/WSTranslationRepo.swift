@@ -26,6 +26,10 @@ protocol WSTranslationRepo {
   ) async throws -> TranslationValueDTO
   func addDefGroup(workspaceId: UUID) async throws -> TranslationGroupDTO
   func addGroup(workspaceId: UUID, name: String, parentId: UUID?) async throws -> TranslationGroupDTO
+  func renameGroup(id: UUID, workspaceId: UUID, parentGroupId: UUID?, name: String) async throws -> TranslationGroupDTO
+  func deleteGroup(id: UUID) async throws
+  func deleteKey(id: UUID) async throws
+  func deleteValue(id: UUID) async throws
   func fetchAllGroups(workspaceId: UUID) async throws -> [TranslationGroupDTO]
   func fetchGroup(id: UUID) async throws -> TranslationGroupDTO?
   func fetchGroupsByParent(parentId: UUID) async throws -> [TranslationGroupDTO]
@@ -78,6 +82,37 @@ class WSTranslationRepoImpl: WSTranslationRepo {
     return try await localGroupSource.create(key: name, workspaceId: workspaceId, parentGroupId: parentId)
   }
   
+  func renameGroup(
+    id: UUID,
+    workspaceId: UUID,
+    parentGroupId: UUID?,
+    name: String
+  ) async throws -> TranslationGroupDTO {
+    let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+    if trimmed.isEmpty {
+      throw ValidationError.EmptyKey
+    }
+    let existingDoc = try await localGroupSource.findByKey(
+      key: trimmed, workspaceId: workspaceId, parentGroupId: parentGroupId
+    )
+    if existingDoc.contains(where: { $0.id != id }) {
+      throw ValidationError.AlreadyExists
+    }
+    return try await localGroupSource.rename(id: id, name: trimmed)
+  }
+
+  func deleteGroup(id: UUID) async throws {
+    try await localGroupSource.delete(id: id)
+  }
+
+  func deleteKey(id: UUID) async throws {
+    try await localKeySource.delete(id: id)
+  }
+
+  func deleteValue(id: UUID) async throws {
+    try await localValueSource.delete(id: id)
+  }
+
   func fetchAllGroups(workspaceId: UUID) async throws -> [TranslationGroupDTO] {
     return try await localGroupSource.fetchByWorkspaceId(workspaceId: workspaceId)
       .map { $0.toDTO() }

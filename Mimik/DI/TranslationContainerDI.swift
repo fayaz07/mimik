@@ -47,6 +47,18 @@ extension Container {
     }
   }
 
+  var renameTrslnGroupUsecase: Factory<RenameTranslationGroupUsecase> {
+    self {
+      RenameTranslationGroupUsecase(repo: self.trslnRepo())
+    }
+  }
+
+  var deleteTrslnGroupUsecase: Factory<DeleteTranslationGroupUsecase> {
+    self {
+      DeleteTranslationGroupUsecase(repo: self.trslnRepo())
+    }
+  }
+
   var createTrslnKeyUsecase: Factory<CreateTranslationKeyUsecase> {
     self {
       CreateTranslationKeyUsecase(repo: self.trslnRepo())

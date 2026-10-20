@@ -7,18 +7,36 @@
 
 import SwiftUI
 import Factory
-import Flow
 
 struct TrslnGroupDetailView: View {
 
   let workspaceId: UUID
-  let currentGroup: TranslationGroupDTO
   let parentGroups: [BreadcrumbItem]
 
-  @EnvironmentObject var router: AppNavigationRouter
+  /// Held in @State, not `let` - a successful rename updates this in place
+  /// so the breadcrumb/title reflect the new name immediately, without
+  /// needing a full reload. The id never changes, only key/updatedAt.
+  @State private var currentGroup: TranslationGroupDTO
 
-  @Injected(\.trslnGroupDetailViewModel)
-  var viewModel: TrslnGroupDetailViewModel
+  /// Local to the Translations tab, not the app-wide router - see
+  /// TranslationsNavigator for why (keeps the workspace sidebar visible
+  /// while drilling into nested groups).
+  @Environment(TranslationsNavigator.self) var nav: TranslationsNavigator
+
+  /// Resolved once, in init, and held in @State rather than @Injected.
+  /// @Injected's default (uncached) Factory scope re-resolves a BRAND NEW
+  /// instance every time this struct is reconstructed - which happens
+  /// whenever a view reading @Environment(TranslationsNavigator.self)
+  /// re-renders, including right after nav.push() mutates the shared
+  /// navigator. That re-render was orphaning the in-flight load() Task on
+  /// the old instance and leaving the view holding a fresh, never-loaded
+  /// one - permanently stuck on the loading spinner for nested groups.
+  /// @State (like WorkspaceDetailScreen's own viewModel) preserves the same
+  /// instance across re-renders for as long as this screen's identity
+  /// lives, which is exactly what we need here. Not .scope(.singleton):
+  /// root and nested group screens are simultaneously alive on the nav
+  /// stack and must not share one ViewModel's state.
+  @State private var viewModel: TrslnGroupDetailViewModel
 
   /// Driven by both the header's "+ Add Group"/"+ Add Key" buttons and the
   /// ghost cards themselves, so creating either happens inline on this
@@ -26,26 +44,28 @@ struct TrslnGroupDetailView: View {
   @State private var isAddingGroup = false
   @State private var isAddingKey = false
 
+  init(workspaceId: UUID, currentGroup: TranslationGroupDTO, parentGroups: [BreadcrumbItem]) {
+    self.workspaceId = workspaceId
+    self._currentGroup = State(wrappedValue: currentGroup)
+    self.parentGroups = parentGroups
+    self._viewModel = State(wrappedValue: Container.shared.trslnGroupDetailViewModel.resolve())
+  }
+
   private var breadcrumbTrailForChildren: [BreadcrumbItem] {
     parentGroups + [
       BreadcrumbItem(id: currentGroup.id.uuidString, label: currentGroup.displayLabel)
     ]
   }
 
-  /// This screen's own route, as it would appear on the nav stack. Used to
-  /// detect "we've been popped back to" so we can refresh - mirrors the
-  /// .onChange(of: router.currentScreen) pattern HomeScreen already uses,
-  /// since .onAppear alone isn't always enough to catch a return from a
-  /// pushed Add Group / Add Key screen.
-  private var ownRoute: Route {
-    .workspace(
-      .translations(
-        .groupDetail(
-          workspaceId: workspaceId,
-          group: currentGroup,
-          parentGroups: parentGroups
-        )
-      )
+  /// This screen's own route, as it would appear on the local nav stack.
+  /// Used to detect "we've been popped back to" so we can refresh - mirrors
+  /// the .onChange(of: router.currentScreen) pattern HomeScreen uses for
+  /// the app-wide router, just scoped to this tab's own navigator.
+  private var ownRoute: Route.WorkspaceRoute.TranslationsRoute {
+    .groupDetail(
+      workspaceId: workspaceId,
+      group: currentGroup,
+      parentGroups: parentGroups
     )
   }
 
@@ -61,31 +81,36 @@ struct TrslnGroupDetailView: View {
     isAddingKey = true
   }
 
+  func onGroupRenamed(_ updated: TranslationGroupDTO) {
+    currentGroup = updated
+  }
+
+  /// The currently-open group deleted itself - there's nothing left to show
+  /// here, so leave for wherever it was reached from. The parent screen
+  /// remounts fresh when we land back on it (see WSTranslationsScreen's
+  /// .id(topRoute)), which re-fetches its own child groups and naturally
+  /// drops the one we just deleted.
+  func onGroupDeleted() {
+    nav.pop()
+  }
+
   func onGroupTap(_ group: TranslationGroupDTO) {
-    router.push(
-      to: .workspace(
-        .translations(
-          .groupDetail(
-            workspaceId: workspaceId,
-            group: group,
-            parentGroups: breadcrumbTrailForChildren
-          )
-        )
+    nav.push(
+      to: .groupDetail(
+        workspaceId: workspaceId,
+        group: group,
+        parentGroups: breadcrumbTrailForChildren
       )
     )
   }
 
   func onEditKey(_ key: TranslationKeyDTO) {
-    router.push(
-      to: .workspace(
-        .translations(
-          .editKey(
-            workspaceId: workspaceId,
-            key: key,
-            groupName: currentGroup.displayLabel,
-            parentGroups: parentGroups
-          )
-        )
+    nav.push(
+      to: .editKey(
+        workspaceId: workspaceId,
+        key: key,
+        groupName: currentGroup.displayLabel,
+        parentGroups: parentGroups
       )
     )
   }
@@ -100,161 +125,78 @@ struct TrslnGroupDetailView: View {
     guard let tappedIndex = fullTrail.firstIndex(where: { $0.id == id }) else { return }
     let popCount = fullTrail.count - 1 - tappedIndex
     if popCount > 0 {
-      router.pop(times: popCount)
+      nav.pop(times: popCount)
     }
   }
 
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 0) {
+        // Inline, not .toolbar - this screen is no longer pushed onto its
+        // own NavigationStack (see WSTranslationsScreen for why), and a
+        // .toolbar here would bubble up to whichever ancestor actually
+        // hosts one, which could collide with WorkspaceDetailScreen's own
+        // always-on back button. Plain content avoids that ambiguity.
+        // The embedded root screen (reached from the Translations tab, not
+        // a push) doesn't need this - WorkspaceDetailScreen's own back
+        // button already leaves the whole workspace from there.
+        if !parentGroups.isEmpty {
+          Button(action: { nav.pop() }) {
+            HStack(spacing: 4) {
+              Image(systemName: "chevron.left")
+              Text("Back")
+            }
+            .font(.subheadline.weight(.medium))
+            .foregroundStyle(AppColors.primaryStart)
+          }
+          .buttonStyle(.plain)
+          .padding(.horizontal, 16)
+          .padding(.top, 12)
+          .padding(.bottom, 4)
+        }
+
         GroupBreadcrumb(
+          workspaceId: workspaceId,
           group: currentGroup,
           parentGroups: parentGroups,
           onAddGroup: onAddGroup,
           onAddKey: onAddKey,
-          onBreadcrumbTap: onBreadcrumbTap
+          onBreadcrumbTap: onBreadcrumbTap,
+          onRenamed: onGroupRenamed,
+          onDeleted: onGroupDeleted
         )
 
-        sectionHeader("Groups", icon: "folder.fill", count: viewModel.childGroups.data?.count)
-        groupsSection
+        SectionHeaderView(title: "Groups", icon: "folder.fill", count: viewModel.childGroups.data?.count)
+        GroupsSectionView(
+          state: viewModel.childGroups,
+          workspaceId: workspaceId,
+          parentGroupId: currentGroup.id,
+          isAddingGroup: $isAddingGroup,
+          onAdded: reload,
+          onGroupTap: onGroupTap
+        )
 
-        sectionHeader("Keys", icon: "character.book.closed.fill", count: viewModel.keys.data?.count)
-        keysSection
+        SectionHeaderView(title: "Keys", icon: "character.book.closed.fill", count: viewModel.keys.data?.count)
+        KeysSectionView(
+          state: viewModel.keys,
+          workspaceId: workspaceId,
+          groupId: currentGroup.id,
+          isAddingKey: $isAddingKey,
+          onAdded: reload,
+          onEditKey: onEditKey
+        )
       }
       .padding(.bottom, 24)
     }
     .background(AppColors.canvasBackground)
-    .toolbar {
-      // The embedded root screen (reached from the Translations tab, not a
-      // push) already gets a back button from WorkspaceDetailScreen's own
-      // toolbar - only add one here for genuinely nested, pushed groups.
-      if !parentGroups.isEmpty {
-        BackNavButton {
-          router.pop()
-        }
-      }
-    }
     .onAppear {
       reload()
     }
-    .onChange(of: router.currentScreen) { _, newScreen in
+    .onChange(of: nav.currentScreen) { _, newScreen in
       if newScreen == ownRoute {
         reload()
       }
     }
-  }
-
-  func sectionHeader(_ title: String, icon: String, count: Int?) -> some View {
-    HStack(spacing: 8) {
-      Image(systemName: icon)
-        .font(.system(size: 13, weight: .semibold))
-        .foregroundStyle(AppColors.primaryStart)
-
-      Text(title)
-        .font(.headline)
-
-      if let count {
-        Text("\(count)")
-          .font(.caption.weight(.bold))
-          .foregroundColor(AppColors.primaryStart)
-          .padding(.horizontal, 8)
-          .padding(.vertical, 2)
-          .background(
-            Capsule().fill(AppColors.primaryStart.opacity(0.12))
-          )
-      }
-    }
-    .padding(.horizontal, 16)
-    .padding(.top, 12)
-    .padding(.bottom, 8)
-  }
-
-  var groupsSection: some View {
-    ViewStateUIBuilder(
-      state: viewModel.childGroups) {
-        ProgressView()
-          .padding(.horizontal, 16)
-      } forError: { error in
-        Text(error)
-          .foregroundColor(.red)
-          .padding(.horizontal, 16)
-      } forData: { groups in
-        HFlow(alignment: .top, spacing: 16) {
-          ForEach(groups) { group in
-            GroupFolderCardView(group: group, onClick: onGroupTap)
-          }
-          AddGroupCardView(
-            workspaceId: workspaceId,
-            parentGroupId: currentGroup.id,
-            isEditing: $isAddingGroup,
-            onAdded: reload
-          )
-        }
-        .padding(.horizontal, 16)
-      } forNoData: {
-        HFlow(spacing: 16) {
-          AddGroupCardView(
-            workspaceId: workspaceId,
-            parentGroupId: currentGroup.id,
-            isEditing: $isAddingGroup,
-            onAdded: reload
-          )
-        }
-        .padding(.horizontal, 16)
-      }
-  }
-
-  var keysSection: some View {
-    ViewStateUIBuilder(
-      state: viewModel.keys) {
-        ProgressView()
-          .padding(.horizontal, 16)
-      } forError: { error in
-        Text(error)
-          .foregroundColor(.red)
-          .padding(.horizontal, 16)
-      } forData: { items in
-        VStack(spacing: 8) {
-          if items.isEmpty {
-            emptyKeysPlaceholder
-          }
-          ForEach(items) { item in
-            TranslationKeyRowView(item: item, onEdit: onEditKey)
-          }
-          AddKeyRowView(
-            workspaceId: workspaceId,
-            groupId: currentGroup.id,
-            isEditing: $isAddingKey,
-            onAdded: reload
-          )
-        }
-        .padding(.horizontal, 16)
-      } forNoData: {
-        VStack(spacing: 8) {
-          emptyKeysPlaceholder
-          AddKeyRowView(
-            workspaceId: workspaceId,
-            groupId: currentGroup.id,
-            isEditing: $isAddingKey,
-            onAdded: reload
-          )
-        }
-        .padding(.horizontal, 16)
-      }
-  }
-
-  var emptyKeysPlaceholder: some View {
-    VStack(spacing: 4) {
-      Image(systemName: "character.book.closed")
-        .font(.system(size: 26))
-        .foregroundStyle(Color.gray.opacity(0.35))
-
-      Text("No keys yet")
-        .font(.subheadline.weight(.medium))
-        .foregroundColor(.secondary)
-    }
-    .frame(maxWidth: .infinity)
-    .padding(.vertical, 20)
   }
 }
 

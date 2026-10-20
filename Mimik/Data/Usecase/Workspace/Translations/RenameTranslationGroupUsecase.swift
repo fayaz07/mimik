@@ -2,7 +2,7 @@
 //  RenameTranslationGroupUsecase.swift
 //  Mimik
 //
-//  Created by Fayaz Mohammad on 04/05/26.
+//  Created by Fayaz Mohammad on 20/10/26.
 //
 
 import Foundation
@@ -14,9 +14,17 @@ class RenameTranslationGroupUsecase {
     self.repo = repo
   }
 
-//  func rename(id: UUID, newName: String) async throws -> TranslationGroupDTO {
-//    let trimmed = newName.trimmingCharacters(in: .whitespaces)
-//    if trimmed.isEmpty { throw ValidationError.EmptyKey }
-//    return try await repo.renameGroup(id: id, newName: trimmed)
-//  }
+  func rename(
+    workspaceId: UUID,
+    groupId: UUID,
+    parentGroupId: UUID?,
+    name: String
+  ) async throws -> TranslationGroupDTO {
+    return try await repo.renameGroup(
+      id: groupId,
+      workspaceId: workspaceId,
+      parentGroupId: parentGroupId,
+      name: name
+    )
+  }
 }

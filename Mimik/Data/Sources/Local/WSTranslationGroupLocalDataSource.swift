@@ -22,17 +22,6 @@ class WSTranslationGroupLocalDataSource {
     return request
   }
   
-  func printAll() async throws {
-    let request: NSFetchRequest<TranslationGroupEntity> = TranslationGroupEntity.fetchRequest()
-    request.sortDescriptors = [
-      NSSortDescriptor(key: "createdAt", ascending: true)
-    ]
-    let results = try context.fetch(request)
-    for result in results {
-      print("ID: \(result.id), parent: \(result.parentGroupId?.uuidString ?? "nil"), key: \(result.key) \n")
-    }
-  }
-  
   func fetchRootGroupsByWorkspaceId(workspaceId: UUID) async throws -> [TranslationGroupEntity] {
     let request: NSFetchRequest<TranslationGroupEntity> = TranslationGroupEntity.fetchRequest()
     request.predicate = NSPredicate(format: "workspaceId == %@ and parentGroupId == nil", workspaceId as CVarArg)
@@ -44,7 +33,6 @@ class WSTranslationGroupLocalDataSource {
   }
   
   func fetchByParentId(id: UUID) async throws -> [TranslationGroupEntity] {
-    try await printAll()
     let request: NSFetchRequest<TranslationGroupEntity> = TranslationGroupEntity.fetchRequest()
     request.predicate = NSPredicate(format: "parentGroupId == %@", id as CVarArg)
     request.sortDescriptors = [
@@ -88,7 +76,6 @@ class WSTranslationGroupLocalDataSource {
     workspaceId: UUID,
     parentGroupId: UUID? = nil
   ) async throws -> TranslationGroupDTO {
-    print("key: \(key), workspaceId: \(workspaceId), parentGroupId: \(String(describing: parentGroupId))")
     let doc = TranslationGroupEntity(context: context)
     doc.id = UUID()
     doc.key = key
@@ -99,14 +86,7 @@ class WSTranslationGroupLocalDataSource {
         
     try await context.perform { [weak context] in
       if context?.hasChanges == true {
-        do {
-          print("saving")
-          try context?.save()
-          print("saved")
-        } catch {
-          print(error)
-          throw error
-        }
+        try context?.save()
       }
     }
     return doc.toDTO()
@@ -114,14 +94,29 @@ class WSTranslationGroupLocalDataSource {
 
   func delete(id: UUID) async throws {
     let request = _fetchOneByIdRequest(id: id)
-    
+
     try await context.perform {
       [weak context] in
-      
+
       if let object = try context?.fetch(request).first {
         context?.delete(object)
         try context?.save()
       }
     }
+  }
+
+  func rename(id: UUID, name: String) async throws -> TranslationGroupDTO {
+    guard let doc = try await fetchById(id: id) else {
+      throw FetchError.NotFound
+    }
+    doc.key = name
+    doc.updatedAt = Date()
+
+    try await context.perform { [weak context] in
+      if context?.hasChanges == true {
+        try context?.save()
+      }
+    }
+    return doc.toDTO()
   }
 }

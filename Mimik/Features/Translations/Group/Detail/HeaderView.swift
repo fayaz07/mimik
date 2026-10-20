@@ -7,48 +7,29 @@
 import SwiftUI
 import Factory
 
-struct GradientPillButtonStyle: ButtonStyle {
-  func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .font(.subheadline.weight(.semibold))
-      .foregroundColor(.white)
-      .padding(.horizontal, 18)
-      .padding(.vertical, 10)
-      .background(AppColors.primaryGradient)
-      .clipShape(Capsule())
-      .shadow(
-        color: AppColors.primaryStart.opacity(0.35),
-        radius: configuration.isPressed ? 2 : 6,
-        y: configuration.isPressed ? 1 : 3
-      )
-      .scaleEffect(configuration.isPressed ? 0.96 : 1.0)
-      .opacity(configuration.isPressed ? 0.9 : 1.0)
-  }
-}
-
-struct GhostButtonStyle: ButtonStyle {
-  var color: Color
-
-  func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .font(.subheadline.weight(.medium))
-      .foregroundColor(color)
-      .padding(.horizontal, 14)
-      .padding(.vertical, 9)
-      .background(
-        Capsule().fill(color.opacity(configuration.isPressed ? 0.16 : 0.08))
-      )
-      .opacity(configuration.isPressed ? 0.85 : 1.0)
-  }
-}
-
 struct GroupBreadcrumb : View {
 
+  let workspaceId: UUID
   let group: TranslationGroupDTO
   let parentGroups: [BreadcrumbItem]
   var onAddGroup: () -> Void = {}
   var onAddKey: () -> Void = {}
   var onBreadcrumbTap: (String) -> Void = { _ in }
+  var onRenamed: (TranslationGroupDTO) -> Void = { _ in }
+  var onDeleted: () -> Void = {}
+
+  @State private var isRenaming = false
+  @State private var renameText = ""
+  @State private var isSubmittingRename = false
+  @State private var renameError: String?
+  @FocusState private var isRenameFocused: Bool
+
+  @State private var isConfirmingDelete = false
+  @State private var isDeleting = false
+  @State private var deleteError: String?
+
+  @Injected(\.renameTrslnGroupUsecase) private var renameUsecase: RenameTranslationGroupUsecase
+  @Injected(\.deleteTrslnGroupUsecase) private var deleteUsecase: DeleteTranslationGroupUsecase
 
   var body: some View {
     HStack(alignment: .top) {
@@ -62,19 +43,52 @@ struct GroupBreadcrumb : View {
         .fill(.white)
         .shadow(color: .black.opacity(0.04), radius: 6, y: 3)
     )
+    .confirmationDialog(
+      "Delete \"\(group.displayLabel)\"?",
+      isPresented: $isConfirmingDelete,
+      titleVisibility: .visible
+    ) {
+      Button("Delete", role: .destructive) { delete() }
+      Button("Cancel", role: .cancel) {}
+    } message: {
+      Text("This also deletes every subgroup and key inside it. This can't be undone.")
+    }
+    .alert(
+      "Couldn't delete this group",
+      isPresented: Binding(
+        get: { deleteError != nil },
+        set: { if !$0 { deleteError = nil } }
+      )
+    ) {
+      Button("OK", role: .cancel) {}
+    } message: {
+      Text(deleteError ?? "Something went wrong. Please try again.")
+    }
   }
 
   func headerRightSection() -> some View {
     return HStack(spacing: 10) {
-      Button(action: {}) {
-        Label("Rename", systemImage: "pencil")
-      }
-      .buttonStyle(GhostButtonStyle(color: .black.opacity(0.65)))
+      // Rename/Delete act on the current group itself, so they only make
+      // sense for nested groups - the workspace's root group isn't a real,
+      // user-created group and can't be renamed or deleted.
+      if !parentGroups.isEmpty && !isRenaming {
+        Button(action: startRenaming) {
+          Label("Rename", systemImage: "pencil")
+        }
+        .buttonStyle(GhostButtonStyle(color: .black.opacity(0.65)))
+        .disabled(isDeleting)
 
-      Button(action: {}) {
-        Label("Delete", systemImage: "trash")
+        Button(action: { isConfirmingDelete = true }) {
+          if isDeleting {
+            ProgressView()
+              .controlSize(.small)
+          } else {
+            Label("Delete", systemImage: "trash")
+          }
+        }
+        .buttonStyle(GhostButtonStyle(color: AppColors.danger))
+        .disabled(isDeleting)
       }
-      .buttonStyle(GhostButtonStyle(color: AppColors.danger))
 
       Button(action: onAddGroup) {
         Label("Add Group", systemImage: "folder.badge.plus")
@@ -88,13 +102,15 @@ struct GroupBreadcrumb : View {
     }
   }
 
-  func headerLeftSection() -> VStack<TupleView<(Text, Breadcrumb)>> {
-    return VStack(alignment: .leading, spacing: 6) {
-      Text(
-        group.displayLabel,
-      )
-      .font(.title2)
-      .bold()
+  func headerLeftSection() -> some View {
+    VStack(alignment: .leading, spacing: 6) {
+      if isRenaming {
+        renameField
+      } else {
+        Text(group.displayLabel)
+          .font(.title2)
+          .bold()
+      }
 
       Breadcrumb(
         items: parentGroups + [
@@ -107,10 +123,121 @@ struct GroupBreadcrumb : View {
       )
     }
   }
+
+  private var renameField: some View {
+    VStack(alignment: .leading, spacing: 4) {
+      HStack(spacing: 8) {
+        TextField("Group name", text: $renameText)
+          .textFieldStyle(.roundedBorder)
+          .font(.title3)
+          .frame(maxWidth: 260)
+          .focused($isRenameFocused)
+          .disabled(isSubmittingRename)
+          .onSubmit { submitRename() }
+
+        if isSubmittingRename {
+          ProgressView()
+            .controlSize(.small)
+        } else {
+          Button(action: submitRename) {
+            Image(systemName: "checkmark.circle.fill")
+          }
+          .buttonStyle(.plain)
+          .foregroundStyle(AppColors.primaryStart)
+
+          Button(action: cancelRenaming) {
+            Image(systemName: "xmark.circle.fill")
+          }
+          .buttonStyle(.plain)
+          .foregroundStyle(.secondary)
+        }
+      }
+
+      if let renameError {
+        Text(renameError)
+          .font(.caption2)
+          .foregroundColor(AppColors.danger)
+      }
+    }
+    .onAppear { isRenameFocused = true }
+  }
+
+  private func startRenaming() {
+    renameText = group.displayLabel
+    renameError = nil
+    isRenaming = true
+  }
+
+  private func cancelRenaming() {
+    isRenaming = false
+    renameError = nil
+  }
+
+  private func submitRename() {
+    let trimmed = renameText.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty else {
+      renameError = "Group name cannot be empty"
+      return
+    }
+    guard trimmed != group.displayLabel else {
+      isRenaming = false
+      return
+    }
+    isSubmittingRename = true
+    renameError = nil
+    Task {
+      do {
+        let updated = try await renameUsecase.rename(
+          workspaceId: workspaceId,
+          groupId: group.id,
+          parentGroupId: group.parentGroupId,
+          name: trimmed
+        )
+        await MainActor.run {
+          isSubmittingRename = false
+          isRenaming = false
+          onRenamed(updated)
+        }
+      } catch {
+        var errString = "Failed to rename group"
+        if let validationError = error as? ValidationError {
+          switch validationError {
+            case .EmptyKey:
+              errString = "Group name cannot be empty"
+            case .AlreadyExists:
+              errString = "A group with this name already exists"
+          }
+        }
+        await MainActor.run {
+          isSubmittingRename = false
+          renameError = errString
+        }
+      }
+    }
+  }
+
+  private func delete() {
+    isDeleting = true
+    Task {
+      do {
+        try await deleteUsecase.delete(groupId: group.id, workspaceId: workspaceId)
+        await MainActor.run {
+          isDeleting = false
+          onDeleted()
+        }
+      } catch {
+        await MainActor.run {
+          isDeleting = false
+          deleteError = "Something went wrong. Please try again."
+        }
+      }
+    }
+  }
 }
 
 #Preview {
   GroupBreadcrumb(
+    workspaceId: UUID(),
     group: TranslationGroupDTO(
       id: UUID(),
       workspaceId: UUID(),
