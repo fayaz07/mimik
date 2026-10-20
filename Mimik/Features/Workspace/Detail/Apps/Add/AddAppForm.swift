@@ -12,77 +12,93 @@ struct AddAppForm: View {
   var workspaceId: UUID
 
   @Bindable var viewModel: AddAppViewModel
-  
-  var platforms: some View {
-    Section {
-      HStack {
-        VStack(alignment: .leading) {
-          Text(
-            "Select Platform"
-          ).padding(.leading, 8)
-          Picker("", selection: $viewModel.selectedPlatform) {
-            ForEach(viewModel.getPlatforms(), id: \.self) { platform in
-              Text(platform.name)
-                .foregroundStyle(.black)
-                .lineLimit(1)
-                .tag(Optional(platform))
-            }
-          }
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .contentShape(Rectangle())
-          .pickerStyle(.menu)
-          .onChange(of: viewModel.selectedPlatform) {
+
+  private var platforms: some View {
+    VStack(alignment: .leading, spacing: 10) {
+      Text("Platform")
+        .font(.headline)
+
+      HStack(spacing: 12) {
+        ForEach(viewModel.getPlatforms(), id: \.self) { platform in
+          PlatformOptionView(
+            platform: platform,
+            isSelected: viewModel.selectedPlatform == platform
+          ) {
+            viewModel.selectedPlatform = platform
             viewModel.clearSelectedPlatformError()
           }
-          
-          if let err = viewModel.selectedPlatformError, !err.isEmpty {
-            Text(err)
-              .foregroundColor(.red)
-              .font(.caption)
-              .padding(.leading, 16)
-          }
-        }
-        
-        Spacer()
-        
-        if viewModel.selectedPlatform != nil {
-          Image(viewModel.selectedPlatform!.icon)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 48, height: 48)
         }
       }
-    }.padding(.bottom, 8)
-  }
-  
-  var body: some View {
-    VStack {
-      Form {
-        platforms
-        
-        Section {
-          AppTextField(
-            label: "App Name",
-            value: $viewModel.name,
-            error: $viewModel.nameError
-          ).padding(.bottom, 8)
-          
-          AppTextEditor(
-            label: "App Description",
-            value: $viewModel.description,
-            error: $viewModel.descriptionError,
-            height: 100
-          )
-        }
-        
-        FilledButton(text: "Save", width: .infinity) {
-          viewModel.saveWorkspace(workspaceId: workspaceId)
-        }
-        .padding(.top, 16)
+
+      if let err = viewModel.selectedPlatformError, !err.isEmpty {
+        Text(err)
+          .foregroundColor(AppColors.danger)
+          .font(.caption)
       }
-      Spacer()
     }
-    .padding()
+  }
+
+  private var details: some View {
+    VStack(alignment: .leading, spacing: 16) {
+      AppTextField(
+        label: "App Name",
+        value: $viewModel.name,
+        error: $viewModel.nameError
+      )
+
+      AppTextEditor(
+        label: "App Description",
+        value: $viewModel.description,
+        error: $viewModel.descriptionError,
+        height: 100
+      )
+    }
+    .padding(16)
+    .background(
+      RoundedRectangle(cornerRadius: 16)
+        .fill(.white)
+    )
+    .overlay(
+      RoundedRectangle(cornerRadius: 16)
+        .stroke(AppColors.cardBorder, lineWidth: 1)
+    )
+  }
+
+  private var saveButton: some View {
+    Button(action: { viewModel.saveWorkspace(workspaceId: workspaceId) }) {
+      HStack {
+        Spacer()
+        if viewModel.viewState.loading {
+          ProgressView()
+            .controlSize(.small)
+            .tint(.white)
+        } else {
+          Text("Save")
+        }
+        Spacer()
+      }
+    }
+    .buttonStyle(GradientPillButtonStyle())
+    .disabled(viewModel.viewState.loading)
+  }
+
+  var body: some View {
+    ScrollView {
+      VStack(alignment: .leading, spacing: 20) {
+        platforms
+        details
+
+        if let error = viewModel.viewState.error, !error.isEmpty {
+          Text(error)
+            .foregroundColor(AppColors.danger)
+            .font(.caption)
+        }
+
+        saveButton
+      }
+      .padding(20)
+    }
+    .background(AppColors.canvasBackground)
   }
 }
 

@@ -12,27 +12,45 @@ import Factory
 
 struct WSAppsScreen: View {
   @EnvironmentObject private var router: AppNavigationRouter
-  
+
+  /// Scoped to this tab, not the app-wide router - see AppsNavigator for
+  /// why: pushing "Add App" through the global router would replace the
+  /// whole WorkspaceDetailScreen, including its sidebar.
+  @State private var navigator = AppsNavigator()
+
   @Injected(\.workspaceAppsViewModel)
   private var viewModel: WSAppsViewModel
-  
+
   var data: WorkspaceDTO
-  
+
   var body: some View {
-    ScrollView {
-      content
-        .padding(16)
+    Group {
+      if let topRoute = navigator.path.last {
+        WorkspaceAppsNavigationView(route: topRoute)
+          .id(topRoute)
+      } else {
+        ScrollView {
+          content
+            .padding(16)
+        }
+        .background(.white)
+      }
     }
     .navigationTitle("Apps - \(data.name)")
-    .background(.white)
-      .onAppear {
+    .onAppear {
+      viewModel.fetchWorkspaceApps(workspaceId: data.id)
+    }
+    .onChange(of: router.currentScreen) { _, newPath in
+      if newPath == .home {
         viewModel.fetchWorkspaceApps(workspaceId: data.id)
       }
-      .onChange(of: router.currentScreen) { _, newPath in
-        if newPath == .home {
-          viewModel.fetchWorkspaceApps(workspaceId: data.id)
-        }
+    }
+    .onChange(of: navigator.currentScreen) { _, newScreen in
+      if newScreen == nil {
+        viewModel.fetchWorkspaceApps(workspaceId: data.id)
       }
+    }
+    .environment(navigator)
   }
   
   var content: some View {
@@ -57,7 +75,7 @@ struct WSAppsScreen: View {
   }
    
   private func onAddApp() {
-    router.push(to: .workspace(.apps(.add(workspaceId: data.id))))
+    navigator.push(to: .add(workspaceId: data.id))
   }
   
   private func onAppClicked(data: WSAppDTO) {

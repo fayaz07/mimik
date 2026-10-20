@@ -71,7 +71,8 @@ class AddAppViewModel {
     } else {
       selectedPlatformError = nil
     }
-    
+
+    viewState = .loading()
     Task {
       do {
         let (result, nameErr, descriptionErr, otherErr) = try await usecase

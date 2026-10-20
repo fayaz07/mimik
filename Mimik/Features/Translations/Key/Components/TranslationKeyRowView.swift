@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import AppKit
 
 struct TranslationKeyRowView: View {
   let item: KeyListItem
   var onEdit: (TranslationKeyDTO) -> Void = { _ in }
 
-  @State private var isHovered = false
+  @State private var isCopied = false
 
   private var hasTranslation: Bool {
     !(item.defaultLangValue ?? "").isEmpty
@@ -37,12 +38,22 @@ struct TranslationKeyRowView: View {
 
       HStack(spacing: 14) {
         VStack(alignment: .leading, spacing: 3) {
-          Text(item.key.key)
-            .font(.caption)
-            .foregroundColor(.secondary)
-            .lineLimit(1)
-            .truncationMode(.tail)
-            .help(item.key.key)
+          HStack(spacing: 5) {
+            Text(item.key.key)
+              .font(.caption)
+              .foregroundColor(.secondary)
+              .lineLimit(1)
+              .truncationMode(.tail)
+              .help(item.key.key)
+
+            Button(action: copyKey) {
+              Image(systemName: isCopied ? "checkmark" : "doc.on.doc")
+                .font(.system(size: 10))
+                .foregroundStyle(isCopied ? AppColors.success : Color.secondary)
+            }
+            .buttonStyle(.plain)
+            .help("Copy key")
+          }
 
           if hasTranslation {
             Text(item.defaultLangValue ?? "")
@@ -92,13 +103,22 @@ struct TranslationKeyRowView: View {
     )
     .overlay(
       RoundedRectangle(cornerRadius: 12)
-        .stroke(isHovered ? accentColor.opacity(0.35) : AppColors.cardBorder, lineWidth: 1)
+        .stroke(AppColors.cardBorder, lineWidth: 1)
     )
-    .shadow(color: .black.opacity(isHovered ? 0.08 : 0.03), radius: isHovered ? 6 : 3, y: 2)
-    .scaleEffect(isHovered ? 1.01 : 1.0)
-    .animation(.easeOut(duration: 0.15), value: isHovered)
+    .shadow(color: .black.opacity(0.03), radius: 3, y: 2)
     .clipShape(RoundedRectangle(cornerRadius: 12))
-    .onHover { isHovered = $0 }
+  }
+
+  private func copyKey() {
+    let pasteboard = NSPasteboard.general
+    pasteboard.clearContents()
+    pasteboard.setString(item.key.key, forType: .string)
+
+    isCopied = true
+    Task {
+      try? await Task.sleep(for: .seconds(1.2))
+      await MainActor.run { isCopied = false }
+    }
   }
 }
 
