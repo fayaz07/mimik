@@ -19,3 +19,7 @@ project.xcworkspace/
 
 # macOS 🍎
 .DS_Store
+
+# Android studio
+.idea/
+

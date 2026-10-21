@@ -18,6 +18,15 @@ extension Container {
     self { WSAppsViewModel(repo: self.appsRepository()) }
       .scope(.shared)
   }
+
+  var appDetailViewModel: Factory<AppDetailViewModel> {
+    self {
+      AppDetailViewModel(
+        langUsecase: self.addLangUsecase(),
+        getWorkspaceUsecase: self.getUsecase()
+      )
+    }
+  }
   
   var workspaceLanguagesViewModel: Factory<WSLanguagesViewModel> {
     self {

@@ -38,9 +38,8 @@ struct WorkspaceAppsNavigationView: View {
       case .add(let id):
         AddAppScreen(workspaceId: id)
         
-      case .detail(let id):
-        VStack{ Text("Detail") }
-        //        WorkspaceAppDetailScreen(appId: id)
+      case .detail(let app):
+        AppDetailScreen(app: app)
     }
   }
 }

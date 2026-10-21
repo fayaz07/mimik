@@ -70,6 +70,12 @@ extension Container {
       UpdateKeyExcludedAppsUsecase(repo: self.trslnRepo())
     }
   }
+
+  var exportAppTranslationsUsecase: Factory<ExportAppTranslationsUsecase> {
+    self {
+      ExportAppTranslationsUsecase(repo: self.trslnRepo())
+    }
+  }
   
   var trslnGroupDetailUsecase: Factory<TranslationGroupDetailUsecase> {
     self {

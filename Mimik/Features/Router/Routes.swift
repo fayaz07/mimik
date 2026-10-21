@@ -19,7 +19,7 @@ enum Route: Hashable {
     case apps(AppsRoute)
     enum AppsRoute: Hashable {
       case add(workspaceId: UUID)
-      case detail(id: UUID)
+      case detail(app: WSAppDTO)
     }
     
     case translations(TranslationsRoute)

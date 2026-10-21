@@ -79,7 +79,7 @@ struct WSAppsScreen: View {
   }
   
   private func onAppClicked(data: WSAppDTO) {
-    
+    navigator.push(to: .detail(app: data))
   }
   
   @ViewBuilder
