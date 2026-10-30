@@ -60,7 +60,10 @@ class TrslnGroupDetailViewModel {
         let valuesByKeyId = Dictionary(grouping: values, by: { $0.keyId })
 
         let items = rawKeys.map { key -> KeyListItem in
-          let keyValues = valuesByKeyId[key.id] ?? []
+          // Default-only (appId == nil) - this list always shows the
+          // shared value, never a per-app override, so it can't mix the
+          // two together when both exist for the same key+lang.
+          let keyValues = (valuesByKeyId[key.id] ?? []).filter { $0.appId == nil }
           let valuesByLang = Dictionary(
             keyValues.map { ($0.lang, $0.value) },
             uniquingKeysWith: { _, latest in latest }

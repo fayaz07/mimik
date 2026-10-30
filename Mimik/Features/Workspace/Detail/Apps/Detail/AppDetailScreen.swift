@@ -8,6 +8,7 @@
 import SwiftUI
 import Factory
 import AppKit
+import UniformTypeIdentifiers
 
 struct AppDetailScreen: View {
   let app: WSAppDTO
@@ -29,7 +30,7 @@ struct AppDetailScreen: View {
   @Injected(\.exportAppTranslationsUsecase) private var exportUsecase: ExportAppTranslationsUsecase
 
   @State private var selectedLang: String = ""
-  @State private var selectedFormat: TranslationExportFormat = .xml
+  @State private var selectedFormat: TranslationExportFormat
   @State private var isExporting = false
   @State private var exportError: String?
   @State private var showExportedToast = false
@@ -37,10 +38,15 @@ struct AppDetailScreen: View {
   init(app: WSAppDTO) {
     self.app = app
     self._viewModel = State(wrappedValue: Container.shared.appDetailViewModel.resolve())
+    self._selectedFormat = State(
+      wrappedValue: TranslationExportFormat.available(for: app.appPlatformId).first ?? .json
+    )
   }
 
-  private var isAndroid: Bool {
-    app.appPlatformId == SupportedPlatforms.ANDROID.id
+  /// Which export formats make sense for this app's platform - see
+  /// TranslationExportFormat.available(for:).
+  private var availableFormats: [TranslationExportFormat] {
+    TranslationExportFormat.available(for: app.appPlatformId)
   }
 
   private func langBinding() -> Binding<String> {
@@ -129,23 +135,17 @@ struct AppDetailScreen: View {
       Text("Export Translations")
         .font(.headline)
 
-      if !isAndroid {
-        Text("Export isn't available yet for this platform.")
-          .font(.subheadline)
-          .foregroundColor(.secondary)
-      } else {
-        ViewStateUIBuilder(
-          state: viewModel.languages) {
-            ProgressView()
-          } forError: { error in
-            Text(error)
-              .foregroundColor(.red)
-          } forData: { langs in
-            return exportControls(langs: langs)
-          } forNoData: {
-            EmptyView()
-          }
-      }
+      ViewStateUIBuilder(
+        state: viewModel.languages) {
+          ProgressView()
+        } forError: { error in
+          Text(error)
+            .foregroundColor(.red)
+        } forData: { langs in
+          return exportControls(langs: langs)
+        } forNoData: {
+          EmptyView()
+        }
     }
     .padding(16)
     .background(RoundedRectangle(cornerRadius: 16).fill(.white))
@@ -186,16 +186,23 @@ struct AppDetailScreen: View {
               .font(.caption.weight(.medium))
               .foregroundColor(.secondary)
 
-            Picker(selection: $selectedFormat) {
-              ForEach(TranslationExportFormat.allCases) { format in
-                Text(format.label).tag(format)
+            if availableFormats.count > 1 {
+              Picker(selection: $selectedFormat) {
+                ForEach(availableFormats) { format in
+                  Text(format.label).tag(format)
+                }
+              } label: {
+                EmptyView()
               }
-            } label: {
-              EmptyView()
+              .labelsHidden()
+              .pickerStyle(.segmented)
+              .frame(width: CGFloat(availableFormats.count) * 70)
+            } else {
+              // Only one sensible format for this platform - nothing to
+              // choose, just say what it'll be.
+              Text(availableFormats.first?.label ?? selectedFormat.label)
+                .font(.subheadline.weight(.medium))
             }
-            .labelsHidden()
-            .pickerStyle(.segmented)
-            .frame(width: 140)
           }
         }
 
@@ -238,7 +245,7 @@ struct AppDetailScreen: View {
         )
         await MainActor.run {
           isExporting = false
-          saveToFile(content: content, format: selectedFormat)
+          saveToFile(content: content, format: selectedFormat, lang: lang)
         }
       } catch {
         await MainActor.run {
@@ -255,10 +262,19 @@ struct AppDetailScreen: View {
   /// after hopping back to the main actor), and was the source of the
   /// runtime crash here. `.begin` is the non-blocking, async-friendly way
   /// to show a save panel and is safe to call from any main-actor context.
-  private func saveToFile(content: String, format: TranslationExportFormat) {
+  private func saveToFile(content: String, format: TranslationExportFormat, lang: String) {
     let panel = NSSavePanel()
-    panel.nameFieldStringValue = format.suggestedFileName
+    panel.nameFieldStringValue = format.suggestedFileName(
+      platformId: app.appPlatformId,
+      lang: lang,
+      isDefaultLang: lang == viewModel.defaultLang
+    )
     panel.canCreateDirectories = true
+    panel.isExtensionHidden = false
+    // Locks the save dialog to the right file type - macOS then enforces
+    // (and auto-appends) the correct extension even if the name field is
+    // edited, instead of leaving it to whatever the user happens to type.
+    panel.allowedContentTypes = [allowedContentType(for: format)]
 
     panel.begin { response in
       guard response == .OK, let url = panel.url else { return }
@@ -271,6 +287,18 @@ struct AppDetailScreen: View {
       } catch {
         exportError = "Couldn't save the file. Please try again."
       }
+    }
+  }
+
+  /// There's no system-declared UTType for `.strings` to reach for the way
+  /// there is for XML/JSON - `UTType(filenameExtension:)` still resolves a
+  /// usable dynamic one from the extension itself, falling back to plain
+  /// text on the off chance that fails.
+  private func allowedContentType(for format: TranslationExportFormat) -> UTType {
+    switch format {
+      case .xml: return .xml
+      case .json: return .json
+      case .strings: return UTType(filenameExtension: "strings") ?? .plainText
     }
   }
 }

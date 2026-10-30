@@ -29,6 +29,7 @@
         <attribute name="workspaceId" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
     <entity name="TranslationValueEntity" representedClassName="TranslationValueEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="appId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="approved" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="approvedBy" optional="YES" attributeType="String"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

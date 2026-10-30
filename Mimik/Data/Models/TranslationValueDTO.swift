@@ -16,6 +16,10 @@ struct TranslationValueDTO: Identifiable, Sendable, Hashable {
   let translatedBy: String
   let createdAt: Date
   let updatedAt: Date
+  /// nil for the shared value every app falls back to; set to a specific
+  /// app's id for a value that only overrides that one app (e.g. a
+  /// formatted-string placeholder syntax that differs by platform).
+  let appId: UUID?
 }
 
 extension TranslationValueEntity {
@@ -29,7 +33,8 @@ extension TranslationValueEntity {
       approvedBy: approvedBy ?? "",
       translatedBy: translatedBy ?? "",
       createdAt: createdAt ?? Date(),
-      updatedAt: updatedAt ?? Date()
+      updatedAt: updatedAt ?? Date(),
+      appId: appId
     )
   }
 }

@@ -24,8 +24,10 @@ protocol WSTranslationRepo {
     keyId: UUID,
     lang: String,
     value: String,
-    translatedBy: String
+    translatedBy: String,
+    appId: UUID?
   ) async throws -> TranslationValueDTO
+  func deleteValueOverride(keyId: UUID, lang: String, appId: UUID) async throws
   func addDefGroup(workspaceId: UUID) async throws -> TranslationGroupDTO
   func addGroup(workspaceId: UUID, name: String, parentId: UUID?) async throws -> TranslationGroupDTO
   func renameGroup(id: UUID, workspaceId: UUID, parentGroupId: UUID?, name: String) async throws -> TranslationGroupDTO
@@ -166,14 +168,20 @@ class WSTranslationRepoImpl: WSTranslationRepo {
     keyId: UUID,
     lang: String,
     value: String,
-    translatedBy: String
+    translatedBy: String,
+    appId: UUID? = nil
   ) async throws -> TranslationValueDTO {
     return try await localValueSource.upsert(
       keyId: keyId,
       lang: lang,
       value: value,
-      translatedBy: translatedBy
+      translatedBy: translatedBy,
+      appId: appId
     )
+  }
+
+  func deleteValueOverride(keyId: UUID, lang: String, appId: UUID) async throws {
+    try await localValueSource.deleteOverride(keyId: keyId, lang: lang, appId: appId)
   }
   
   func fetchGroup(id: UUID) async throws -> TranslationGroupDTO? {

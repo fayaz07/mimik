@@ -24,6 +24,7 @@ struct EditTranslationsScreen: View {
   let groupName: String
   let parentGroups: [BreadcrumbItem]
 
+
   /// Held in @State, not `let` - toggling which apps this key is excluded
   /// from updates this in place so the picker reflects the change right
   /// away, the same way TrslnGroupDetailView handles a group rename.
@@ -50,93 +51,115 @@ struct EditTranslationsScreen: View {
     )
   }
 
+  private var loading: Bool {
+    viewModel.saveResult.loading
+  }
+
   var body: some View {
-    let loading = viewModel.saveResult.loading
-
-    return ZStack {
-    ScrollView {
-      VStack(alignment: .leading, spacing: 16) {
-
-        // Inline, not .toolbar - see the same change (and why) on
-        // TrslnGroupDetailView: this screen isn't pushed onto its own
-        // NavigationStack anymore, so a .toolbar here could collide with
-        // whatever ancestor actually hosts one.
-        Button(action: { nav.pop() }) {
-          HStack(spacing: 4) {
-            Image(systemName: "chevron.left")
-            Text("Back")
-          }
-          .font(.subheadline.weight(.medium))
-          .foregroundStyle(AppColors.primaryStart)
-        }
-        .buttonStyle(.plain)
-        .padding(.horizontal, 16)
-
-        Breadcrumb(
-          items: parentGroups + [
-            BreadcrumbItem(id: "group", label: groupName),
-            BreadcrumbItem(id: currentKey.id.uuidString, label: currentKey.key)
-          ]
-        )
-        .padding(.horizontal, 16)
-
-        appsSection
-
-        languagesSection
+    ZStack {
+      VStack(spacing: 0) {
+        headerBar
 
         if viewModel.saveResult.hasError {
           Text(
             viewModel.saveResult.error ?? "Something went wrong. Please try again."
           )
           .foregroundColor(.red)
+          .font(.caption)
           .multilineTextAlignment(.leading)
           .lineLimit(nil)
           .fixedSize(horizontal: false, vertical: true)
           .padding(.horizontal, 16)
+          .padding(.top, 10)
         }
 
-        HStack {
-          Spacer()
+        ScrollView {
+          VStack(alignment: .leading, spacing: 16) {
+            Breadcrumb(
+              items: parentGroups + [
+                BreadcrumbItem(id: "group", label: groupName),
+                BreadcrumbItem(id: currentKey.id.uuidString, label: currentKey.key)
+              ]
+            )
+            .padding(.horizontal, 16)
+            .padding(.top, 16)
 
-          Button("Cancel") { nav.pop() }
-            .disabled(loading)
+            appsSection
 
-          Button(action: {
-            viewModel.save(keyId: currentKey.id)
-          }) {
-            if loading {
-              ProgressView()
-                .progressViewStyle(CircularProgressViewStyle())
-            } else {
-              Text("Save")
+            languagesSection
+
+            overridesSection
+          }
+          .padding(.bottom, 16)
+        }
+      }
+      .background(.white)
+      .navigationTitle("Edit Translations")
+      .onAppear {
+        viewModel.load(workspaceId: workspaceId, keyId: currentKey.id)
+      }
+      .onReceive(viewModel.$saveEvent) { event in
+        switch event.data {
+          case .saved:
+            showSavedToast = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+              nav.pop()
             }
-          }
-          .disabled(loading)
-          .keyboardShortcut(.defaultAction)
+          default:
+            break
         }
-        .padding(.horizontal, 16)
       }
-      .padding(.vertical, 16)
-    }
-    .background(.white)
-    .navigationTitle("Edit Translations")
-    .onAppear {
-      viewModel.load(workspaceId: workspaceId, keyId: currentKey.id)
-    }
-    .onReceive(viewModel.$saveEvent) { event in
-      switch event.data {
-        case .saved:
-          showSavedToast = true
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-            nav.pop()
-          }
-        default:
-          break
-      }
-    }
 
       Snackbar(text: "Translations saved", show: showSavedToast)
     }
+  }
+
+  /// Fixed, not inside the ScrollView - Save/Cancel (and Back) need to stay
+  /// reachable regardless of how long this screen gets, especially now that
+  /// per-app overrides can add a lot of extra height below the fold.
+  /// Not .toolbar, for the same reason as before: this screen isn't pushed
+  /// onto its own NavigationStack, so a .toolbar here could collide with
+  /// whatever ancestor actually hosts one.
+  private var headerBar: some View {
+    HStack {
+      Button(action: { nav.pop() }) {
+        HStack(spacing: 4) {
+          Image(systemName: "chevron.left")
+          Text("Back")
+        }
+        .font(.subheadline.weight(.medium))
+        .foregroundStyle(AppColors.primaryStart)
+      }
+      .buttonStyle(.plain)
+      .disabled(loading)
+
+      Spacer()
+
+      Button("Cancel") { nav.pop() }
+        .buttonStyle(GhostButtonStyle(color: .secondary))
+        .disabled(loading)
+
+      Button(action: {
+        viewModel.save(keyId: currentKey.id)
+      }) {
+        if loading {
+          ProgressView()
+            .controlSize(.small)
+        } else {
+          Text("Save")
+        }
+      }
+      .buttonStyle(GradientPillButtonStyle())
+      .disabled(loading)
+      .keyboardShortcut(.defaultAction)
+    }
+    .padding(.horizontal, 16)
+    .padding(.vertical, 12)
+    .background(
+      Rectangle()
+        .fill(.white)
+        .shadow(color: .black.opacity(0.04), radius: 6, y: 3)
+    )
   }
 
   var appsSection: some View {
@@ -229,6 +252,32 @@ struct EditTranslationsScreen: View {
           .foregroundColor(.secondary)
           .padding(.horizontal, 16)
       }
+  }
+
+  /// Apps this key is still included in, excluding the ones toggled off in
+  /// appsSection above - overriding a value for an app that's excluded
+  /// from this key entirely wouldn't mean anything.
+  private var includedApps: [WSAppDTO] {
+    (viewModel.workspaceApps.data ?? []).filter { !currentKey.excludedApps.contains($0.id) }
+  }
+
+  var overridesSection: some View {
+    Group {
+      if let langs = viewModel.languages.data, !langs.isEmpty {
+        PerAppOverridesSection(
+          includedApps: includedApps,
+          langs: langs,
+          defaultLang: viewModel.defaultLang,
+          defaultValue: { code in viewModel.value(for: code) },
+          overrideValue: { appId, code in viewModel.overrideValue(appId: appId, lang: code) },
+          hasAnyOverride: { appId in viewModel.hasAnyOverride(appId: appId) },
+          onStartCustomizing: { appId, code in viewModel.startCustomizing(appId: appId, lang: code) },
+          onChange: { appId, code, value in viewModel.setOverrideValue(value, appId: appId, lang: code) },
+          onReset: { appId, code in viewModel.resetToDefault(appId: appId, lang: code) }
+        )
+        .padding(.horizontal, 16)
+      }
+    }
   }
 }
 

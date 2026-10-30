@@ -22,16 +22,27 @@ class TranslationValueUsecase {
     return try await repo.fetchValues(forKeyIds: [keyId])
   }
 
+  /// `appId: nil` saves the shared default every app falls back to;
+  /// passing a specific app's id saves (or updates) that app's own
+  /// override of this key+lang instead.
   func save(
     keyId: UUID,
     lang: String,
-    value: String
+    value: String,
+    appId: UUID? = nil
   ) async throws -> TranslationValueDTO {
     return try await repo.upsertValue(
       keyId: keyId,
       lang: lang,
       value: value,
-      translatedBy: "{}"
+      translatedBy: "{}",
+      appId: appId
     )
+  }
+
+  /// Reverts a single app back to the shared default for this key+lang by
+  /// deleting its override, if one exists.
+  func removeOverride(keyId: UUID, lang: String, appId: UUID) async throws {
+    try await repo.deleteValueOverride(keyId: keyId, lang: lang, appId: appId)
   }
 }
